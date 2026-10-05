@@ -2782,7 +2782,7 @@ export function panelHTML(env, options = {}) {
         <div class="brand-title-wrap">
           <h1>
             <span class="brand-title-gradient">Arizo Self</span>
-            <span class="badge-pro">PRO V3.5</span>
+            <span class="badge-pro">PRO v3.6.2</span>
           </h1>
         </div>
       </div>
@@ -3380,6 +3380,10 @@ export function panelHTML(env, options = {}) {
           </label>
         </div>
 
+        <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 18px; font-size: 0.8rem; color: var(--text-main); line-height: 1.7;">
+          🛡️ <b>سنسورهای هوشمند پایش آنلاین/آفلاین:</b> منشی خودکار تنها زمانی که <b>کاملاً آفلاین</b> باشید پاسخ می‌دهد. با پایش مستقیم نشست‌های فعال گوشی و دسکتاپ، پنجره ۱۰ دقیقه‌ای عدم تداخل در چت‌های زنده و تشخیص خوانده شدن پیام، منشی مزاحم مکالمات شما نمی‌شود.
+        </div>
+
         <div class="form-group">
           <label class="form-label">متن پاسخ خودکار منشی به مخاطبان در پیوی</label>
           <textarea id="afkMessageInput" class="input-field" rows="3" placeholder="متن پاسخ خودکار منشی (مثال: درود! در حال حاضر امکان پاسخگویی ندارم. به محض آنلاین شدن پاسخ خواهم داد ⏳)"></textarea>
@@ -3533,8 +3537,8 @@ export function panelHTML(env, options = {}) {
           </label>
         </div>
 
-        <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 18px; font-size: 0.8rem; color: var(--text-main); line-height: 1.7;">
-          🛡️ <b>پایش هوشمند وضعیت آنلاین:</b> هوش مصنوعی تنها در زمان <b>آفلاین بودن</b> به پیوی‌ها پاسخ می‌دهد. به محض اینکه آنلاین شوید، پیامی بخوانید یا در حال چت با مخاطبان باشید، منشی خودکار فوراً متوقف می‌شود.
+        <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 18px; font-size: 0.8rem; color: var(--text-main); line-height: 1.7;">
+          🛡️ <b>پایش پیشرفته سنسورهای آنلاین/آفلاین:</b> هوش مصنوعی تنها زمانی پاسخ می‌دهد که <b>آفلاین واقعی</b> باشید. وضعیت نشست‌های زنده تلگرام (موبایل و کامپیوتر)، فعالیت در چت‌های ۱۰ دقیقه اخیر، و صف انتظار ۱۲ ثانیه‌ای مانع از تداخل هوش مصنوعی با گفتگوهای شما می‌شود.
         </div>
 
         <div class="form-group">
@@ -3998,7 +4002,7 @@ export function panelHTML(env, options = {}) {
           <div class="features-header-top-row">
             <span class="features-header-badge">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <span>معرفی امکانات و سرویس‌های پیشرفته | Arizo Self v3.6.0 PRO</span>
+              <span>معرفی امکانات و سرویس‌های پیشرفته | Arizo Self v3.6.2 PRO</span>
             </span>
           </div>
           <div class="features-header-title">استودیوی ابری سلف‌بات هوشمند تلگرام</div>
