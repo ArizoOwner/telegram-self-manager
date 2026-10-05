@@ -410,7 +410,7 @@ let activeUsersETag = null;
 let cachedPanelHtml = null;
 let cachedAdminHtml = null;
 let cachedWizardHtml = null;
-const STATIC_ASSET_ETAG = '"arizo-v4.4.1-ui-freeze-fix"';
+const STATIC_ASSET_ETAG = '"arizo-v4.4.2-ai-test-auth-fix"';
 let cachedFaviconResponse = null;
 
 export default {
@@ -2043,21 +2043,24 @@ export default {
     if (url.pathname === '/api/user/test-ai' && request.method === 'POST') {
       try {
         const auth = await getAuthUser(request, env);
-        if (!auth) return json({ ok: false, error: 'احراز هویت ناموفق بود', errorEn: 'Unauthorized session' }, 401);
+        const isAdmin = !auth ? await getAdminAuth(request, env) : false;
+        if (!auth && !isAdmin) return json({ ok: false, error: 'احراز هویت ناموفق بود', errorEn: 'Unauthorized session' }, 401);
 
-        const sub = checkUserSubscription(auth.user);
-        if (!sub.active || auth.user.isSuspended) {
-          return json({
-            ok: false,
-            error: 'اشتراک شما به پایان رسیده و پنل در حالت تعلیق است.',
-            errorEn: 'Your subscription has expired.'
-          }, 403);
+        if (auth && !isAdmin) {
+          const sub = checkUserSubscription(auth.user);
+          if (!sub.active || auth.user.isSuspended) {
+            return json({
+              ok: false,
+              error: 'اشتراک شما به پایان رسیده و پنل در حالت تعلیق است.',
+              errorEn: 'Your subscription has expired.'
+            }, 403);
+          }
         }
 
         const b = await request.json().catch(() => ({}));
-        let apiKey = (b.apiKey || '').trim();
-        const provider = (b.provider || auth.user.telegram?.aiProvider || 'gemini').toLowerCase().trim();
-        const model = (b.model || auth.user.telegram?.aiModel || '').trim();
+        let apiKey = (b.apiKey || (auth && auth.user && auth.user.telegram && auth.user.telegram.aiApiKey) || '').trim();
+        const provider = (b.provider || (auth && auth.user && auth.user.telegram && auth.user.telegram.aiProvider) || 'gemini').toLowerCase().trim();
+        const model = (b.model || (auth && auth.user && auth.user.telegram && auth.user.telegram.aiModel) || '').trim();
 
         if (!apiKey) {
           apiKey = (auth.user.telegram?.aiApiKey || '').trim();
