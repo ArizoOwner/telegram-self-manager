@@ -840,7 +840,7 @@ export function panelHTML(env, options = {}) {
     }
     .segmented-btn:hover:not(.active) {
       color: var(--text-main);
-      background: rgba(255, 255, 255, 0.06);
+      background: var(--btn-secondary-hover);
     }
     .segmented-btn:active {
       transform: scale(0.97);
@@ -889,7 +889,7 @@ export function panelHTML(env, options = {}) {
     }
     .studio-tab-btn:hover:not(.active) {
       color: var(--text-main);
-      background: rgba(255, 255, 255, 0.07);
+      background: var(--btn-secondary-hover);
       transform: translateY(-1px);
     }
     .studio-tab-btn:active {
@@ -1415,7 +1415,7 @@ export function panelHTML(env, options = {}) {
       transition: all 0.22s var(--smooth-physics);
     }
     .admin-subtab-btn:hover:not(.active) {
-      background: rgba(255, 255, 255, 0.08);
+      background: var(--btn-secondary-hover);
       color: var(--text-main);
     }
     .admin-subtab-btn.active {
@@ -1618,8 +1618,8 @@ export function panelHTML(env, options = {}) {
     .btn-secondary:hover:not(:disabled) {
       background: var(--btn-secondary-hover);
       border-color: rgba(168, 85, 247, 0.35);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-      color: #ffffff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      color: var(--text-main);
     }
     .btn-gold {
       background: var(--gradient-gold);
@@ -1866,13 +1866,13 @@ export function panelHTML(env, options = {}) {
       color: var(--text-muted);
       font-weight: 800;
       font-size: 0.78rem;
-      background: rgba(0, 0, 0, 0.15);
+      background: var(--table-th-bg);
     }
     .admin-table tbody tr {
       transition: background-color 0.2s ease;
     }
     .admin-table tbody tr:hover {
-      background-color: rgba(255, 255, 255, 0.04);
+      background-color: var(--table-hover-bg);
     }
     .copy-btn {
       background: var(--accent-indigo-bg);
@@ -2292,17 +2292,16 @@ export function panelHTML(env, options = {}) {
       width: 95%;
       max-width: 860px;
       padding: clamp(16px, 2.5vw, 26px);
-      background: #090d1a;
-      background: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.2) 0%, rgba(9, 13, 26, 0.98) 75%);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-top: 1px solid rgba(255, 255, 255, 0.3);
+      background: var(--modal-bg);
+      border: 1px solid var(--border-subtle);
+      border-top: 1px solid var(--border-specular);
       border-radius: 24px;
-      box-shadow: 0 32px 100px -10px rgba(0, 0, 0, 0.95), 0 0 50px -10px rgba(139, 92, 246, 0.32);
+      box-shadow: var(--card-shadow);
       position: relative;
       max-height: 90vh;
       display: flex;
       flex-direction: column;
-      color: #e2e8f0;
+      color: var(--text-main);
       box-sizing: border-box;
       overflow: hidden;
     }
@@ -2313,7 +2312,7 @@ export function panelHTML(env, options = {}) {
       align-items: flex-start;
       padding-bottom: 14px;
       margin-bottom: 14px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid var(--border-subtle);
       position: relative;
       gap: 12px;
     }
@@ -2334,9 +2333,9 @@ export function panelHTML(env, options = {}) {
       gap: 6px;
       font-size: 0.74rem;
       font-weight: 800;
-      color: #c4b5fd;
-      background: rgba(139, 92, 246, 0.15);
-      border: 1px solid rgba(139, 92, 246, 0.3);
+      color: var(--accent-purple);
+      background: var(--accent-purple-bg);
+      border: 1px solid var(--accent-purple-border);
       padding: 3px 10px;
       border-radius: 20px;
     }
@@ -2344,13 +2343,13 @@ export function panelHTML(env, options = {}) {
       font-size: clamp(1.1rem, 3vw, 1.35rem);
       font-weight: 900;
       letter-spacing: -0.4px;
-      color: #ffffff;
+      color: var(--text-main);
       line-height: 1.3;
       margin-bottom: 6px;
     }
     .features-header-desc {
       font-size: 0.82rem;
-      color: #94a3b8;
+      color: var(--text-muted);
       line-height: 1.6;
       margin-bottom: 10px;
     }
@@ -2366,9 +2365,9 @@ export function panelHTML(env, options = {}) {
       gap: 5px;
       font-size: 0.72rem;
       font-weight: 700;
-      color: #cbd5e1;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      background: var(--btn-secondary-bg);
+      border: 1px solid var(--border-subtle);
       padding: 3px 9px;
       border-radius: 8px;
     }
@@ -2376,8 +2375,8 @@ export function panelHTML(env, options = {}) {
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: #4ade80;
-      box-shadow: 0 0 6px #4ade80;
+      background: var(--accent-green);
+      box-shadow: 0 0 6px var(--accent-green);
     }
     .features-modal-body {
       flex: 1;
@@ -2385,13 +2384,13 @@ export function panelHTML(env, options = {}) {
       overscroll-behavior: contain;
       padding: 4px 4px 12px 2px;
       scrollbar-width: thin;
-      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+      scrollbar-color: var(--border-subtle) transparent;
     }
     .features-modal-body::-webkit-scrollbar {
       width: 5px;
     }
     .features-modal-body::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.2);
+      background: var(--border-subtle);
       border-radius: 4px;
     }
     .features-cards-grid {
@@ -2400,8 +2399,8 @@ export function panelHTML(env, options = {}) {
       gap: 12px;
     }
     .feature-card-item {
-      background: rgba(255, 255, 255, 0.025);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
       border-radius: 16px;
       padding: 14px 15px;
       display: flex;
@@ -2411,24 +2410,24 @@ export function panelHTML(env, options = {}) {
       min-width: 0;
     }
     .feature-card-item:hover {
-      background: rgba(255, 255, 255, 0.055);
+      background: var(--bg-surface-hover);
       border-color: rgba(168, 85, 247, 0.4);
       transform: translateY(-2px);
-      box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.55);
+      box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.15);
     }
     .feature-item-icon {
       width: 38px;
       height: 38px;
       border-radius: 11px;
-      background: rgba(139, 92, 246, 0.14);
-      border: 1px solid rgba(139, 92, 246, 0.28);
-      color: #c4b5fd;
+      background: var(--accent-purple-bg);
+      border: 1px solid var(--accent-purple-border);
+      color: var(--accent-purple);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
       margin-top: 2px;
-      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+      box-shadow: 0 4px 12px var(--accent-purple-bg);
     }
     .feature-item-body {
       flex: 1;
@@ -2445,7 +2444,7 @@ export function panelHTML(env, options = {}) {
     .feature-item-title {
       font-size: 0.9rem;
       font-weight: 800;
-      color: #ffffff;
+      color: var(--text-main);
       line-height: 1.35;
       overflow-wrap: break-word;
       word-break: normal;
@@ -2455,15 +2454,15 @@ export function panelHTML(env, options = {}) {
       font-weight: 800;
       padding: 2px 8px;
       border-radius: 6px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #a78bfa;
+      background: var(--accent-purple-bg);
+      border: 1px solid var(--accent-purple-border);
+      color: var(--accent-purple);
       white-space: nowrap;
       flex-shrink: 0;
     }
     .feature-item-desc {
       font-size: 0.78rem;
-      color: #94a3b8;
+      color: var(--text-muted);
       line-height: 1.6;
       overflow-wrap: break-word;
       word-break: normal;
@@ -2475,7 +2474,7 @@ export function panelHTML(env, options = {}) {
       justify-content: space-between;
       padding-top: 14px;
       margin-top: 14px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1px solid var(--border-subtle);
       gap: 14px;
       flex-wrap: wrap;
     }
@@ -2484,12 +2483,12 @@ export function panelHTML(env, options = {}) {
       align-items: center;
       gap: 8px;
       font-size: 0.79rem;
-      color: #94a3b8;
+      color: var(--text-muted);
       cursor: pointer;
       user-select: none;
     }
     .features-pref-toggle:hover {
-      color: #e2e8f0;
+      color: var(--text-main);
     }
     .features-pref-toggle input[type="checkbox"] {
       width: 16px;
@@ -2503,9 +2502,9 @@ export function panelHTML(env, options = {}) {
       gap: 10px;
     }
     .btn-feature-dismiss {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #cbd5e1;
+      background: var(--btn-secondary-bg);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
       padding: 9px 18px;
       border-radius: 12px;
       font-size: 0.82rem;
@@ -2515,9 +2514,9 @@ export function panelHTML(env, options = {}) {
       transition: all 0.2s ease;
     }
     .btn-feature-dismiss:hover {
-      background: rgba(255, 255, 255, 0.09);
-      color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.18);
+      background: var(--btn-secondary-hover);
+      color: var(--text-main);
+      border-color: var(--border-focus);
     }
     .btn-feature-start {
       background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
@@ -2780,14 +2779,36 @@ export function panelHTML(env, options = {}) {
       --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
     [data-theme="light"] {
-      --bg-dark: #f4f1ff;
-      --bg-surface: rgba(255, 255, 255, 0.78);
+      --bg-dark: #f8fafc;
+      --bg-surface: rgba(255, 255, 255, 0.88);
+      --bg-surface-elevated: #ffffff;
+      --bg-surface-hover: #f1f5f9;
+      --bg-input: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #334155;
+      --text-dim: #64748b;
+      --border-subtle: rgba(203, 213, 225, 0.85);
+      --border-specular: #ffffff;
+      --border-focus: rgba(124, 58, 237, 0.65);
+      --border-glow: rgba(124, 58, 237, 0.22);
       --gradient-brand: linear-gradient(120deg, #db2777 0%, #7c3aed 50%, #0891b2 100%);
       --gradient-btn: linear-gradient(120deg, #db2777 0%, #7c3aed 60%, #4f46e5 100%);
       --edge-gradient: linear-gradient(140deg, rgba(219, 39, 119, 0.35), rgba(124, 58, 237, 0.1) 40%, rgba(8, 145, 178, 0.35));
-      --card-shadow: 0 20px 50px -18px rgba(76, 29, 149, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.7), inset 0 1px 0 #fff;
-      --card-shadow-hover: 0 28px 60px -18px rgba(76, 29, 149, 0.32), inset 0 1px 0 #fff;
-      --orb-opacity: 0.28;
+      --card-shadow: 0 14px 40px -12px rgba(15, 23, 42, 0.1), 0 0 0 1px rgba(226, 232, 240, 0.9), inset 0 1px 0 #fff;
+      --card-shadow-hover: 0 24px 50px -12px rgba(15, 23, 42, 0.15), 0 0 0 1px rgba(124, 58, 237, 0.3), inset 0 1px 0 #fff;
+      --modal-bg: #ffffff;
+      --table-bg: #ffffff;
+      --table-th-bg: #f8fafc;
+      --table-hover-bg: #f1f5f9;
+      --segmented-bg: #f1f5f9;
+      --badge-bg: #f1f5f9;
+      --btn-secondary-bg: #ffffff;
+      --btn-secondary-hover: #f1f5f9;
+      --btn-secondary-active: #e2e8f0;
+      --clock-box-bg: linear-gradient(180deg, rgba(238, 242, 255, 0.85) 0%, rgba(248, 250, 252, 0.95) 100%);
+      --clock-digits-grad: linear-gradient(135deg, #1e1b4b 20%, #4338ca 65%, #0284c7 100%);
+      --clock-shadow: drop-shadow(0 0 14px rgba(99, 102, 241, 0.18));
+      --orb-opacity: 0.2;
     }
 
     /* پس‌زمینهٔ مش گرادیانی + شبکهٔ ظریف */
@@ -2956,6 +2977,132 @@ export function panelHTML(env, options = {}) {
     }
     .tg-mockup-body { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
 
+    /* ☀️ تمایز و کنتراست ۱۰۰٪ بی‌نقص تم روز و شب */
+    [data-theme="light"] .tg-mockup-wrapper {
+      background: linear-gradient(180deg, rgba(241, 245, 249, 0.94) 0%, rgba(255, 255, 255, 0.98) 100%);
+      border-color: rgba(226, 232, 240, 0.9);
+      box-shadow: 0 6px 24px rgba(99, 102, 241, 0.08), inset 0 1px 0 #fff;
+    }
+    [data-theme="light"] .tg-mockup-body {
+      background: #f8fafc;
+      border-color: rgba(226, 232, 240, 0.9);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+    [data-theme="light"] .tg-mockup-firstname {
+      color: #0f172a;
+    }
+    [data-theme="light"] .hero-clock-box {
+      background: var(--clock-box-bg);
+      border-color: rgba(226, 232, 240, 0.9);
+      box-shadow: 0 6px 24px rgba(99, 102, 241, 0.08), inset 0 1px 0 #fff;
+    }
+    [data-theme="light"] .toggle-row,
+    [data-theme="light"] .preset-card,
+    [data-theme="light"] .stat-card,
+    [data-theme="light"] .health-item,
+    [data-theme="light"] .admin-kpi-card {
+      background: #ffffff;
+      border-color: rgba(226, 232, 240, 0.9);
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+    }
+    [data-theme="light"] .admin-table th {
+      background: #f1f5f9;
+      color: #334155;
+    }
+    [data-theme="light"] .admin-table td {
+      border-bottom-color: rgba(226, 232, 240, 0.9);
+      color: #0f172a;
+    }
+    [data-theme="light"] .admin-table tbody tr:hover {
+      background-color: #f8fafc;
+    }
+    [data-theme="light"] .table-responsive-wrapper {
+      box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.04);
+    }
+    [data-theme="light"] .table-responsive-wrapper::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    [data-theme="light"] select.input-field option {
+      background: #ffffff;
+      color: #0f172a;
+    }
+    [data-theme="dark"] select.input-field option {
+      background: #0f172a;
+      color: #f8fafc;
+    }
+    [data-theme="light"] .meta-chip {
+      background: #f1f5f9;
+      border-color: rgba(226, 232, 240, 0.9);
+      color: #475569;
+    }
+    [data-theme="light"] .meta-chip:hover {
+      color: #0f172a;
+    }
+    [data-theme="light"] .bio-preset-pill {
+      background: #f8fafc;
+      border-color: rgba(203, 213, 225, 0.9);
+      color: #475569;
+    }
+    [data-theme="light"] .bio-preset-pill:hover {
+      color: #0f172a;
+      background: rgba(124, 58, 237, 0.06);
+    }
+    [data-theme="light"] .sep-pill {
+      background: #ffffff;
+      border-color: rgba(203, 213, 225, 0.9);
+      color: #334155;
+    }
+    [data-theme="light"] .var-chip {
+      background: rgba(124, 58, 237, 0.08);
+      border-color: rgba(124, 58, 237, 0.25);
+      color: #7c3aed;
+    }
+    [data-theme="light"] .navbar {
+      background: rgba(255, 255, 255, 0.88);
+      border-color: rgba(226, 232, 240, 0.9);
+      box-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.08);
+    }
+    [data-theme="light"] .footer-dock {
+      background: rgba(255, 255, 255, 0.88);
+      border-top-color: rgba(226, 232, 240, 0.9);
+    }
+    [data-theme="light"] .modal-container,
+    [data-theme="light"] .features-modal-container,
+    [data-theme="light"] .admin-inspector-container {
+      background: #ffffff;
+      border-color: rgba(203, 213, 225, 0.9);
+      box-shadow: 0 30px 80px -15px rgba(15, 23, 42, 0.2), 0 0 0 1px rgba(226, 232, 240, 0.9);
+      color: #0f172a;
+    }
+    [data-theme="light"] .features-modal-header {
+      border-bottom-color: rgba(226, 232, 240, 0.9);
+    }
+    [data-theme="light"] .features-modal-action-bar {
+      border-top-color: rgba(226, 232, 240, 0.9);
+    }
+    [data-theme="light"] .feature-card-item {
+      background: #f8fafc;
+      border-color: rgba(226, 232, 240, 0.9);
+    }
+    [data-theme="light"] .feature-card-item:hover {
+      background: #ffffff;
+      border-color: rgba(124, 58, 237, 0.4);
+      box-shadow: 0 10px 24px -6px rgba(15, 23, 42, 0.08);
+    }
+    [data-theme="light"] .admin-filter-bar {
+      background: #f8fafc;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+    }
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--accent-purple-bg);
+      color: var(--accent-purple);
+      border: 1px solid var(--accent-purple-border);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 0.85em;
+    }
+
     /* کارت‌های ریز: کیپی‌آی، پریست، تاگل */
     .admin-kpi-card, .stat-card, .health-item, .preset-card, .toggle-row { position: relative; overflow: hidden; }
     .admin-kpi-card::before {
@@ -3043,7 +3190,7 @@ export function panelHTML(env, options = {}) {
 
       <div class="nav-actions">
         <!-- 🌐 دکمه سوئیچ زبان انگلیسی / فارسی -->
-        <button class="btn-theme-toggle" id="langToggleBtn" onclick="toggleLanguage()" title="Switch Language / تغییر زبان" style="border-color: rgba(56, 189, 248, 0.35); color: #38bdf8; background: rgba(56, 189, 248, 0.08);">
+        <button class="btn-theme-toggle" id="langToggleBtn" onclick="toggleLanguage()" title="Switch Language / تغییر زبان" style="border-color: var(--accent-blue-border); color: var(--accent-blue); background: var(--accent-blue-bg);">
           <span id="langIcon">🌐</span>
           <span class="theme-text" id="langText" style="font-weight:700;">English</span>
         </button>
@@ -3055,7 +3202,7 @@ export function panelHTML(env, options = {}) {
         </button>
 
         <!-- 💡 دکمه رسمی راهنمای امکانات سامانه -->
-        <button class="btn-theme-toggle" id="featureTourNavBtn" onclick="openFeaturesModal()" title="راهنمای جامع امکانات و سرویس‌های سامانه Arizo Self" style="border-color: rgba(168, 85, 247, 0.3); color: #c4b5fd; background: rgba(168, 85, 247, 0.1);">
+        <button class="btn-theme-toggle" id="featureTourNavBtn" onclick="openFeaturesModal()" title="راهنمای جامع امکانات و سرویس‌های سامانه Arizo Self" style="border-color: var(--accent-purple-border); color: var(--accent-purple); background: var(--accent-purple-bg);">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
           <span class="theme-text" style="font-weight:700;" data-i18n="featureTour">راهنمای امکانات</span>
         </button>
@@ -3811,7 +3958,7 @@ export function panelHTML(env, options = {}) {
             <button type="button" id="btnToggleAiKeyVisibility" style="position:absolute; left:10px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem; padding:4px;" title="نمایش / مخفی‌سازی کلید">👁️</button>
           </div>
           <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; flex-wrap:wrap; gap:8px;">
-            <button type="button" id="btnDeleteAiKey" class="btn btn-secondary btn-sm" style="color:#ef4444; border-color:rgba(239,68,68,0.3); font-size:0.8rem; padding:6px 14px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; background:rgba(239,68,68,0.08); border-radius:8px; transition:all 0.2s ease;">
+            <button type="button" id="btnDeleteAiKey" class="btn btn-secondary btn-sm" style="color:var(--accent-rose); border-color:var(--accent-rose-border); font-size:0.8rem; padding:6px 14px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; background:var(--accent-rose-bg); border-radius:8px; transition:all 0.2s ease;">
               <span>🗑️</span>
               <span style="font-weight:600;">حذف کامل کلید API (رفع تداخل)</span>
             </button>
@@ -3918,14 +4065,14 @@ export function panelHTML(env, options = {}) {
             </div>
           </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 0.78rem;">
-            <div style="background: rgba(0,0,0,0.2); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-subtle);">
+            <div style="background: var(--bg-surface-hover); color: var(--text-main); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-subtle);">
               🟢 <b>وضعیت وب‌هوک:</b> متصل و فعال
             </div>
-            <div style="background: rgba(0,0,0,0.2); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-subtle);">
+            <div style="background: var(--bg-surface-hover); color: var(--text-main); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-subtle);">
               🎛️ <b>ورود به پنل (Mini App):</b> دکمه منو فعال شد
             </div>
           </div>
-          <div style="background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 8px; padding: 10px 14px; margin-top: 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+          <div style="background: var(--accent-indigo-bg); border: 1px solid var(--accent-indigo-border); border-radius: 8px; padding: 10px 14px; margin-top: 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
             <div style="display:flex; align-items:center; gap:8px;">
               <span style="font-size:1.1rem;">🔒</span>
               <div>
@@ -3934,7 +4081,7 @@ export function panelHTML(env, options = {}) {
               </div>
             </div>
             <div style="display:flex; align-items:center; gap:6px;">
-              <div id="botOwnerIdDisplay" style="font-family:var(--font-mono); font-size:0.8rem; background:rgba(0,0,0,0.3); padding:4px 10px; border-radius:6px; color:var(--accent-indigo); font-weight:700;">
+              <div id="botOwnerIdDisplay" style="font-family:var(--font-mono); font-size:0.8rem; background:var(--accent-indigo-bg); border: 1px solid var(--accent-indigo-border); padding:4px 10px; border-radius:6px; color:var(--accent-indigo); font-weight:700;">
                 🔒 آماده قفل با اولین /start
               </div>
               <button type="button" class="btn btn-secondary" onclick="promptSetBotOwnerId()" style="padding: 4px 8px; font-size: 0.72rem; border-color: var(--border-subtle); color: var(--text-muted); width: auto;" title="تنظیم یا تغییر دستی شناسه تلگرام مجاز">
@@ -4006,7 +4153,7 @@ export function panelHTML(env, options = {}) {
                 <div style="font-size:0.75rem; color:var(--text-muted);">محافظت از حساب در برابر نفوذ با کدهای ۶ رقمی زمان‌محور</div>
               </div>
             </div>
-            <div id="totpStatusBadge" style="padding:4px 12px; border-radius:999px; font-size:0.78rem; font-weight:700; background:rgba(239,68,68,0.12); color:#ef4444; border:1px solid rgba(239,68,68,0.3);">
+            <div id="totpStatusBadge" style="padding:4px 12px; border-radius:999px; font-size:0.78rem; font-weight:700; background:var(--accent-rose-bg); color:var(--accent-rose); border:1px solid var(--accent-rose-border);">
               غیرفعال ❌
             </div>
           </div>
@@ -4081,7 +4228,7 @@ export function panelHTML(env, options = {}) {
                 <div style="font-weight:700; font-size:0.85rem; color:var(--accent-green); display:flex; align-items:center; gap:6px;">
                   <span>✅</span> <span>احراز هویت دو مرحله‌ای (2FA) برای حساب شما فعال است.</span>
                 </div>
-                <button type="button" class="btn btn-secondary" onclick="promptDisableTotp()" style="color:#ef4444; border-color:rgba(239,68,68,0.3); font-size:0.78rem; padding:6px 12px;">
+                <button type="button" class="btn btn-secondary" onclick="promptDisableTotp()" style="color:var(--accent-rose); border-color:var(--accent-rose-border); font-size:0.78rem; padding:6px 12px;">
                   <span>❌ غیرفعال‌سازی ۲FA</span>
                 </button>
               </div>
@@ -4159,7 +4306,7 @@ export function panelHTML(env, options = {}) {
                 <div style="font-size:0.75rem; color:var(--text-muted);">مسدودسازی خودکار آی‌پی‌های مشکوک و پویشگران آسیب‌پذیری وب</div>
               </div>
             </div>
-            <div style="padding:4px 12px; border-radius:999px; font-size:0.78rem; font-weight:700; background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.3);">
+            <div style="padding:4px 12px; border-radius:999px; font-size:0.78rem; font-weight:700; background:var(--accent-green-bg); color:var(--accent-green); border:1px solid var(--accent-green-border);">
               فعال و هوشیار 🟢
             </div>
           </div>
@@ -4270,15 +4417,15 @@ export function panelHTML(env, options = {}) {
               <span>واکنش زیر ۴۰ms</span>
             </span>
             <span class="features-chip">
-              <span class="features-chip-dot" style="background:#38bdf8; box-shadow:0 0 6px #38bdf8;"></span>
+              <span class="features-chip-dot" style="background:var(--accent-blue); box-shadow:0 0 6px var(--accent-blue);"></span>
               <span>۱۰۰٪ ابری ۲۴/۷</span>
             </span>
             <span class="features-chip">
-              <span class="features-chip-dot" style="background:#10b981; box-shadow:0 0 6px #10b981;"></span>
+              <span class="features-chip-dot" style="background:var(--accent-green); box-shadow:0 0 6px var(--accent-green);"></span>
               <span>دیتابیس هیبرید D1 + KV</span>
             </span>
             <span class="features-chip">
-              <span class="features-chip-dot" style="background:#c084fc; box-shadow:0 0 6px #c084fc;"></span>
+              <span class="features-chip-dot" style="background:var(--accent-purple); box-shadow:0 0 6px var(--accent-purple);"></span>
               <span>امنیت ۲FA و هانی‌پات</span>
             </span>
           </div>
@@ -6310,15 +6457,15 @@ export function panelHTML(env, options = {}) {
       var isEn = window.currentLang === 'en';
       if (hasError) {
         badge.textContent = isEn ? '⚠️ Telegram Reconnect Required' : '⚠️ نیازمند اتصال مجدد تلگرام';
-        badge.style.color = '#fb7185';
+        badge.style.color = 'var(--accent-rose)';
         toggleText.textContent = isEn ? '▶️ Retry Selfbot' : '▶️ تلاش مجدد سلف‌بات';
       } else if (enabled) {
         badge.textContent = isEn ? '🟢 Active & Running 24/7' : '🟢 فعال و در حال اجرای خودکار';
-        badge.style.color = '#4ade80';
+        badge.style.color = 'var(--accent-green)';
         toggleText.textContent = isEn ? '⏸️ Pause Selfbot' : '⏸️ توقف موقت سلف‌بات';
       } else {
         badge.textContent = isEn ? '⏸️ Paused' : '⏸️ متوقف‌شده (Pause)';
-        badge.style.color = '#fbbf24';
+        badge.style.color = 'var(--accent-amber)';
         toggleText.textContent = isEn ? '▶️ Resume Selfbot' : '▶️ فعال‌سازی مجدد سلف‌بات';
       }
     }
@@ -6760,7 +6907,13 @@ export function panelHTML(env, options = {}) {
         var mockupLastNameEl = document.getElementById('mockupLastName');
         if (mockupLastNameEl) {
           mockupLastNameEl.textContent = fullLastName;
-          mockupLastNameEl.style.color = isSleeping ? '#fbbf24' : 'inherit';
+          if (isSleeping) {
+            mockupLastNameEl.style.color = 'var(--accent-amber)';
+            mockupLastNameEl.style.webkitTextFillColor = 'var(--accent-amber)';
+          } else {
+            mockupLastNameEl.style.color = '';
+            mockupLastNameEl.style.webkitTextFillColor = 'transparent';
+          }
         }
 
         var dateEl = document.getElementById('persianDateText');
@@ -7172,8 +7325,8 @@ export function panelHTML(env, options = {}) {
         if (data.isSuspended || data.isExpired) {
           if (suspBox) suspBox.classList.remove('hidden');
           planBadge.textContent = 'اشتراک: معلق و منقضی 🔴';
-          planBadge.style.color = '#fb7185';
-          planBadge.style.borderColor = 'rgba(251, 113, 133, 0.4)';
+          planBadge.style.color = 'var(--accent-rose)';
+          planBadge.style.borderColor = 'var(--accent-rose-border)';
 
           // مخفی‌سازی یا غیرفعال‌سازی گزینه‌های اجرایی هنگام تعلیق
           document.getElementById('telegramConnectSection').classList.add('hidden');
@@ -7181,7 +7334,7 @@ export function panelHTML(env, options = {}) {
 
           var badge = document.getElementById('botStatusBadge');
           badge.textContent = '⏸️ به حالت تعلیق درآمده (منقضی)';
-          badge.style.color = '#fb7185';
+          badge.style.color = 'var(--accent-rose)';
 
           var toggleText = document.getElementById('toggleBotText');
           toggleText.textContent = '🔒 سلف‌بات معلق است';
@@ -7190,7 +7343,7 @@ export function panelHTML(env, options = {}) {
 
           var lastUpEl = document.getElementById('lastUpdateTime');
           lastUpEl.textContent = 'تعلیق به علت پایان مدت زمان اشتراک';
-          lastUpEl.style.color = '#fb7185';
+          lastUpEl.style.color = 'var(--accent-rose)';
           updateLiveClock();
           return;
         } else {
@@ -7201,8 +7354,8 @@ export function panelHTML(env, options = {}) {
           var isEn = window.currentLang === 'en';
           var remText = data.isLifetime ? (isEn ? 'Lifetime ♾️' : 'دائمی ♾️') : (data.remainingDays + (isEn ? ' days remaining' : ' روز اعتبار باقی‌مانده'));
           planBadge.textContent = (isEn ? 'Subscription: ' : 'اشتراک: ') + (data.planName || (isEn ? 'Standard' : 'استاندارد')) + ' (' + remText + ')';
-          planBadge.style.color = '#4ade80';
-          planBadge.style.borderColor = 'rgba(74, 222, 128, 0.3)';
+          planBadge.style.color = 'var(--accent-green)';
+          planBadge.style.borderColor = 'var(--accent-green-border)';
         }
 
         if (data.hasTelegram) {
@@ -7413,9 +7566,9 @@ export function panelHTML(env, options = {}) {
       var actBox = document.getElementById('totpActiveBox');
       if (badge) {
         badge.textContent = enabled ? 'فعال و محافظت‌شده 🟢' : 'غیرفعال ❌';
-        badge.style.background = enabled ? 'rgba(16, 185, 129, 0.12)' : 'rgba(239, 68, 68, 0.12)';
-        badge.style.color = enabled ? '#10b981' : '#ef4444';
-        badge.style.borderColor = enabled ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)';
+        badge.style.background = enabled ? 'var(--accent-green-bg)' : 'var(--accent-rose-bg)';
+        badge.style.color = enabled ? 'var(--accent-green)' : 'var(--accent-rose)';
+        badge.style.borderColor = enabled ? 'var(--accent-green-border)' : 'var(--accent-rose-border)';
       }
       if (enabled) {
         window.isSettingUpTotp = false;
@@ -7428,7 +7581,7 @@ export function panelHTML(env, options = {}) {
           var bcList = document.getElementById('totpActiveBackupCodesList');
           if (bcList) {
             bcList.innerHTML = backupCodes.map(function(c) {
-              return '<span style="padding:6px 10px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); border-radius:6px; text-align:center; letter-spacing:1px; color:var(--text-main); font-weight:700;">' + c + '</span>';
+              return '<span style="padding:6px 10px; background:var(--bg-surface-hover); border:1px solid var(--border-subtle); border-radius:6px; text-align:center; letter-spacing:1px; color:var(--text-main); font-weight:700;">' + c + '</span>';
             }).join('');
           }
         }
