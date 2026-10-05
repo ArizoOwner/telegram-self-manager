@@ -5044,6 +5044,227 @@ export function panelHTML(env, options = {}) {
       window.TRANSLATIONS_MAP = {};
     }
 
+    // =========================================================================
+    // 🌐 دیکشنری الحاقی برای قابلیت‌های جدید (AI Smart Reply, Models, Ignore List, Ghost Mode, etc.)
+    // =========================================================================
+    var ADDITIONAL_TRANSLATIONS = {
+      // 🤖 AI Smart Reply — Section Header & Description
+      'پاسخ هوشمند مبتنی بر هوش مصنوعی (AI Smart Reply)': 'Intelligent AI-Powered Smart Reply (AI Smart Reply)',
+      'پاسخگویی هوشمند به پیام‌های پیوی با هوش مصنوعی (AI Smart Reply)': 'Intelligent Private Chat AI Auto-Reply (AI Smart Reply)',
+      'به جای یک پیام ثابت AFK، هوش مصنوعی': 'Instead of a static AFK reply, AI',
+      'متناسب با محتوای پیام': 'tailors dynamic responses based on message content',
+      'به مخاطبین پاسخ می‌دهد. هر کاربر API Key خودش رو وارد می‌کنه و هزینه‌ای برای سرور نداره.': 'to incoming messages. Each user provides their own API Key with zero server cost.',
+      'به جای یک پیام ثابت AFK، هوش مصنوعی متناسب با محتوای پیام به مخاطبین پاسخ می‌دهد. هر کاربر API Key خودش رو وارد می‌کنه و هزینه‌ای برای سرور نداره.': 'Instead of a static AFK message, AI dynamically responds based on message content. Each user enters their own API Key with zero cost to the server.',
+      'فعال‌سازی پاسخ هوشمند AI (جایگزین AFK ثابت)': 'Enable AI Smart Auto-Reply (Replaces Static AFK)',
+      'وقتی فعال باشه، AI به جای پیام ثابت منشی، هوشمندانه پاسخ می‌دهد': 'When enabled, AI crafts intelligent responses instead of a static secretary message',
+      'پاسخ AI': 'AI Reply',
+      'پاسخ هوشمند AI': 'Smart AI Reply',
+
+      // 🛡️ AI Sensors & Offline Detection
+      'پایش پیشرفته سنسورهای آنلاین/آفلاین:': 'Advanced Online/Offline Sensor Monitoring:',
+      'هوش مصنوعی تنها زمانی پاسخ می‌دهد که': 'AI replies exclusively when you are',
+      'آفلاین واقعی': 'genuinely offline',
+      'باشید. وضعیت نشست‌های زنده تلگرام (موبایل و کامپیوتر)، فعالیت در چت‌های ۱۰ دقیقه اخیر، و صف انتظار ۱۲ ثانیه‌ای مانع از تداخل هوش مصنوعی با گفتگوهای شما می‌شود.': '. Active Telegram sessions (mobile & desktop), chat activity in the last 10 minutes, and a 12-second grace queue prevent any AI interference with your real-time conversations.',
+      'تشخیص فوق‌هوشمند آفلاین بودن:': 'Ultra-Smart Offline Detection:',
+      'سیستم به صورت چندلایه‌ای با بررسی نشست‌های متصل (گوشی و دسکتاپ)، چت فعال دوطرفه (۱۰ دقیقه)، پیش‌نویس‌ها و خواندن پیام‌ها تضمین می‌کند که منشی فقط در زمان آفلاین بودن پاسخ دهد و در حین چت فعال یا آنلاین بودن شما هرگز مزاحمتی ایجاد نکند (به همراه فرجه هوشمند ۱۲ ثانیه‌ای برای لغو خودکار).': 'The multi-layered sensor system checks active devices (mobile & desktop), recent two-way chat activity (10 min), typing drafts, and read receipts to guarantee AI replies exclusively when you are offline without disturbing your live chats (including a 12-second grace cancellation period).',
+
+      // 🤖 AI Provider & Models
+      'سرویس‌دهنده هوش مصنوعی (AI Provider)': 'AI Service Provider (AI Provider)',
+      'Google Gemini (رایگان — پیشنهادی)': 'Google Gemini (Free — Recommended)',
+      'OpenAI (GPT-4o / GPT-3.5)': 'OpenAI (GPT-4o / GPT-3.5)',
+      'Custom API (سرویس سفارشی / DeepSeek)': 'Custom API (Custom Service / DeepSeek)',
+      'Custom API (سرویس سفارشی)': 'Custom API (Custom Service)',
+      'مدل هوش مصنوعی (AI Model)': 'AI Model (AI Model)',
+      '🤖 مدل هوش مصنوعی (AI Model)': '🤖 AI Model (AI Model)',
+      'انتخاب مدل پاسخ‌دهی': 'Select response model',
+      'مدل‌های پرسرعت گوگل (رایگان)': 'High-speed Google models (Free)',
+      'مدل‌های OpenAI GPT': 'OpenAI GPT models',
+      'مدل سفارشی / DeepSeek / کلاود': 'Custom Model / DeepSeek / Claude',
+      '⚡ Gemini 2.5 Flash (جدیدترین، پرسرعت و رایگان — پیشنهادی)': '⚡ Gemini 2.5 Flash (Latest, Fast & Free — Recommended)',
+      '🚀 Gemini 2.0 Flash (پایدار و هوشمند)': '🚀 Gemini 2.0 Flash (Stable & Smart)',
+      '🌟 Gemini 1.5 Flash (سریع و سبک)': '🌟 Gemini 1.5 Flash (Fast & Lightweight)',
+      '🧠 Gemini 1.5 Pro (قدرت تحلیل بالا)': '🧠 Gemini 1.5 Pro (High Reasoning Capability)',
+      '💨 Gemini Flash Lite (فوق سبک)': '💨 Gemini Flash Lite (Ultra Lightweight)',
+      '✏️ مدل دستی دیگر (تایپ نام مدل دلخواه)...': '✏️ Other Custom Model (Type model name)...',
+      '⚡ GPT-4o Mini (سریع، اقتصادی و دقیق — پیشنهادی)': '⚡ GPT-4o Mini (Fast, Economic & Accurate — Recommended)',
+      '🧠 GPT-4o (پرچمدار هوشمند همه‌کاره)': '🧠 GPT-4o (Flagship Multimodal Intelligence)',
+      '🚀 GPT-4 Turbo': '🚀 GPT-4 Turbo',
+      '💨 GPT-3.5 Turbo (اقتصادی و سبک)': '💨 GPT-3.5 Turbo (Economic & Lightweight)',
+      '🐳 DeepSeek V3 (Chat)': '🐳 DeepSeek V3 (Chat)',
+      '🧠 DeepSeek R1 (استدلال و تفکر)': '🧠 DeepSeek R1 (Reasoning & Thinking)',
+      '🎭 Claude 3.5 Sonnet': '🎭 Claude 3.5 Sonnet',
+      '✏️ تایپ مدل اختصاصی دیگر...': '✏️ Type Other Custom Model...',
+      'نام دقیق مدل (مثال: deepseek-chat یا gemini-2.5-flash یا gpt-4o)': 'Exact model identifier (e.g. deepseek-chat, gemini-2.5-flash, or gpt-4o)',
+      'نام شناسه مدل اختصاصی یا آزمایشی ارائه‌دهنده را با حروف کوچک انگلیسی وارد فرمایید.': 'Enter the exact model identifier from your provider in lowercase English.',
+      '💡 نام شناسه مدل اختصاصی یا آزمایشی ارائه‌دهنده را با حروف کوچک انگلیسی وارد فرمایید.': '💡 Enter the exact model identifier from your provider in lowercase English.',
+
+      // 🔑 AI API Key & Prompts
+      'کلید API هوش مصنوعی (API Key)': 'AI API Key (API Key)',
+      'کلید API خود را از پنل Gemini یا OpenAI دریافت و اینجا وارد کنید': 'Obtain your API key from Gemini or OpenAI and enter it here',
+      'نمایش / مخفی‌سازی کلید': 'Toggle Key Visibility',
+      'حذف کامل کلید API (رفع تداخل)': 'Completely Delete API Key (Reset Conflicts)',
+      'شخصیت و دستورالعمل AI (System Prompt)': 'AI Persona & Instructions (System Prompt)',
+      'به AI بگویید چطور رفتار کنه (مثلاً: مؤدبانه و رسمی پاسخ بده، از اطلاعات خصوصی صحبت نکنه)': 'Tell AI how to behave (e.g. reply politely, be friendly, do not disclose private info)',
+      'حداکثر ۵۰۰ کاراکتر. این متن شخصیت AI را تعیین می‌کند.': 'Up to 500 characters. Defines the persona and tone of the AI.',
+      '💡 حداکثر ۵۰۰ کاراکتر. این متن شخصیت AI را تعیین می‌کند.': '💡 Up to 500 characters. Defines the persona and tone of the AI.',
+      'اطلاعات پایه برای AI (زمینه و کانتکست)': 'Base Context for AI (Context & Background)',
+      'اطلاعاتی که AI اجازه داره بگه (مثلاً: ساعت کاری من ۹ تا ۵ هست، برنامه‌نویس هستم)': 'Info that AI is allowed to share (e.g. my working hours are 9-5, I am a developer)',
+      'AI از این اطلاعات برای پاسخ دقیق‌تر استفاده می‌کند.': 'AI utilizes this context to craft accurate and customized answers.',
+      '💡 AI از این اطلاعات برای پاسخ دقیق‌تر استفاده می‌کند.': '💡 AI utilizes this context to craft accurate and customized answers.',
+
+      // 🔢 AI Limits & Cooldowns
+      'حداکثر تعداد پاسخ به هر شخص': 'Max Replies per Person',
+      'فقط ۱ پاسخ': 'Only 1 reply',
+      'حداکثر ۲ پاسخ': 'Max 2 replies',
+      'حداکثر ۳ پاسخ (پیشنهادی)': 'Max 3 replies (Recommended)',
+      'حداکثر ۵ پاسخ': 'Max 5 replies',
+      'حداکثر ۱۰ پاسخ': 'Max 10 replies',
+      'نامحدود (۲۰ پاسخ)': 'Unlimited (20 replies)',
+      'فاصله زمانی بین پاسخ‌ها (کول‌داون)': 'Cooldown Between Replies',
+      '⚡ بدون محدودیت زمانی (فوری و بدون کول‌داون)': '⚡ Instant (No Cooldown)',
+      'بدون محدودیت زمانی (فوری و بدون کول‌داون)': 'Instant (No Cooldown)',
+      'هر ۱ دقیقه': 'Every 1 minute',
+      'هر ۳ دقیقه': 'Every 3 minutes',
+      'هر ۵ دقیقه (پیشنهادی)': 'Every 5 minutes (Recommended)',
+      'هر ۱۰ دقیقه': 'Every 10 minutes',
+      'هر ۳۰ دقیقه': 'Every 30 minutes',
+
+      // 🚫 AI Ignore List
+      '🚫 کاربران مستثنی از پاسخ هوش مصنوعی (لیست نادیده‌گیری)': '🚫 Users Excluded from AI Replies (Ignore List / Blacklist)',
+      'کاربران مستثنی از پاسخ هوش مصنوعی (لیست نادیده‌گیری)': 'Users Excluded from AI Replies (Ignore List / Blacklist)',
+      'عدم ارسال پاسخ AI به این افراد': 'Do not send AI auto-replies to these users',
+      'شناسه عددی یا یوزرنیم افراد را با ویرگول جدا کنید (مثال: 123456789, @username, @friend)': 'Enter numerical IDs or usernames separated by commas (e.g. 123456789, @username, @friend)',
+      'هوش مصنوعی به پیام‌های خصوصی این کاربران هیچ پاسخی نخواهد داد. می‌توانید شناسه عددی (Numeric ID) یا نام کاربری تلگرام (با یا بدون @) را وارد کرده و با ویرگول (,) جدا فرمایید.': 'AI will never send automatic replies to private messages from these users. You can enter Telegram numeric user IDs or usernames (with or without @) separated by commas (,).',
+      'هوش مصنوعی به پیام‌های خصوصی این کاربران': 'AI to private messages from these users',
+      'هیچ پاسخی نخواهد داد': 'will NEVER reply',
+      '. می‌توانید شناسه عددی (Numeric ID) یا نام کاربری تلگرام (با یا بدون @) را وارد کرده و با ویرگول (,) جدا فرمایید.': '. You can enter Telegram numeric user IDs or usernames (with or without @) separated by commas (,).',
+
+      // 👻 Ghost Mode (Tab 6)
+      'حالت شبح — خواندن بدون تیک آبی (Ghost Read)': 'Ghost Mode — Read Without Blue Ticks (Ghost Read)',
+      'وقتی این قابلیت فعال باشه، تمام پیام‌های خصوصی جدید به صورت خودکار به': 'When enabled, all new incoming private messages are automatically forwarded to your',
+      'ربات اختصاصی': 'dedicated bot',
+      'شما فوروارد می‌شن و می‌تونید اونجا بخونیدشون بدون اینکه تیک آبی بخوره. وقتی آماده بودید، با دستور .read در تلگرام می‌تونید تیک آبی رو دستی بزنید.': 'so you can read them without sending blue ticks. When ready, use the .read command in Telegram to mark them as read manually.',
+      'شما فوروارد می‌شن و می‌تونید اونجا بخونیدشون بدون اینکه تیک آبی بخوره. وقتی آماده بودید، با دستور': 'so you can read them without sending blue ticks. When ready, use command',
+      'در تلگرام می‌تونید تیک آبی رو دستی بزنید.': 'in Telegram to manually send read receipts.',
+      'فعال‌سازی حالت شبح (Ghost Mode)': 'Enable Ghost Mode (Ghost Mode)',
+      'پیام‌های خصوصی رو بخونید بدون تیک آبی — فوروارد خودکار به ربات': 'Read private messages without blue ticks — auto-forwarded to your bot',
+      'دستورات سریع تلگرامی:': 'Telegram Quick Commands:',
+      'تیک آبی رو برای چتی که توش هستید بزنید': 'Mark current chat as read',
+      'تیک آبی رو برای همه چت‌ها یکجا بزنید': 'Mark all chats as read at once',
+      'فعال‌سازی سریع حالت شبح': 'Quickly enable Ghost Mode',
+      'غیرفعال کردن حالت شبح': 'Quickly disable Ghost Mode',
+      'لیست استثنا — افرادی که همیشه تیک آبی بخوره (اختیاری)': 'Exclusion List — Always Mark Blue Ticks for These Users (Optional)',
+      'آیدی عددی یا یوزرنیم افرادی که می‌خواید تیک آبی برایشون فعال بمونه (با کاما جدا کنید)': 'Enter numerical IDs or usernames to always mark as read (separated by commas)',
+      'برای این افراد، تیک آبی به صورت عادی کار می‌کنه و حالت شبح روی اونا اعمال نمی‌شه.': 'For these users, read receipts work normally and Ghost Mode will not be applied.',
+      '💡 برای این افراد، تیک آبی به صورت عادی کار می‌کنه و حالت شبح روی اونا اعمال نمی‌شه.': '💡 For these users, read receipts work normally and Ghost Mode will not be applied.',
+      'نکته مهم:': 'Important Note:',
+      'حالت شبح فقط زمانی کار می‌کنه که پیام‌ها رو از طریق': 'Ghost Mode only functions when you read messages through your',
+      'ربات': 'bot',
+      'بخونید. اگر چت رو مستقیم توی اپلیکیشن تلگرام باز کنید، تیک آبی از طرف اپلیکیشن ارسال می‌شه.': '. If you open the chat directly in the Telegram official app, blue ticks will be sent by Telegram.',
+      'حالت شبح': 'Ghost Mode',
+
+      // 🔇 Mute Filter (Tab 4)
+      'سکوت و حذف آنی پیام‌های افراد مزاحم (Mute Filter)': 'Mute & Instant Delete Filter for Annoying Users (Mute Filter)',
+      'پیام‌های ارسال‌شده توسط کاربران مشخص‌شده بلافاصله برای دو طرف پاک می‌شوند': 'Messages sent by specified users will be immediately deleted for both sides',
+      'لیست آیدی‌های عددی یا یوزرنیم‌های تلگرام جهت سکوت (با کاما جدا کنید)': 'List of numeric IDs or Telegram usernames to mute (comma-separated)',
+      'آیدی‌های عددی یا یوزرنیم‌های تلگرام با کاما (مثال: 123456789, @username, 987654321)': 'Numeric IDs or usernames with commas (e.g. 123456789, @username, 987654321)',
+      'شما همچنین در محیط تلگرام می‌توانید با ریپلای روی پیام هر شخص و ارسال .mute او را اضافه کرده و با .unmute از سکوت خارج کنید.': 'In Telegram, you can also reply to anyone\'s message and send .mute to mute them, or .unmute to lift the mute.',
+      'شما همچنین در محیط تلگرام می‌توانید با ریپلای روی پیام هر شخص و ارسال': 'In Telegram, you can also reply to someone\'s message and send',
+      'او را اضافه کرده و با': 'to mute them, and use',
+      'از سکوت خارج کنید.': 'to unmute them.',
+      'فیلتر سکوت': 'Silence Filter',
+
+      // 🌙 Sleep Mode (Tab 5)
+      'حالت خواب و استراحت شبانه (Sleep Mode)': 'Nighttime Rest & Sleep Mode (Sleep Mode)',
+      'در ساعات مشخص‌شده، به‌روزرسانی متوقف شده یا متن خواب قرار می‌گیرد': 'During designated hours, updates pause or display your custom sleep text',
+      'شروع خواب (ساعت)': 'Sleep Start (Hour)',
+      'پایان خواب (ساعت)': 'Sleep End (Hour)',
+      'متن نام خانوادگی در طول ساعات خواب': 'Last Name Text During Sleep Hours',
+      'متن نام خانوادگی در خواب (مثال: 😴 Sleep یا 🌙 خوابیدم)': 'Sleep last name text (e.g. 😴 Sleep or 🌙 Sleeping)',
+      '۲۲:۰۰ (۱۰ شب)': '22:00 (10 PM)',
+      '۲۳:۰۰ (۱۱ شب)': '23:00 (11 PM)',
+      '۰۰:۰۰ (نیمه‌شب)': '00:00 (Midnight)',
+      '۰۱:۰۰ (بامداد)': '01:00 (1 AM)',
+      '۰۲:۰۰ (بامداد)': '02:00 (2 AM)',
+      '۰۶:۰۰ (صبح)': '06:00 (6 AM)',
+      '۰۷:۰۰ (صبح)': '07:00 (7 AM)',
+      '۰۸:۰۰ (صبح)': '08:00 (8 AM)',
+      '۰۹:۰۰ (صبح)': '09:00 (9 AM)',
+      '۱۰:۰۰ (صبح)': '10:00 (10 AM)',
+      'حالت خواب': 'Sleep Schedule',
+
+      // 🤖 Dedicated Bot & Mini App (Tab 8)
+      'اتصال ربات دستیار اختصاصی تلگرام (BotFather API)': 'Connect Dedicated Telegram Assistant Bot (BotFather API)',
+      'قانون انحصار و امنیت:': 'Exclusivity & Security Rule:',
+      'هر کاربر باید در': 'Each user must create a unique bot in',
+      'ربات اختصاصی و مجزای خود را بسازد و توکن آن را وارد کند. به منظور حفظ کامل حریم خصوصی و امنیت حساب، این ربات منحصراً به مالک حساب پاسخ می‌دهد و دسترسی هر فرد دیگری به پیام‌ها یا دستورات ربات به طور کامل مسدود و غیرمجاز است.': 'and provide its API token. To safeguard account privacy, this bot responds exclusively to the account owner; all unauthorized access is strictly blocked.',
+      'توکن ربات تلگرام (API Token از BotFather@)': 'Telegram Bot Token (API Token from @BotFather)',
+      'دریافت توکن از @BotFather': 'Get Token from @BotFather',
+      '➕ دریافت توکن از @BotFather': '➕ Get Token from @BotFather',
+      'توکن ربات دریافتی از BotFather@ (مثال: 123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ)': 'Bot token from @BotFather (e.g. 123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ)',
+      'اتصال و فعال‌سازی وب‌هوک': 'Connect & Activate Webhook',
+      '⚡ اتصال و فعال‌سازی وب‌هوک': '⚡ Connect & Activate Webhook',
+      'ربات تلگرام': 'Telegram Bot',
+      'باز کردن ربات در تلگرام': 'Open Bot in Telegram',
+      '🚀 باز کردن ربات در تلگرام': '🚀 Open Bot in Telegram',
+      'قطع اتصال ربات': 'Disconnect Bot',
+      '🔌 قطع اتصال ربات': '🔌 Disconnect Bot',
+      'وضعیت وب‌هوک:': 'Webhook Status:',
+      'متصل و فعال': 'Connected & Active',
+      'ورود به پنل (Mini App):': 'Access Panel (Mini App):',
+      'دکمه منو فعال شد': 'Menu button enabled',
+      'امنیت انحصاری (مخصوص شما):': 'Exclusive Security (Your Account Only):',
+      'ربات منحصراً به شناسه تلگرام شما پاسخ می‌دهد و برای بقیه مسدود است.': 'Bot strictly responds to your Telegram ID and blocks everyone else.',
+      'آماده قفل با اولین /start': 'Ready to lock on first /start',
+      '🔒 آماده قفل با اولین /start': '🔒 Ready to lock on first /start',
+      'تنظیم یا تغییر دستی شناسه تلگرام مجاز': 'Manually configure or change allowed Telegram ID',
+      'تنظیم شناسه': 'Set ID',
+      '✏️ تنظیم شناسه': '✏️ Set ID',
+      'پس از اتصال، یک‌بار وارد ربات تلگرام خود شده و دستور': 'After connecting, open your Telegram bot once and send the',
+      'را بفرستید تا ربات منحصراً به اکانت شما قفل شده و پنل گرافیکی داخل تلگرام فعال شود.': 'command to lock the bot to your account and activate the inline graphical panel.',
+      'سطل زباله و ضد حذف پیام‌های پیوی (Anti-Delete)': 'Private Chat Trash & Anti-Delete Messages (Anti-Delete)',
+      '🗑️ سطل زباله و ضد حذف پیام‌های پیوی (Anti-Delete)': '🗑️ Private Chat Trash & Anti-Delete Messages (Anti-Delete)',
+      'اگر شخصی در پیوی پیامی را پاک کند، متن یا رسانه ذخیره شده فوراً به ربات اختصاصی شما ارسال می‌شود': 'If someone deletes a private message, the saved text or media is immediately forwarded to your dedicated bot',
+      'مانیتور و ضد ویرایش پیام‌های پیوی (Anti-Edit)': 'Private Chat Anti-Edit & Edit Monitoring (Anti-Edit)',
+      '✏️ مانیتور و ضد ویرایش پیام‌های پیوی (Anti-Edit)': '✏️ Private Chat Anti-Edit & Edit Monitoring (Anti-Edit)',
+      'اگر شخصی پیامی را تغییر دهد، متن قبل از ویرایش و متن جدید در ربات تلگرام به شما نمایش داده می‌شود': 'If someone edits a message, both original and modified versions appear in your Telegram bot',
+      'نجات و ارسال رسانه‌های زمان‌دار به ربات (Anti-TTL)': 'Save & Forward View-Once Media to Bot (Anti-TTL)',
+      '📸 نجات و ارسال رسانه‌های زمان‌دار به ربات (Anti-TTL)': '📸 Save & Forward View-Once Media to Bot (Anti-TTL)',
+      'تصاویر، فیلم‌ها و ویس‌های محوشونده (View-Once) مستقیماً به پیوی ربات اختصاصی شما ارسال می‌شوند': 'Expiring photos, videos, and voice notes (View-Once) are sent directly to your bot before deletion',
+      'ربات و لاگر': 'Bot & Logger',
+
+      // 🔐 Security & 2FA (Tab 9)
+      'سپر امنیتی پیشرفته Arizo Self & Zero-Trust': 'Arizo Self & Zero-Trust Advanced Security Shield',
+      'حساب کاربری شما تحت حفاظت لایه‌های دفاعی چندگانه شامل رمزنگاری کوانتوم‌امن، تله‌های دفاعی Honeypot، سنسورهای تشخیص نفوذ و احراز هویت دوعاملی (TOTP) قرار دارد.': 'Your account is protected by multi-layered defenses including quantum-safe encryption, honeypot traps, intrusion detection sensors, and two-factor authentication (TOTP).',
+      'احراز هویت دو مرحله‌ای (Google Authenticator / 2FA)': 'Two-Factor Authentication (Google Authenticator / 2FA)',
+      'محافظت از حساب در برابر نفوذ با کدهای ۶ رقمی زمان‌محور': 'Protect account from intrusion using time-based 6-digit verification codes',
+      'امنیت و ۲FA': 'Security & 2FA',
+
+      // 🕒 AFK & General Studio Controls
+      'منشی خودکار پیوی (AFK Auto-Secretary)': 'Private Chat Auto-Secretary (AFK Auto-Secretary)',
+      'هنگامی که آنلاین نیستید، پیام‌های خصوصی به طور هوشمند و خودکار پاسخ داده می‌شوند': 'When offline, private incoming messages are answered intelligently and automatically',
+      'سنسورهای هوشمند پایش آنلاین/آفلاین:': 'Smart Online/Offline Monitoring Sensors:',
+      'منشی خودکار تنها زمانی که': 'Auto-secretary responds only when you are',
+      'کاملاً آفلاین': 'completely offline',
+      'باشید پاسخ می‌دهد. با پایش مستقیم نشست‌های فعال گوشی و دسکتاپ، پنجره ۱۰ دقیقه‌ای عدم تداخل در چت‌های زنده و تشخیص خوانده شدن پیام، منشی مزاحم مکالمات شما نمی‌شود.': '. By directly monitoring active mobile and desktop sessions, a 10-minute live chat non-interference window, and read receipt checks, the secretary never interferes with your conversations.',
+      'متن پاسخ خودکار منشی به مخاطبان در پیوی': 'Auto-secretary reply message to private chat contacts',
+      'متن پاسخ خودکار منشی (مثال: درود! در حال حاضر امکان پاسخگویی ندارم. به محض آنلاین شدن پاسخ خواهم داد ⏳)': 'Auto-secretary text (e.g. Hello! I am currently away. I will reply as soon as I am back online ⏳)',
+      'فاصله زمانی ارسال مجدد برای یک مخاطب (کول‌داون ضد اسپم)': 'Cooldown Interval for Resending to Same Contact (Anti-Spam Cooldown)',
+      'هر ۵ دقیقه یک‌بار به هر فرد': 'Once every 5 minutes per person',
+      'هر ۱۰ دقیقه یک‌بار به هر فرد (پیشنهادی)': 'Once every 10 minutes per person (Recommended)',
+      'هر ۳۰ دقیقه یک‌بار به هر فرد': 'Once every 30 minutes per person',
+      'هر ۱ ساعت یک‌بار به هر فرد': 'Once every 1 hour per person',
+      'فقط یک‌بار در طول شبانه‌روز به هر فرد': 'Only once every 24 hours per person',
+      'این قابلیت مانع از اسپم شدن چت هنگامی که مخاطب چندین پیام متوالی می‌فرستد می‌شود.': 'This prevents chat spam when a contact sends multiple consecutive messages.',
+      'منشی خودکار': 'Auto-Secretary'
+    };
+
+    try {
+      Object.assign(window.TRANSLATIONS_MAP, ADDITIONAL_TRANSLATIONS);
+    } catch(err) {
+      console.warn('Could not merge additional translations:', err);
+    }
+
     var faDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
     var arDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
     var enDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -5247,6 +5468,17 @@ export function panelHTML(env, options = {}) {
       }
       if (typeof updateLiveClock === 'function') {
         updateLiveClock();
+      }
+      if (typeof window.updateAiModelOptions === 'function') {
+        var provSelectEl = document.getElementById('aiProviderSelect');
+        var modelSelectEl = document.getElementById('aiModelSelect');
+        var curProv = provSelectEl ? provSelectEl.value : 'gemini';
+        var curModel = modelSelectEl ? modelSelectEl.value : '';
+        if (curModel === 'custom') {
+          var customInputEl = document.getElementById('aiCustomModelInput');
+          if (customInputEl && customInputEl.value) curModel = customInputEl.value;
+        }
+        window.updateAiModelOptions(curProv, curModel);
       }
       
 
@@ -7241,25 +7473,25 @@ export function panelHTML(env, options = {}) {
     // 🤖 تعریف و مدیریت مدل‌های هوش مصنوعی (AI Models)
     var AI_PROVIDER_MODELS = {
       gemini: [
-        { value: 'gemini-2.5-flash', label: '⚡ Gemini 2.5 Flash (جدیدترین، پرسرعت و رایگان — پیشنهادی)' },
-        { value: 'gemini-2.0-flash', label: '🚀 Gemini 2.0 Flash (پایدار و هوشمند)' },
-        { value: 'gemini-1.5-flash', label: '🌟 Gemini 1.5 Flash (سریع و سبک)' },
-        { value: 'gemini-1.5-pro', label: '🧠 Gemini 1.5 Pro (قدرت تحلیل بالا)' },
-        { value: 'gemini-flash-lite-latest', label: '💨 Gemini Flash Lite (فوق سبک)' },
-        { value: 'custom', label: '✏️ مدل دستی دیگر (تایپ نام مدل دلخواه)...' }
+        { value: 'gemini-2.5-flash', label: '⚡ Gemini 2.5 Flash (جدیدترین، پرسرعت و رایگان — پیشنهادی)', labelEn: '⚡ Gemini 2.5 Flash (Latest, Fast & Free — Recommended)' },
+        { value: 'gemini-2.0-flash', label: '🚀 Gemini 2.0 Flash (پایدار و هوشمند)', labelEn: '🚀 Gemini 2.0 Flash (Stable & Smart)' },
+        { value: 'gemini-1.5-flash', label: '🌟 Gemini 1.5 Flash (سریع و سبک)', labelEn: '🌟 Gemini 1.5 Flash (Fast & Lightweight)' },
+        { value: 'gemini-1.5-pro', label: '🧠 Gemini 1.5 Pro (قدرت تحلیل بالا)', labelEn: '🧠 Gemini 1.5 Pro (High Reasoning Capability)' },
+        { value: 'gemini-flash-lite-latest', label: '💨 Gemini Flash Lite (فوق سبک)', labelEn: '💨 Gemini Flash Lite (Ultra Lightweight)' },
+        { value: 'custom', label: '✏️ مدل دستی دیگر (تایپ نام مدل دلخواه)...', labelEn: '✏️ Other Custom Model (Type model name)...' }
       ],
       openai: [
-        { value: 'gpt-4o-mini', label: '⚡ GPT-4o Mini (سریع، اقتصادی و دقیق — پیشنهادی)' },
-        { value: 'gpt-4o', label: '🧠 GPT-4o (پرچمدار هوشمند همه‌کاره)' },
-        { value: 'gpt-4-turbo', label: '🚀 GPT-4 Turbo' },
-        { value: 'gpt-3.5-turbo', label: '💨 GPT-3.5 Turbo (اقتصادی و سبک)' },
-        { value: 'custom', label: '✏️ مدل دستی دیگر (تایپ نام مدل دلخواه)...' }
+        { value: 'gpt-4o-mini', label: '⚡ GPT-4o Mini (سریع، اقتصادی و دقیق — پیشنهادی)', labelEn: '⚡ GPT-4o Mini (Fast, Economic & Accurate — Recommended)' },
+        { value: 'gpt-4o', label: '🧠 GPT-4o (پرچمدار هوشمند همه‌کاره)', labelEn: '🧠 GPT-4o (Flagship Multimodal Intelligence)' },
+        { value: 'gpt-4-turbo', label: '🚀 GPT-4 Turbo', labelEn: '🚀 GPT-4 Turbo' },
+        { value: 'gpt-3.5-turbo', label: '💨 GPT-3.5 Turbo (اقتصادی و سبک)', labelEn: '💨 GPT-3.5 Turbo (Economic & Lightweight)' },
+        { value: 'custom', label: '✏️ مدل دستی دیگر (تایپ نام مدل دلخواه)...', labelEn: '✏️ Other Custom Model (Type model name)...' }
       ],
       custom: [
-        { value: 'deepseek-chat', label: '🐳 DeepSeek V3 (Chat)' },
-        { value: 'deepseek-reasoner', label: '🧠 DeepSeek R1 (استدلال و تفکر)' },
-        { value: 'claude-3-5-sonnet-20241022', label: '🎭 Claude 3.5 Sonnet' },
-        { value: 'custom', label: '✏️ تایپ مدل اختصاصی دیگر...' }
+        { value: 'deepseek-chat', label: '🐳 DeepSeek V3 (Chat)', labelEn: '🐳 DeepSeek V3 (Chat)' },
+        { value: 'deepseek-reasoner', label: '🧠 DeepSeek R1 (استدلال و تفکر)', labelEn: '🧠 DeepSeek R1 (Reasoning & Thinking)' },
+        { value: 'claude-3-5-sonnet-20241022', label: '🎭 Claude 3.5 Sonnet', labelEn: '🎭 Claude 3.5 Sonnet' },
+        { value: 'custom', label: '✏️ تایپ مدل اختصاصی دیگر...', labelEn: '✏️ Type Other Custom Model...' }
       ]
     };
 
@@ -7272,6 +7504,7 @@ export function panelHTML(env, options = {}) {
 
       var prov = provider || (document.getElementById('aiProviderSelect') ? document.getElementById('aiProviderSelect').value : 'gemini');
       var models = AI_PROVIDER_MODELS[prov] || AI_PROVIDER_MODELS.gemini;
+      var isEn = (window.currentLang === 'en');
 
       select.innerHTML = '';
       var matched = false;
@@ -7280,7 +7513,8 @@ export function panelHTML(env, options = {}) {
       models.forEach(function(m) {
         var opt = document.createElement('option');
         opt.value = m.value;
-        opt.textContent = m.label;
+        opt.textContent = isEn ? (m.labelEn || m.label) : m.label;
+        opt.__origFaText = m.label;
         if (m.value !== 'custom' && m.value === targetModel) {
           opt.selected = true;
           matched = true;
@@ -7301,9 +7535,16 @@ export function panelHTML(env, options = {}) {
       }
 
       if (hint) {
-        if (prov === 'gemini') hint.textContent = 'مدل‌های پرسرعت گوگل (رایگان)';
-        else if (prov === 'openai') hint.textContent = 'مدل‌های OpenAI GPT';
-        else hint.textContent = 'مدل سفارشی / DeepSeek / کلاود';
+        if (prov === 'gemini') {
+          hint.textContent = isEn ? 'High-speed Google models (Free)' : 'مدل‌های پرسرعت گوگل (رایگان)';
+          hint.__origFa = 'مدل‌های پرسرعت گوگل (رایگان)';
+        } else if (prov === 'openai') {
+          hint.textContent = isEn ? 'OpenAI GPT models' : 'مدل‌های OpenAI GPT';
+          hint.__origFa = 'مدل‌های OpenAI GPT';
+        } else {
+          hint.textContent = isEn ? 'Custom Model / DeepSeek / Claude' : 'مدل سفارشی / DeepSeek / کلاود';
+          hint.__origFa = 'مدل سفارشی / DeepSeek / کلاود';
+        }
       }
     };
 
