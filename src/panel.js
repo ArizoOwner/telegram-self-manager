@@ -3736,13 +3736,8 @@ export function panelHTML(env, options = {}) {
           <span>👑</span> <span data-i18n="adminPortal">پنل مدیریت</span>
         </button>
 
-        <!-- نشانگر حساب کاربری و اشتراک کاربر متصل -->
+        <!-- نشانگر حساب کاربری کاربر متصل -->
         <div id="userHeaderBadge" class="hidden" style="display:flex; align-items:center; gap:8px;">
-          <div id="navUserPlanChip" class="nav-plan-chip" onclick="openLicenseModal()" title="مشاهده وضعیت اشتراک و تمدید لایسنس">
-            <span id="navPlanIcon" class="nav-plan-icon">⭐</span>
-            <span id="navPlanName" class="nav-plan-name">اشتراک</span>
-            <span id="navPlanValidity" class="nav-plan-validity-pill">⏳ بررسی اعتبار...</span>
-          </div>
           <div class="nav-user-profile-wrap">
             <span class="nav-user-avatar">👤</span>
             <span style="font-size:0.85rem; font-weight:700; color:var(--text-main);" id="usernameDisplay">کاربر</span>
@@ -6001,7 +5996,141 @@ export function panelHTML(env, options = {}) {
       'کلید API با موفقیت تأیید شد! ۱۰۰٪ سالم و فعال است': 'API Key verified successfully! 100% operational',
       'خطای شبکه در حین آزمایش API': 'Network error during API test',
       'خطای شبکه یا عدم پاسخگویی سرور': 'Network error or server timeout',
-      'لطفاً ابتدا کلید API خود را وارد فرمایید': 'Please enter an API Key first'
+      'لطفاً ابتدا کلید API خود را وارد فرمایید': 'Please enter an API Key first',
+
+      // =========================================================================
+      // 🌐 نگارش رسمی و واژگان تخصصی سامانه (Official SaaS Terminology)
+      // =========================================================================
+      "منشی خودکار صرفاً در زمان عدم حضور و آفلاین بودن شما فعال می‌گردد. با بررسی وضعیت نشست‌های فعال (موبایل و دسکتاپ)، بازه اطمینان ۱۰ دقیقه‌ای مکالمات زنده و بررسی پیام‌های خوانده‌شده، از تداخل منشی با گفتگوهای فعال شما جلوگیری می‌شود.": "The auto-secretary operates exclusively when you are away and offline. By monitoring active sessions (mobile and desktop), a 10-minute live chat buffer, and read receipts, interference with your active conversations is completely avoided.",
+      "هوش مصنوعی تنها در زمان عدم حضور و آفلاین بودن شما به پیام‌ها پاسخ می‌دهد. بررسی وضعیت نشست‌های فعال (موبایل و دسکتاپ)، وقفه مکالمات در ۱۰ دقیقه اخیر و بازه اطمینان ۱۲ ثانیه‌ای، مانع از هرگونه تداخل با گفتگوهای زنده شما می‌گردد.": "AI responds to messages exclusively when you are offline. Active session monitoring (mobile and desktop), a 10-minute recent chat silence check, and a 12-second grace period prevent any interference with live conversations.",
+      "هر کاربر می‌تواند ربات اختصاصی خود را در BotFather@ ایجاد کرده و توکن آن را ثبت نماید. به جهت حفظ کامل حریم خصوصی، این ربات منحصراً به شناسه کاربری شما پاسخ داده و دسترسی سایر افراد به آن غیرمجاز و مسدود خواهد بود.": "Each user can create their dedicated bot via @BotFather and register its token. To maintain absolute privacy, this bot responds exclusively to your user ID, and access for all others is strictly blocked.",
+      "به جای ارسال پاسخ متنی ثابت، هوش مصنوعی متناسب با محتوای پیام مخاطب پاسخی سنجیده ارسال می‌نماید. هر کاربر کلید اختصاصی API خود را وارد نموده و تعاملات به صورت کاملاً مستقل انجام می‌پذیرد.": "Instead of sending a static text reply, AI crafts intelligent responses tailored to each message. Each user provides their dedicated API key, ensuring all interactions remain entirely independent.",
+      "با فعال‌سازی این قابلیت، پیام‌های دریافتی بدون ثبت وضعیت خوانده‌شده (تیک دوم) جهت مطالعه به ربات پشتیبان شما منتقل می‌شوند. در صورت تمایل می‌توانید با ارسال دستور": "With this feature enabled, incoming messages are forwarded to your backup bot for reading without marking them as read (no second checkmark). When desired, you can send command",
+      "مدت زمان اشتراک شما خاتمه یافته و به‌روزرسانی پروفایل موقتاً متوقف گردیده است. جهت تمدید اعتبار و فعال‌سازی مجدد، کد لایسنس جدید خود را در کادر زیر وارد نمایید:": "Your subscription period has ended, and profile updates are temporarily paused. To renew your license and reactivate the service, enter your new license key in the box below:",
+      "درخواست‌های مشکوک و تلاش‌های غیرمجاز برای دسترسی به مسیرهای نامعتبر، بلافاصله در لبه شبکه ابری مسدود شده و گزارش آن در لاگ‌های امنیتی سامانه ثبت می‌گردد.": "Suspicious requests and unauthorized attempts to access restricted paths are immediately blocked at the cloud edge and recorded in security audit logs.",
+      "تصاویر، ویدیوها و پیام‌های صوتی دارای محدودیت زمانی (View-Once) مستقیماً به ربات پشتیبان شما ارسال و ذخیره می‌شوند": "Expiring view-once photos, videos, and voice messages are immediately captured and archived directly to your backup bot",
+      "مطالعه فرمایید. در صورت گشودن گفتگو در اپلیکیشن اصلی تلگرام، وضعیت خوانده‌شده توسط خود نرم‌افزار اعمال خواهد شد.": "to read. If you open the conversation within the official Telegram application, read receipts will be applied normally by the client.",
+      "حساب کاربری شما با استانداردهای امنیتی، رمزنگاری پیشرفته داده‌ها و امکان ورود دوعاملی (TOTP) محافظت می‌شود.": "Your account is secured with advanced cryptographic data standards and time-based two-factor authentication (TOTP).",
+      "متن پاسخ خودکار (مثال: درود، در حال حاضر امکان پاسخگویی ندارم. به محض آنلاین شدن با شما گفتگو خواهم کرد ⏳)": "Auto-reply message text (e.g. Hello, I am currently away. I will get back to you as soon as I am online ⏳)",
+      "در صورت حذف پیام یا رسانه توسط مخاطب، نسخه ذخیره‌شده بلافاصله جهت آگاهی به ربات پشتیبان شما ارسال می‌شود": "If a contact deletes a message or media, the archived copy is immediately forwarded to your backup bot for your reference",
+      "💡 برای کاربران حاضر در این فهرست، وضعیت خوانده‌شدن به صورت عادی ثبت شده و حالت محرمانه اعمال نمی‌گردد.": "💡 For users on this list, read receipts are marked normally and Ghost Mode is not applied.",
+      "💡 این تنظیم از ارسال مکرر پیام منشی در صورت دریافت پیام‌های پیاپی از یک مخاطب پیشگیری می‌نماید.": "💡 This setting prevents repeated auto-replies when consecutive messages are received from the same contact.",
+      "تعیین شیوه پاسخ‌دهی و لحن هوش مصنوعی (مثال: محترمانه و رسمی پاسخ بده و اطلاعات تماس را ثبت نما)": "Define AI persona and reply tone (e.g. Reply politely and formally, and capture contact details)",
+      "در صورت ویرایش پیام توسط مخاطب، متن اولیه به همراه متن جدید در ربات پشتیبان ثبت می‌گردد": "If a message is edited by a contact, both the original and updated texts are logged in your backup bot",
+      "رشته StringSession تلگرام خود را اینجا وارد کنید (Pyrogram یا Telethon/GramJS)...": "Enter your Telegram StringSession string here (Pyrogram or Telethon/GramJS)...",
+      "💡 شناسه مدل اختصاصی یا سفارشی ارائه‌دهنده را با حروف کوچک انگلیسی وارد فرمایید.": "💡 Enter the provider's custom model identifier in lowercase English letters.",
+      "در ساعات تعیین‌شده، به‌روزرسانی متوقف شده یا متن حالت استراحت نمایش داده می‌شود": "During configured hours, profile updates pause or the custom sleep status text is displayed",
+      "شناسه‌های عددی یا نام‌های کاربری تلگرام (مثال: 123456789, @username, 987654321)": "Telegram numeric IDs or usernames (e.g. 123456789, @username, 987654321)",
+      "💡 هوش مصنوعی از این اطلاعات برای پاسخ‌دهی هماهنگ و متناسب استفاده می‌نماید.": "💡 AI utilizes this context to craft consistent and accurately informed replies.",
+      "مشاهده پیام‌های دریافتی بدون ثبت وضعیت خوانده‌شده با انتقال به ربات پشتیبان": "Read incoming messages without triggering blue checkmarks by forwarding them to your backup bot",
+      "اطلاعات تکمیلی جهت آگاهی هوش مصنوعی (مثال: ساعات پاسخگویی از ۹ الی ۱۷ است)": "Additional reference context for AI (e.g. Business hours are 9:00 AM to 5:00 PM)",
+      "پیام‌های دریافتی از کاربران مشخص‌شده بلافاصله برای هر دو طرف حذف می‌گردند": "Messages received from specified users are instantly deleted for both participants",
+      "پاسخ‌دهی خودکار به پیام‌های خصوصی در زمان عدم حضور یا آفلاین بودن شما": "Automatic private chat replies when you are away or offline",
+      "شناسه‌های عددی یا نام‌های کاربری تلگرام جهت سکوت (با ویرگول جدا کنید)": "Telegram numeric IDs or usernames to silence (separated by commas)",
+      "💡 حداکثر ۵۰۰ کاراکتر. این متن لحن و چارچوب پاسخ‌دهی را تعیین می‌کند.": "💡 Maximum 500 characters. This prompt defines the tone and operational framework.",
+      "ربات منحصراً به شناسه تلگرام شما پاسخ می‌دهد و برای سایرین مسدود است.": "The bot strictly responds to your Telegram ID and remains locked against all other users.",
+      "هنگام فعال بودن، هوش مصنوعی متناسب با پیام دریافتی پاسخ‌دهی می‌نماید": "When active, AI crafts intelligent replies based on incoming message context",
+      ". می‌توانید آیدی عددی تلگرام یا یوزرنیم (با یا بدون @) را وارد کنید:": ". You can enter Telegram numeric user IDs or usernames (with or without @):",
+      "💡 در محیط تلگرام نیز می‌توانید با پاسخ به پیام کاربر و ارسال دستور": "💡 In Telegram, you can also reply to a user message with the command",
+      "در گفتگوی مورد نظر، وضعیت خوانده‌شدن را به صورت دستی ثبت فرمایید.": "in the target chat to mark the messages as read manually.",
+      "💡 هوش مصنوعی به پیام‌های خصوصی افرادی که در این لیست قرار دارند": "💡 AI will never send automatic replies to private messages from users in this list",
+      "متن نام خانوادگی در خواب (مثال: 😴 Sleep یا 🌙 در حال استراحت)": "Last name sleep status (e.g. 😴 Away or 🌙 Resting)",
+      "را ارسال نمایید تا ربات منحصراً به حساب کاربری شما متصل گردد.": "to bind the bot exclusively to your personal Telegram account.",
+      "⚡ Arizo Self | سامانه مدیریت نمایه و ابزارهای ارتباطی تلگرام": "⚡ Arizo Self | Telegram Cloud Automation & Profile Studio",
+      "لیست استثنا — کاربرانی که وضعیت خوانده‌شده ثبت شود (اختیاری)": "Exclusion List — Contacts with standard read receipts (Optional)",
+      "شناسه عددی یا نام کاربری افراد مورد نظر (با ویرگول جدا کنید)": "Numeric IDs or usernames of specified users (separated by commas)",
+      "کلید API دریافت شده از پنل سرویس‌دهنده را اینجا وارد نمایید": "Enter your API key obtained from the provider dashboard here",
+      "معرفی امکانات و سرویس‌های پیشرفته | Arizo Self v3.6.2 PRO": "Feature Overview & System Architecture | Arizo Self v3.6.2 PRO",
+      "مسدودسازی خودکار درخواست‌های غیرمجاز و پویشگران امنیتی": "Automated blocking of unauthorized probes and security scanners",
+      "حالت محرمانه زمانی عمل می‌کند که پیام‌ها را از طریق": "Ghost Mode operates when incoming messages are inspected via your",
+      "اعتبار اشتراک حساب کاربری شما به پایان رسیده است": "Your account subscription period has expired",
+      "بازه زمانی ارسال مجدد به هر مخاطب (مدیریت تکرار)": "Reply cooldown interval per contact (Frequency Control)",
+      "منشی خودکار گفتگوهای خصوصی (AFK Auto-Secretary)": "Private Chat Auto-Secretary (AFK Secretary)",
+      "مدیریت سکوت و حذف دوطرفه پیام‌ها (Mute Filter)": "Silence Filter & Two-Way Message Purge (Mute Filter)",
+      "رمز دو مرحله‌ای تلگرام (در صورت فعال بودن 2FA)": "Telegram Two-Step Verification Password (if 2FA is active)",
+      "اتصال ربات دستیار شخصی تلگرام (BotFather API)": "Connect Dedicated Telegram Assistant Bot (BotFather API)",
+      "ورود دو مرحله‌ای (Google Authenticator / 2FA)": "Two-Factor Authentication (Google Authenticator / 2FA)",
+      "دستورالعمل و لحن هوش مصنوعی (System Prompt)": "AI Instructions & Tone (System Prompt)",
+      "فعال‌سازی حالت مشاهده محرمانه (Ghost Mode)": "Enable Ghost Mode (Read Without Blue Ticks)",
+      "ارائه‌دهنده سرویس هوش مصنوعی (AI Provider)": "AI Service Provider (AI Provider)",
+      "هر ۱۰ دقیقه یک‌بار به هر مخاطب (پیشنهادی)": "Once every 10 minutes per contact (Recommended)",
+      "فعال‌سازی پاسخ هوشمند مبتنی بر هوش مصنوعی": "Enable Intelligent AI-Powered Auto-Reply",
+      "حالت مشاهده محرمانه پیام‌ها (Ghost Mode)": "Confidential Message Viewing (Ghost Mode)",
+      "— ثبت وضعیت خوانده‌شده برای تمام گفتگوها": "— Mark all conversations as read",
+      "محافظت از حساب با کدهای ۶ رقمی زمان‌محور": "Protect account access with 6-digit time-based OTPs",
+      "— ثبت وضعیت خوانده‌شده برای گفتگوی جاری": "— Mark current conversation as read",
+      "گذرواژه تأیید دو مرحله‌ای تلگرام (2FA)": "Telegram Two-Step Verification Password (2FA)",
+      "کلید دسترسی سرویس هوش مصنوعی (API Key)": "AI Service Access Key (API Key)",
+      "اطلاعات تکمیلی و ساعات کاری (Context)": "Supplementary Business Context & Guidelines (Context)",
+      "در انتظار فعال‌سازی بیوگرافی زنده...": "Awaiting dynamic biography activation...",
+      "🎟️ تمدید اعتبار اشتراک با کد لایسنس": "🎟️ Renew Subscription with License Key",
+      "کد تأیید ارسالی تلگرام (مثال: 58291)": "Telegram verification code (e.g. 58291)",
+      "فقط یک‌بار در شبانه‌روز به هر مخاطب": "Only once per 24 hours per contact",
+      "🗑️ حذف کامل حساب کاربری و اطلاعات": "🗑️ Permanently Delete Account & Data",
+      "آنلاین (همگام با زمان رسمی تهران)": "Online (Synced with Tehran Standard Time)",
+      "اتصال با رشته سشن (StringSession)": "Connect via StringSession string",
+      "سیستم پایش و محافظت در برابر نفوذ": "Edge Intrusion Detection & Protection System",
+      "تقویم خورشیدی و زمان رسمی تهران": "Solar Hijri Calendar & Tehran Standard Time",
+      "رشته سشن تلگرام (StringSession)": "Telegram Session String (StringSession)",
+      "متن پاسخ خودکار منشی به مخاطبان": "Auto-Secretary reply text to contacts",
+      "دستورات کاربردی در محیط تلگرام:": "Practical Telegram Chat Commands:",
+      "هر ۳۰ دقیقه یک‌بار به هر مخاطب": "Once every 30 minutes per contact",
+      "متن نام خانوادگی در ساعات خواب": "Last name text during sleep hours",
+      "⚙️ تنظیمات و امنیت حساب کاربری": "⚙️ Account Security & Preferences",
+      "ایجاد حساب و فعال‌سازی اشتراک": "Create Account & Activate Subscription",
+      "تمدید اعتبار و فعال‌سازی مجدد": "Renew Subscription & Reactivate",
+      "همگام‌سازی رسمی با زمان تهران": "Official Sync with Tehran Standard Time",
+      "کد تأیید ارسالی از سوی تلگرام": "Verification Code Sent by Telegram",
+      "هر ۵ دقیقه یک‌بار به هر مخاطب": "Once every 5 minutes per contact",
+      "— فعال‌سازی سریع حالت محرمانه": "— Quickly activate Ghost Mode",
+      "هر ۱ ساعت یک‌بار به هر مخاطب": "Once every 1 hour per contact",
+      "🔌 قطع ارتباط با حساب تلگرام": "🔌 Disconnect Telegram Account",
+      "پیش‌نمایش زنده نمایه تلگرام": "Live Telegram Profile Preview",
+      "اتصال حساب تلگرام به سامانه": "Connect Telegram Account to Platform",
+      "— غیرفعال‌سازی حالت محرمانه": "— Deactivate Ghost Mode",
+      "حریم خصوصی و امنیت اطلاعات:": "Data Privacy & Platform Security:",
+      "اتصال و ذخیره‌سازی امن سشن": "Secure Connection & Session Storage",
+      "مدیریت سامانه و لایسنس‌ها": "System Administration & License Manager",
+      "سیستم پیشرفته تشخیص حضور:": "Advanced Presence Detection System:",
+      "دریافت کد ورود از تلگرام": "Request Login Code from Telegram",
+      "سیستم هوشمند تشخیص حضور:": "Smart Presence Detection System:",
+      "شماره همراه حساب تلگرام": "Telegram Account Phone Number",
+      "دریافت مستقیم کلید API:": "Direct API Key Portals:",
+      "او را اضافه نموده و با": "to add them, and use",
+      "🕒 ساعت و قالب نوشتاری": "🕒 Clock & Typography Styles",
+      "بخش معرفی نمایه (Bio)": "Profile Biography Section (Bio)",
+      "از لیست خارج فرمایید.": "to remove them from the list.",
+      "🔑 تغییر گذرواژه ورود": "🔑 Change Login Password",
+      "ارتباط امن و مستقیم": "Direct & Secure Connection",
+      "پایان ساعات استراحت": "Sleep Schedule End Time",
+      "ساعت و قالب نوشتاری": "Clock & Typography Styles",
+      "ورود با شماره تلفن": "Sign in with Phone Number",
+      "شروع ساعات استراحت": "Sleep Schedule Start Time",
+      "⏳ بررسی اعتبار...": "⏳ Checking validity...",
+      "تاریخ پایان: -": "Expiration: -",
+      "وضعیت ارتباط:": "Connection Status:",
+      "ربات پشتیبان": "backup assistant bot",
+      "توجه مهم:": "Important Notice:",
+      "بخش قبلی": "Previous Step",
+      "بخش بعدی": "Next Step",
+      "فعال 🟢": "Active 🟢",
+      "بخش معرفی نمایه (بیوگرافی)": "Profile Biography Section (Bio)",
+      "فعال‌سازی Live Bio و هوشمند (Live Bio)": "Enable Dynamic Live Bio (Live Bio)",
+      "فعال‌سازی بیوگرافی زنده و هوشمند (Live Bio)": "Enable Dynamic Live Bio (Live Bio)",
+      "حالت مشاهده محرمانه پیام‌ها (حالت شبح)": "Confidential Message Viewing (Ghost Mode)",
+      "فعال‌سازی حالت مشاهده محرمانه (حالت شبح)": "Enable Confidential Viewing (Ghost Mode)",
+      "ارائه‌دهنده سرویس هوش مصنوعی (AI Provider)": "AI Service Provider (AI Provider)",
+      "🗑️ بایگانی خودکار پیام‌های حذف‌شده (ضد حذف پیام)": "🗑️ Auto-Archive Deleted Messages (Anti-Delete)",
+      "✏️ ثبت تاریخچه ویرایش پیام‌ها (Anti-Edit)": "✏️ Log Message Edit History (Anti-Edit)",
+      "💾 خروجی پشتیبان (خروجی گرفتن)": "💾 Export Backup (Export)",
+      "📤 بازیابی فایل پشتیبان (بازیابی)": "📤 Restore Backup File (Restore)",
+      "🔄 بازیابی اطلاعات (بازیابی)": "🔄 Restore System Data (Restore)",
+      "نمایش تقویم زنده هجری شمسی، روز هفته و ساعت در بخش بیوگرافی تلگرام با الگوهای مدرن و متغیرهای داینامیک.": "Live display of Solar Hijri calendar, day of week, and clock in Telegram biography with modern typography and dynamic variables.",
+      "منشی خودکار پیوی (منشی)": "Private Chat Auto-Secretary (Secretary)",
+      "پایشگر ضد حذف (ضد حذف پیام)": "Anti-Delete Message Monitor (Anti-Delete)",
+      "مانیتور ضد ویرایش (Anti-Edit)": "Message Edit History Monitor (Anti-Edit)",
+      "حالت روح و نامرئی (حالت شبح)": "Invisible Stealth Mode (Ghost Mode)",
+      "مدیریت سکوت و فیلتر (بی‌صدا کردن)": "Silence Filter Management (Mute Filter)",
     };
 
     try {
@@ -6010,31 +6139,51 @@ export function panelHTML(env, options = {}) {
       console.warn('Could not merge additional translations:', err);
     }
 
+    window.NORMALIZED_TRANSLATIONS_MAP = {};
+    window.REVERSE_TRANSLATIONS_MAP = {};
+
+    var allTransKeys = Object.keys(window.TRANSLATIONS_MAP);
+    for (var ti = 0; ti < allTransKeys.length; ti++) {
+      var tk = allTransKeys[ti];
+      var tv = window.TRANSLATIONS_MAP[tk];
+      if (typeof tv !== 'string' || !tv) continue;
+      var normTk = tk.replace(/\\s+/g, ' ').trim();
+      var normTv = tv.replace(/\\s+/g, ' ').trim();
+      window.NORMALIZED_TRANSLATIONS_MAP[normTk] = tv;
+      if (normTv && normTv !== normTk) {
+        if (!window.REVERSE_TRANSLATIONS_MAP[normTv] || normTk.length > window.REVERSE_TRANSLATIONS_MAP[normTv].length) {
+          window.REVERSE_TRANSLATIONS_MAP[normTv] = normTk;
+        }
+      }
+    }
+
     var faDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
     var arDigits = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
     var enDigits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
-    var sortedTranslationKeys = Object.keys(window.TRANSLATIONS_MAP)
-      .filter(function(k) { return k.length >= 2 && /[\u0600-\u06FF]/.test(k); })
+    var persianRegex = /[\\u0600-\\u06FF\\u200C]/;
+    var safeLongPhrases = Object.keys(window.TRANSLATIONS_MAP)
+      .filter(function(k) { return k.length >= 12 && persianRegex.test(k); })
       .sort(function(a, b) { return b.length - a.length; });
 
-    // Universal Text Translator
+    // Universal Text Translator (Persian -> English)
     window.t = function(text) {
       if (window.currentLang !== 'en') return text;
       if (!text || typeof text !== 'string') return text;
       var trimmed = text.trim();
       if (!trimmed) return text;
 
-      // ۱. بررسی تطابق دقیق در دیکشنری
-      if (window.TRANSLATIONS_MAP[trimmed]) {
-        return text.replace(trimmed, window.TRANSLATIONS_MAP[trimmed]);
-      }
+      var leadingWs = text.match(/^\\s*/)[0];
+      var trailingWs = text.match(/\\s*$/)[0];
+      var norm = trimmed.replace(/\\s+/g, ' ');
 
-      // ۲. استخراج هسته فارسی و تطابق در صورت وجود علائم نگارشی، ایموجی یا پرانتز
-      var persianRegex = /[\u0600-\u06FF\u200C]/;
+      // ۱. تطابق مستقیم یا تطابق نرمال‌شده در دیکشنری
+      if (window.TRANSLATIONS_MAP[trimmed]) return leadingWs + window.TRANSLATIONS_MAP[trimmed] + trailingWs;
+      if (window.NORMALIZED_TRANSLATIONS_MAP[norm]) return leadingWs + window.NORMALIZED_TRANSLATIONS_MAP[norm] + trailingWs;
+
+      // ۲. استخراج هسته فارسی (جلوگیری از تأثیر ایموجی‌ها، پرانتزها، و علائم در تطابق)
       if (persianRegex.test(trimmed)) {
-        var first = -1;
-        var last = -1;
+        var first = -1, last = -1;
         for (var pi = 0; pi < trimmed.length; pi++) {
           if (persianRegex.test(trimmed.charAt(pi))) {
             if (first === -1) first = pi;
@@ -6043,33 +6192,83 @@ export function panelHTML(env, options = {}) {
         }
         if (first !== -1 && last !== -1) {
           var core = trimmed.substring(first, last + 1);
-          if (window.TRANSLATIONS_MAP[core]) {
+          var normCore = core.replace(/\\s+/g, ' ').trim();
+          var match = window.TRANSLATIONS_MAP[core] || window.NORMALIZED_TRANSLATIONS_MAP[normCore];
+          if (match) {
             var lead = trimmed.substring(0, first);
             var trail = trimmed.substring(last + 1);
-            return text.replace(trimmed, lead + window.TRANSLATIONS_MAP[core] + trail);
+            return leadingWs + lead + match + trail + trailingWs;
           }
         }
       }
 
-      // ۳. جایگزینی زیررشته‌ای عبارات شناخته‌شده از بزرگ به کوچک
-      var out = text;
+      // ۳. ترجمه چندخطی
+      if (trimmed.indexOf('\\n') !== -1 && persianRegex.test(trimmed)) {
+        var lines = text.split('\\n');
+        return lines.map(function(l) { return window.t(l); }).join('\\n');
+      }
+
+      // ۴. جایگزینی ایمن عبارات بلند (حداقل ۱۲ نویسه، جلوگیری قطعی از تخریب کلمات فارسی)
+      var out = trimmed;
       if (persianRegex.test(out)) {
-        for (var i = 0; i < sortedTranslationKeys.length; i++) {
-          var k = sortedTranslationKeys[i];
-          if (out.indexOf(k) !== -1) {
-            out = out.split(k).join(window.TRANSLATIONS_MAP[k]);
+        for (var si = 0; si < safeLongPhrases.length; si++) {
+          var sk = safeLongPhrases[si];
+          if (out.indexOf(sk) !== -1) {
+            out = out.split(sk).join(window.TRANSLATIONS_MAP[sk]);
             if (!persianRegex.test(out)) break;
           }
         }
       }
 
-      // ۴. تبدیل ارقام فارسی و عربی به ارقام انگلیسی
+      // ۵. تبدیل ارقام فارسی و عربی به ارقام انگلیسی
       for (var d = 0; d < 10; d++) {
         out = out.split(faDigits[d]).join(enDigits[d]);
         out = out.split(arDigits[d]).join(enDigits[d]);
       }
 
-      return out;
+      return leadingWs + out + trailingWs;
+    };
+
+    // Universal Reverse Text Translator (English -> Persian)
+    window.tFa = function(text) {
+      if (!text || typeof text !== 'string') return text;
+      var trimmed = text.trim();
+      if (!trimmed) return text;
+      if (!/[a-zA-Z]/.test(trimmed)) return text;
+
+      var leadingWs = text.match(/^\\s*/)[0];
+      var trailingWs = text.match(/\\s*$/)[0];
+      var norm = trimmed.replace(/\\s+/g, ' ');
+
+      if (window.REVERSE_TRANSLATIONS_MAP[trimmed]) return leadingWs + window.REVERSE_TRANSLATIONS_MAP[trimmed] + trailingWs;
+      if (window.REVERSE_TRANSLATIONS_MAP[norm]) return leadingWs + window.REVERSE_TRANSLATIONS_MAP[norm] + trailingWs;
+
+      // استخراج هسته انگلیسی
+      var engRegex = /[a-zA-Z]/;
+      var first = -1, last = -1;
+      for (var ei = 0; ei < trimmed.length; ei++) {
+        if (engRegex.test(trimmed.charAt(ei))) {
+          if (first === -1) first = ei;
+          last = ei;
+        }
+      }
+      if (first !== -1 && last !== -1) {
+        var core = trimmed.substring(first, last + 1);
+        var normCore = core.replace(/\\s+/g, ' ').trim();
+        var match = window.REVERSE_TRANSLATIONS_MAP[core] || window.REVERSE_TRANSLATIONS_MAP[normCore];
+        if (match) {
+          var lead = trimmed.substring(0, first);
+          var trail = trimmed.substring(last + 1);
+          return leadingWs + lead + match + trail + trailingWs;
+        }
+      }
+
+      if (trimmed.indexOf('\\n') !== -1) {
+        var lines = text.split('\\n');
+        return lines.map(function(l) { return window.tFa(l); }).join('\\n');
+      }
+
+      return text;
     };
 
     // قلاب‌گذاری ریشه‌ای دیالوگ‌های مرورگر (Confirm, Prompt, Alert Interception)
@@ -6089,6 +6288,7 @@ export function panelHTML(env, options = {}) {
       };
     }
 
+    // موتور ترجمه دوطرفه DOM (Bidirectional DOM Translation Engine)
     window.translateDOM = function(root, lang) {
       var isEn = (lang === 'en');
       if (!root) root = document.body;
@@ -6107,13 +6307,29 @@ export function panelHTML(env, options = {}) {
 
         if (node.parentElement && (node.parentElement.id === 'langToggleBtn' || node.parentElement.id === 'langText')) continue;
 
-        if (typeof node.__origFa === 'undefined') {
-          node.__origFa = raw;
-        }
-
-        var targetValue = isEn ? window.t(node.__origFa) : node.__origFa;
-        if (node.nodeValue !== targetValue) {
-          node.nodeValue = targetValue;
+        if (isEn) {
+          if (/[\u0600-\u06FF]/.test(raw)) {
+            if (typeof node.__origFa === 'undefined') {
+              node.__origFa = raw;
+            }
+            var enVal = window.t(node.__origFa);
+            if (node.nodeValue !== enVal) {
+              node.nodeValue = enVal;
+            }
+          }
+        } else {
+          // بازگشت به زبان فارسی
+          if (typeof node.__origFa !== 'undefined' && /[\u0600-\u06FF]/.test(node.__origFa)) {
+            if (node.nodeValue !== node.__origFa) {
+              node.nodeValue = node.__origFa;
+            }
+          } else if (!/[؀-ۿ]/.test(raw) && /[a-zA-Z]/.test(raw)) {
+            var faVal = window.tFa(raw);
+            if (faVal && faVal !== raw) {
+              node.__origFa = faVal;
+              node.nodeValue = faVal;
+            }
+          }
         }
       }
 
@@ -6126,12 +6342,29 @@ export function panelHTML(env, options = {}) {
           var val = el.getAttribute(attr);
           if (!val) return;
           var key = '__origFa_' + attr;
-          if (typeof el[key] === 'undefined') {
-            el[key] = val;
-          }
-          var targetAttr = isEn ? window.t(el[key]) : el[key];
-          if (el.getAttribute(attr) !== targetAttr) {
-            el.setAttribute(attr, targetAttr);
+
+          if (isEn) {
+            if (/[\u0600-\u06FF]/.test(val)) {
+              if (typeof el[key] === 'undefined') {
+                el[key] = val;
+              }
+              var enAttr = window.t(el[key]);
+              if (el.getAttribute(attr) !== enAttr) {
+                el.setAttribute(attr, enAttr);
+              }
+            }
+          } else {
+            if (typeof el[key] !== 'undefined' && /[\u0600-\u06FF]/.test(el[key])) {
+              if (el.getAttribute(attr) !== el[key]) {
+                el.setAttribute(attr, el[key]);
+              }
+            } else if (!/[؀-ۿ]/.test(val) && /[a-zA-Z]/.test(val)) {
+              var faAttr = window.tFa(val);
+              if (faAttr && faAttr !== val) {
+                el[key] = faAttr;
+                el.setAttribute(attr, faAttr);
+              }
+            }
           }
         });
       });
@@ -6139,19 +6372,42 @@ export function panelHTML(env, options = {}) {
       var selectOptions = root.querySelectorAll ? root.querySelectorAll('option, optgroup') : [];
       selectOptions.forEach(function(opt) {
         if (opt.tagName === 'OPTION') {
-          if (typeof opt.__origFaText === 'undefined') opt.__origFaText = opt.textContent;
-          if (typeof opt.__origFaLabel === 'undefined' && opt.hasAttribute('label')) opt.__origFaLabel = opt.getAttribute('label');
-          var targetOptText = isEn ? window.t(opt.__origFaText) : opt.__origFaText;
-          if (opt.textContent !== targetOptText) opt.textContent = targetOptText;
-          if (opt.__origFaLabel) {
-            var targetOptLabel = isEn ? window.t(opt.__origFaLabel) : opt.__origFaLabel;
-            if (opt.getAttribute('label') !== targetOptLabel) opt.setAttribute('label', targetOptLabel);
+          if (isEn) {
+            if (typeof opt.__origFaText === 'undefined' && /[\u0600-\u06FF]/.test(opt.textContent)) {
+              opt.__origFaText = opt.textContent;
+            }
+            if (opt.__origFaText) {
+              var enOpt = window.t(opt.__origFaText);
+              if (opt.textContent !== enOpt) opt.textContent = enOpt;
+            }
+          } else {
+            if (opt.__origFaText && opt.textContent !== opt.__origFaText) {
+              opt.textContent = opt.__origFaText;
+            } else if (!/[؀-ۿ]/.test(opt.textContent) && /[a-zA-Z]/.test(opt.textContent)) {
+              var faOpt = window.tFa(opt.textContent);
+              if (faOpt && faOpt !== opt.textContent) {
+                opt.__origFaText = faOpt;
+                opt.textContent = faOpt;
+              }
+            }
           }
         } else if (opt.tagName === 'OPTGROUP') {
-          if (typeof opt.__origFaLabel === 'undefined' && opt.hasAttribute('label')) opt.__origFaLabel = opt.getAttribute('label');
-          if (opt.__origFaLabel) {
-            var targetGroupLabel = isEn ? window.t(opt.__origFaLabel) : opt.__origFaLabel;
-            if (opt.getAttribute('label') !== targetGroupLabel) opt.setAttribute('label', targetGroupLabel);
+          if (isEn) {
+            if (typeof opt.__origFaLabel === 'undefined' && opt.hasAttribute('label')) opt.__origFaLabel = opt.getAttribute('label');
+            if (opt.__origFaLabel) {
+              var targetGroupLabel = window.t(opt.__origFaLabel);
+              if (opt.getAttribute('label') !== targetGroupLabel) opt.setAttribute('label', targetGroupLabel);
+            }
+          } else {
+            if (opt.__origFaLabel && opt.getAttribute('label') !== opt.__origFaLabel) {
+              opt.setAttribute('label', opt.__origFaLabel);
+            } else if (opt.hasAttribute('label') && !/[؀-ۿ]/.test(opt.getAttribute('label')) && /[a-zA-Z]/.test(opt.getAttribute('label'))) {
+              var faGroupLabel = window.tFa(opt.getAttribute('label'));
+              if (faGroupLabel && faGroupLabel !== opt.getAttribute('label')) {
+                opt.__origFaLabel = faGroupLabel;
+                opt.setAttribute('label', faGroupLabel);
+              }
+            }
           }
         }
       });
@@ -6164,16 +6420,15 @@ export function panelHTML(env, options = {}) {
 
       var pending = false;
       i18nObserver = new MutationObserver(function(mutations) {
-        if (window.currentLang !== 'en') return;
         if (pending) return;
         pending = true;
         requestAnimationFrame(function() {
           pending = false;
-          window.translateDOM(document.body, 'en');
+          window.translateDOM(document.body, window.currentLang || 'fa');
         });
       });
 
-      i18nObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
+      i18nObserver.observe(document.body, { childList: true, subtree: true });
     }
 
     window.applyLanguage = function(lang) {
@@ -6201,7 +6456,6 @@ export function panelHTML(env, options = {}) {
         langBtn.title = lang === 'en' ? 'تغییر زبان به فارسی / Switch to Persian' : 'Switch Language to English / تغییر زبان به انگلیسی';
       }
 
-      
       if (typeof updateThemeUI === 'function') {
         updateThemeUI(document.documentElement.getAttribute('data-theme') || 'dark');
       }
@@ -6231,13 +6485,8 @@ export function panelHTML(env, options = {}) {
       if (typeof window.updateSubscriptionUI === 'function' && window.lastUserData) {
         window.updateSubscriptionUI(window.lastUserData);
       }
-      
 
-      if (lang === 'en') {
-        setupI18nObserver();
-      } else if (i18nObserver) {
-        i18nObserver.disconnect();
-      }
+      setupI18nObserver();
     };
 
     window.toggleLanguage = function() {
