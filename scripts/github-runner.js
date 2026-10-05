@@ -616,7 +616,7 @@ async function sendAfkReply(entry, message, afkText, username, senderIdStr) {
  * @param {string} userMessage - پیام دریافتی مخاطب
  * @returns {Promise<string|null>}
  */
-async function callAIApi(provider, apiKey, systemPrompt, context, userMessage) {
+async function callAIApi(provider, apiKey, systemPrompt, context, userMessage, selectedModel) {
   if (!apiKey || !userMessage) return null;
 
   const defaultSystemPrompt = `You are a smart AI personal assistant replying on behalf of the account owner who is currently offline.
@@ -634,15 +634,20 @@ async function callAIApi(provider, apiKey, systemPrompt, context, userMessage) {
 
   try {
     if (provider === 'gemini') {
-      const geminiModels = [
+      const defaultGeminiModels = [
+        'gemini-2.5-flash',
+        'gemini-2.0-flash',
+        'gemini-1.5-flash',
+        'gemini-1.5-pro',
+        'gemini-flash-lite-latest',
+        'gemini-flash-latest',
         'gemini-3.5-flash-lite',
         'gemini-3.5-flash',
-        'gemini-3.8-flash',
-        'gemini-3.7-flash',
-        'gemini-3.1-flash-lite',
-        'gemini-flash-lite-latest',
-        'gemini-flash-latest'
+        'gemini-3.8-flash'
       ];
+      const modelToUse = (selectedModel && selectedModel.trim()) || 'gemini-2.5-flash';
+      // مدل انتخابی کاربر اولویت نخست است؛ در صورت خطا به سایر مدل‌های معتبر گوگل فال‌بک می‌شود
+      const geminiModels = [modelToUse, ...defaultGeminiModels.filter(m => m !== modelToUse)];
 
       for (const model of geminiModels) {
         try {
@@ -681,6 +686,7 @@ async function callAIApi(provider, apiKey, systemPrompt, context, userMessage) {
       return null;
 
     } else if (provider === 'openai') {
+      const modelToUse = (selectedModel && selectedModel.trim()) || 'gpt-4o-mini';
       const url = 'https://api.openai.com/v1/chat/completions';
       const res = await fetch(url, {
         method: 'POST',
@@ -690,7 +696,7 @@ async function callAIApi(provider, apiKey, systemPrompt, context, userMessage) {
         },
         signal: AbortSignal.timeout(12000),
         body: JSON.stringify({
-          model: 'gpt-4o-mini',
+          model: modelToUse,
           messages: [
             { role: 'system', content: fullSystemPrompt },
             { role: 'user', content: userMessage }
@@ -703,7 +709,42 @@ async function callAIApi(provider, apiKey, systemPrompt, context, userMessage) {
       if (!res || !res.ok) {
         const errText = res ? await res.text().catch(() => '') : 'اتصال ناموفق';
         const safeErr = String(errText || '').replaceAll(apiKey, '[REDACTED_KEY]');
-        console.warn(`⚠️ [AI-OpenAI] API error: ${safeErr.slice(0, 150)}`);
+        console.warn(`⚠️ [AI-OpenAI] API error (${modelToUse}): ${safeErr.slice(0, 150)}`);
+        return null;
+      }
+      const data = await res.json();
+      const reply = data?.choices?.[0]?.message?.content;
+      return reply ? reply.trim().slice(0, 500) : null;
+
+    } else if (provider === 'custom') {
+      const modelToUse = (selectedModel && selectedModel.trim()) || 'deepseek-chat';
+      const isDeepSeek = modelToUse.toLowerCase().includes('deepseek');
+      const endpoint = isDeepSeek
+        ? 'https://api.deepseek.com/v1/chat/completions'
+        : 'https://api.openai.com/v1/chat/completions';
+
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        signal: AbortSignal.timeout(15000),
+        body: JSON.stringify({
+          model: modelToUse,
+          messages: [
+            { role: 'system', content: fullSystemPrompt },
+            { role: 'user', content: userMessage }
+          ],
+          max_tokens: 250,
+          temperature: 0.7
+        })
+      }).catch(() => null);
+
+      if (!res || !res.ok) {
+        const errText = res ? await res.text().catch(() => '') : 'اتصال ناموفق';
+        const safeErr = String(errText || '').replaceAll(apiKey, '[REDACTED_KEY]');
+        console.warn(`⚠️ [AI-Custom] API error (${modelToUse}): ${safeErr.slice(0, 150)}`);
         return null;
       }
       const data = await res.json();
@@ -990,6 +1031,7 @@ class TelegramConnectionPool {
           ghostExcludeList: Array.isArray(userSettings?.ghostExcludeList) ? userSettings.ghostExcludeList : [],
           aiReplyEnabled: !!userSettings?.aiReplyEnabled,
           aiProvider: userSettings?.aiProvider || 'gemini',
+          aiModel: userSettings?.aiModel || 'gemini-2.5-flash',
           aiApiKey: userSettings?.aiApiKey || '',
           aiSystemPrompt: userSettings?.aiSystemPrompt || '',
           aiContext: userSettings?.aiContext || '',
@@ -1082,6 +1124,7 @@ class TelegramConnectionPool {
         // 🤖 AI Smart Reply
         aiReplyEnabled: !!userSettings.aiReplyEnabled,
         aiProvider: userSettings.aiProvider || 'gemini',
+        aiModel: userSettings.aiModel || 'gemini-2.5-flash',
         aiApiKey: userSettings.aiApiKey || '',
         aiSystemPrompt: userSettings.aiSystemPrompt || '',
         aiContext: userSettings.aiContext || '',
@@ -1504,6 +1547,21 @@ class TelegramConnectionPool {
         syncUserFeatureToCloudflare(username, { aiReplyEnabled: newState });
         await message.edit({ text: newState ? '🤖 پاسخ هوشمند AI فعال شد 🟢' : '🤖 پاسخ هوشمند AI غیرفعال شد ⚪' }).catch(() => {});
         setTimeout(() => message.delete({ revoke: true }).catch(() => {}), 3500);
+        return;
+      }
+
+      // دستور .ai model <name> جهت تغییر یا استعلام مدل هوش مصنوعی
+      const aiModelMatch = text.match(/^\.ai\s+model(?:\s+(.+))?$/i);
+      if (aiModelMatch) {
+        const newModel = aiModelMatch[1]?.trim();
+        if (newModel) {
+          entry.settings.aiModel = newModel;
+          syncUserFeatureToCloudflare(username, { aiModel: newModel });
+          await message.edit({ text: `🤖 مدل هوش مصنوعی به <code>${newModel}</code> تغییر یافت.` }).catch(() => {});
+        } else {
+          await message.edit({ text: `🤖 مدل هوش مصنوعی فعال: <code>${entry.settings.aiModel || 'پیش‌فرض'}</code>\n🌐 ارائه‌دهنده: <code>${entry.settings.aiProvider || 'gemini'}</code>` }).catch(() => {});
+        }
+        setTimeout(() => message.delete({ revoke: true }).catch(() => {}), 4000);
         return;
       }
 
@@ -2058,7 +2116,8 @@ class TelegramConnectionPool {
                   entry.settings.aiApiKey,
                   entry.settings.aiSystemPrompt,
                   entry.settings.aiContext,
-                  combinedText
+                  combinedText,
+                  entry.settings.aiModel
                 );
 
                 if (aiResponse) {
@@ -2078,10 +2137,12 @@ class TelegramConnectionPool {
                       const senderUserStr = sender?.username ? ` (@${sender.username})` : '';
                       const cleanUserMsg = String(combinedText).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').slice(0, 300);
                       const cleanReply = String(aiResponse).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').slice(0, 500);
+                      const activeModel = entry.settings?.aiModel || 'پیش‌فرض';
                       const logText = `🤖 <b>[پاسخ خودکار هوش مصنوعی — AI Reply]</b>\n` +
                         `━━━━━━━━━━━━━━━━━━━━\n` +
                         `👤 <b>مخاطب:</b> ${cleanSender}${senderUserStr} (<code>${senderIdStr}</code>)\n` +
                         `🕒 <b>زمان ارسال:</b> <code>${new Date().toLocaleTimeString('fa-IR', { timeZone: 'Asia/Tehran' })}</code>\n` +
+                        `🌐 <b>موتور و مدل:</b> <code>${(entry.settings.aiProvider || 'gemini').toUpperCase()} (${activeModel})</code>\n` +
                         `📊 <b>شمارنده:</b> <code>${currentCount + 1} از ${maxReplies} پاسخ مجاز</code>\n\n` +
                         `📩 <b>پیام مخاطب:</b>\n<blockquote>${cleanUserMsg}</blockquote>\n\n` +
                         `💬 <b>پاسخ هوش مصنوعی:</b>\n<blockquote>${cleanReply}</blockquote>\n` +
@@ -2629,6 +2690,7 @@ async function syncUserSettings(usersList) {
         ghostExcludeList: Array.isArray(u.ghostExcludeList) ? u.ghostExcludeList : [],
         aiReplyEnabled: !!u.aiReplyEnabled,
         aiProvider: u.aiProvider || 'gemini',
+        aiModel: u.aiModel || 'gemini-2.5-flash',
         aiApiKey: u.aiApiKey || '',
         aiSystemPrompt: u.aiSystemPrompt || '',
         aiContext: u.aiContext || '',
