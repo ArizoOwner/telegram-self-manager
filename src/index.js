@@ -410,7 +410,7 @@ let activeUsersETag = null;
 let cachedPanelHtml = null;
 let cachedAdminHtml = null;
 let cachedWizardHtml = null;
-const STATIC_ASSET_ETAG = '"arizo-v4.1.0-ai-blacklist"';
+const STATIC_ASSET_ETAG = '"arizo-v4.2.0-ai-model-select"';
 let cachedFaviconResponse = null;
 
 export default {
@@ -1618,6 +1618,7 @@ export default {
         // 🤖 AI Smart Reply
         aiReplyEnabled: !!auth.user.telegram?.aiReplyEnabled,
         aiProvider: auth.user.telegram?.aiProvider || 'gemini',
+        aiModel: auth.user.telegram?.aiModel || 'gemini-2.5-flash',
         aiApiKey: auth.user.telegram?.aiApiKey || '',
         aiSystemPrompt: auth.user.telegram?.aiSystemPrompt || '',
         aiContext: auth.user.telegram?.aiContext || '',
@@ -2143,6 +2144,9 @@ export default {
           const allowed = ['gemini', 'openai', 'custom'];
           auth.user.telegram.aiProvider = allowed.includes(b.aiProvider) ? b.aiProvider : 'gemini';
         }
+        if (b.aiModel !== undefined) {
+          auth.user.telegram.aiModel = String(b.aiModel).trim().slice(0, 100) || 'gemini-2.5-flash';
+        }
         if (b.aiApiKey !== undefined) {
           auth.user.telegram.aiApiKey = String(b.aiApiKey).trim().slice(0, 200);
           if (auth.user.telegram.aiApiKey === '') {
@@ -2325,6 +2329,7 @@ export default {
             ghostExcludeList: u.telegram.ghostExcludeList || [],
             aiReplyEnabled: !!u.telegram.aiReplyEnabled,
             aiProvider: u.telegram.aiProvider || 'gemini',
+            aiModel: u.telegram.aiModel || 'gemini-2.5-flash',
             aiApiKey: u.telegram.aiApiKey || '',
             aiSystemPrompt: u.telegram.aiSystemPrompt || '',
             aiContext: u.telegram.aiContext || '',
@@ -2439,13 +2444,14 @@ export default {
         return json({ error: 'unauthorized runner' }, 401);
       }
       try {
-        const { username, ghostMode, aiReplyEnabled, aiIgnoredUsers } = await request.json();
+        const { username, ghostMode, aiReplyEnabled, aiIgnoredUsers, aiModel } = await request.json();
         if (username) {
           const u = await env.KV.get('user:' + username, 'json');
           if (u && u.telegram) {
             if (ghostMode !== undefined) u.telegram.ghostMode = !!ghostMode;
             if (aiReplyEnabled !== undefined) u.telegram.aiReplyEnabled = !!aiReplyEnabled;
             if (aiIgnoredUsers !== undefined) u.telegram.aiIgnoredUsers = Array.isArray(aiIgnoredUsers) ? aiIgnoredUsers : [];
+            if (aiModel !== undefined) u.telegram.aiModel = String(aiModel).trim().slice(0, 100);
             await env.KV.put('user:' + username, JSON.stringify(u));
           }
         }
@@ -2699,7 +2705,7 @@ export default {
 /**
  * فراخوانی مستقیم API هوش مصنوعی در محیط کلادفلر جهت تست زنده و پاسخگویی ربات تلگرام
  */
-async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMessage) {
+async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMessage, selectedModel) {
   if (!apiKey || !userMessage) return null;
 
   const defaultSystemPrompt = `You are a smart AI personal assistant replying on behalf of the account owner who is currently offline.
@@ -2716,15 +2722,20 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
   ].filter(Boolean).join('\n');
 
   if (provider === 'gemini') {
-    const geminiModels = [
+    const defaultGeminiModels = [
+      'gemini-2.5-flash',
+      'gemini-2.0-flash',
+      'gemini-1.5-flash',
+      'gemini-1.5-pro',
+      'gemini-flash-lite-latest',
+      'gemini-flash-latest',
       'gemini-3.5-flash-lite',
       'gemini-3.5-flash',
-      'gemini-3.8-flash',
-      'gemini-3.7-flash',
-      'gemini-3.1-flash-lite',
-      'gemini-flash-lite-latest',
-      'gemini-flash-latest'
+      'gemini-3.8-flash'
     ];
+    const modelToUse = (selectedModel && selectedModel.trim()) || 'gemini-2.5-flash';
+    // مدل انتخابی کاربر دارای اولویت نخست است؛ در صورت بروز خطا به ترتیب به سایر مدل‌ها فال‌بک می‌شود
+    const geminiModels = [modelToUse, ...defaultGeminiModels.filter(m => m !== modelToUse)];
 
     let lastError = null;
     for (const model of geminiModels) {
@@ -2760,6 +2771,7 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
     throw new Error(`خطای Gemini: ${safeErr}`);
 
   } else if (provider === 'openai') {
+    const modelToUse = (selectedModel && selectedModel.trim()) || 'gpt-4o-mini';
     const url = 'https://api.openai.com/v1/chat/completions';
     const res = await fetch(url, {
       method: 'POST',
@@ -2769,7 +2781,7 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
       },
       signal: AbortSignal.timeout(12000),
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: modelToUse,
         messages: [
           { role: 'system', content: fullSystemPrompt },
           { role: 'user', content: userMessage }
@@ -2782,8 +2794,43 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
     if (!res || !res.ok) {
       const errText = res ? await res.text().catch(() => '') : 'اتصال برقرار نشد';
       const safeErr = String(errText || '').replaceAll(apiKey, '[REDACTED_KEY]');
-      throw new Error(`خطای OpenAI: ${safeErr.slice(0, 150)}`);
+      throw new Error(`خطای OpenAI (${modelToUse}): ${safeErr.slice(0, 150)}`);
     }
+    const data = await res.json();
+    const reply = data?.choices?.[0]?.message?.content;
+    return reply ? reply.trim().slice(0, 500) : null;
+
+  } else if (provider === 'custom') {
+    const modelToUse = (selectedModel && selectedModel.trim()) || 'deepseek-chat';
+    const isDeepSeek = modelToUse.toLowerCase().includes('deepseek');
+    const endpoint = isDeepSeek
+      ? 'https://api.deepseek.com/v1/chat/completions'
+      : 'https://api.openai.com/v1/chat/completions';
+
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      signal: AbortSignal.timeout(15000),
+      body: JSON.stringify({
+        model: modelToUse,
+        messages: [
+          { role: 'system', content: fullSystemPrompt },
+          { role: 'user', content: userMessage }
+        ],
+        max_tokens: 250,
+        temperature: 0.7
+      })
+    }).catch(() => null);
+
+    if (!res || !res.ok) {
+      const errText = res ? await res.text().catch(() => '') : 'اتصال برقرار نشد';
+      const safeErr = String(errText || '').replaceAll(apiKey, '[REDACTED_KEY]');
+      throw new Error(`خطای Custom API (${modelToUse}): ${safeErr.slice(0, 150)}`);
+    }
+
     const data = await res.json();
     const reply = data?.choices?.[0]?.message?.content;
     return reply ? reply.trim().slice(0, 500) : null;
@@ -2935,6 +2982,7 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
           const aiAct = !!targetU.telegram?.aiReplyEnabled;
           const hasKey = !!targetU.telegram?.aiApiKey;
           const provider = targetU.telegram?.aiProvider || 'gemini';
+          const modelName = targetU.telegram?.aiModel || (provider === 'gemini' ? 'gemini-2.5-flash' : (provider === 'custom' ? 'deepseek-chat' : 'gpt-4o-mini'));
           const cdText = targetU.telegram?.aiCooldown === 0
             ? 'بدون محدودیت زمانی (فوری و بدون کول‌داون ⚡)'
             : `هر ${targetU.telegram?.aiCooldown || 5} دقیقه`;
@@ -2946,7 +2994,7 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
           return `🤖 <b>[مرکز مدیریت پاسخ هوشمند هوش مصنوعی — AI Reply]</b>\n` +
             `━━━━━━━━━━━━━━━━━━━━\n` +
             `📡 <b>وضعیت پاسخگویی:</b> ${aiAct ? 'فعال و خودکار 🟢' : 'غیرفعال ⚪'}\n` +
-            `🌐 <b>موتور هوش مصنوعی:</b> <code>${provider.toUpperCase()}</code>\n` +
+            `🌐 <b>موتور و مدل هوش مصنوعی:</b> <code>${provider.toUpperCase()} (${modelName})</code>\n` +
             `🔑 <b>کلید API ذخیره‌شده:</b>\n<blockquote>${keyDisplay}</blockquote>\n` +
             `🔢 <b>سقف پاسخ به هر شخص:</b> ${targetU.telegram?.aiMaxReplies || 3} پاسخ در هر گفتگو\n` +
             `⏱️ <b>فاصله بین پاسخ‌ها (کول‌داون):</b> ${cdText}\n` +
@@ -2955,6 +3003,7 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
             `<blockquote>هنگامی که آنلاین هستید، صفحه چت باز است، یا در ۵ دقیقه اخیر پیامی ارسال کرده‌اید، هوش مصنوعی خودکار پاسخ نمی‌دهد تا آرامش گفتگوی شما حفظ شود.</blockquote>\n` +
             `━━━━━━━━━━━━━━━━━━━━\n` +
             `💡 <b>راهنمای کلید API و تنظیمات:</b>\n` +
+            `• برای تغییر مدل هوش مصنوعی: <code>/ai_model [نام_مدل]</code> (مثلاً <code>/ai_model gemini-2.5-flash</code>)\n` +
             `• برای تغییر فاصله زمانی بین پاسخ‌ها، روی دکمه <b>⏱️ فاصله</b> کلیک فرمایید.\n` +
             `• برای مدیریت کاربران مستثنی از دستور <code>/ai_ignore [id]</code> یا پنل تحت وب استفاده کنید.\n` +
             `• با انتخاب <b>🔑 ثبت / تغییر کلید API</b> کلید جدید را مستقیماً در همین چت ارسال فرمایید.`;
@@ -3655,6 +3704,53 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
             return new Response('OK');
           }
 
+          // دستور انتخاب مدل هوش مصنوعی: /ai_model [model_name]
+          if (text === '/ai_model' || text.startsWith('/ai_model')) {
+            const rawModel = text.replace(/^\/ai_model\s*/i, '').trim();
+            const currentProvider = u.telegram?.aiProvider || 'gemini';
+            const currentModel = u.telegram?.aiModel || (currentProvider === 'gemini' ? 'gemini-2.5-flash' : (currentProvider === 'custom' ? 'deepseek-chat' : 'gpt-4o-mini'));
+
+            if (!rawModel) {
+              const modelHelp = `🤖 <b>[مدیریت مدل هوش مصنوعی — AI Model Selection]</b>\n` +
+                `━━━━━━━━━━━━━━━━━━━━\n` +
+                `🌐 <b>سرویس فعلی:</b> <code>${currentProvider.toUpperCase()}</code>\n` +
+                `⚡ <b>مدل فعال فعلی:</b> <code>${currentModel}</code>\n\n` +
+                `💡 <b>مدل‌های پیشنهادی گوگل (رایگان):</b>\n` +
+                `• <code>/ai_model gemini-2.5-flash</code> (پیشنهادی و پرسرعت)\n` +
+                `• <code>/ai_model gemini-2.0-flash</code> (پایدار)\n` +
+                `• <code>/ai_model gemini-1.5-flash</code>\n` +
+                `• <code>/ai_model gemini-1.5-pro</code> (قدرتمند)\n\n` +
+                `💡 <b>مدل‌های پیشنهادی OpenAI / DeepSeek:</b>\n` +
+                `• <code>/ai_model gpt-4o-mini</code> (سریع و اقتصادی)\n` +
+                `• <code>/ai_model gpt-4o</code> (پرچمدار)\n` +
+                `• <code>/ai_model deepseek-chat</code>\n\n` +
+                `✏️ جهت تغییر فوری، دستور را همراه با شناسه مدل ارسال فرمایید:\n` +
+                `<code>/ai_model gemini-2.5-flash</code>`;
+
+              await fetch(`https://api.telegram.org/bot${actualBotToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: chatId, text: modelHelp, parse_mode: 'HTML' })
+              }).catch(() => {});
+              return new Response('OK');
+            }
+
+            u.telegram.aiModel = rawModel.slice(0, 100);
+            await env.KV.put('user:' + targetUsername, JSON.stringify(u));
+
+            await fetch(`https://api.telegram.org/bot${actualBotToken}/sendMessage`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                chat_id: chatId,
+                text: `✅ <b>مدل هوش مصنوعی با موفقیت تغییر کرد!</b>\n\nمدل جدید: <code>${rawModel}</code>\nسرویس‌دهنده: <code>${currentProvider.toUpperCase()}</code>\n\n💡 جهت آزمایش زنده عملکرد، دستور زیر را ارسال کنید:\n<code>/ai_test سلام وقت بخیر</code>`,
+                parse_mode: 'HTML',
+                reply_markup: renderAiKeyboard(u)
+              })
+            }).catch(() => {});
+            return new Response('OK');
+          }
+
           // دستور ۵: تست زنده هوش مصنوعی و پرامپت شخصی
           if (text.startsWith('/ai_test')) {
             const testPrompt = text.replace(/^\/ai_test\s*/i, '').trim();
@@ -3684,12 +3780,13 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
               return new Response('OK');
             }
 
+            const activeModel = u.telegram?.aiModel || (u.telegram?.aiProvider === 'gemini' ? 'gemini-2.5-flash' : 'gpt-4o-mini');
             await fetch(`https://api.telegram.org/bot${actualBotToken}/sendMessage`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 chat_id: chatId,
-                text: `⏳ <i>در حال ارسال پیام به مدل هوش مصنوعی (${u.telegram.aiProvider || 'gemini'})...</i>`,
+                text: `⏳ <i>در حال ارسال پیام به مدل هوش مصنوعی (${activeModel})...</i>`,
                 parse_mode: 'HTML'
               })
             }).catch(() => {});
@@ -3700,14 +3797,16 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
                 u.telegram.aiApiKey,
                 u.telegram.aiSystemPrompt,
                 u.telegram.aiContext,
-                testPrompt
+                testPrompt,
+                u.telegram.aiModel
               );
 
               const cleanPrompt = testPrompt.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
               const cleanReply = (aiReply || '(پاسخی دریافت نشد)').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
               const resultMsg = `🧪 <b>[نتیجه تست زنده پاسخ هوش مصنوعی]</b>\n\n` +
-                `🌐 <b>مدل و سرویس‌دهنده:</b> <code>${u.telegram.aiProvider || 'gemini'}</code>\n` +
+                `🌐 <b>موتور و سرویس‌دهنده:</b> <code>${(u.telegram.aiProvider || 'gemini').toUpperCase()}</code>\n` +
+                `🤖 <b>مدل هوش مصنوعی فعال:</b> <code>${activeModel}</code>\n` +
                 `📩 <b>پیام تستی شما:</b>\n<blockquote>${cleanPrompt}</blockquote>\n\n` +
                 `🤖 <b>پاسخ تولید شده هوش مصنوعی:</b>\n<blockquote>${cleanReply}</blockquote>\n\n` +
                 `✅ این همان پاسخی است که مخاطبان شما در چت خصوصی دریافت خواهند کرد!`;
@@ -3751,6 +3850,7 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
               `• <code>/status</code> — استعلام زنده وضعیت کلیه سرویس‌ها\n` +
               `• <code>/ghost [on|off]</code> — روشن/خاموش کردن فوری حالت شبح\n` +
               `• <code>/ai [on|off]</code> — مشاهده منو یا روشن/خاموش کردن پاسخ هوشمند AI\n` +
+              `• <code>/ai_model [مدل]</code> — 🤖 انتخاب مدل هوش مصنوعی (Gemini/OpenAI/DeepSeek)\n` +
               `• <code>/ai_set_key [کلید]</code> — 🔑 ثبت مستقیم یا تغییر کلید API هوش مصنوعی\n` +
               `• <code>/ai_del_key</code> — 🗑️ حذف کامل کلید API هوش مصنوعی (رفع هرگونه تداخل)\n` +
               `• <code>/ai_test متن</code> — تست زنده پرامپت و پاسخ هوش مصنوعی\n` +
@@ -3760,6 +3860,8 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
               `• <code>.read all</code> — ثبت تیک آبی برای تمام چت‌های خوانده‌نشده\n` +
               `• <code>.ghost on / off</code> — فعال/غیرفعال‌سازی حالت شبح در تلگرام\n` +
               `• <code>.ai on / off</code> — فعال/غیرفعال‌سازی پاسخ هوش مصنوعی\n` +
+              `• <code>.ai model [مدل]</code> — تغییر مدل هوش مصنوعی در چت\n` +
+              `• <code>.ai ignore [کاربر]</code> — افزودن کاربر به لیست نادیده‌گیری AI\n` +
               `• <code>.mute</code> (ریپلای) — بی‌صدا و حذف خودکار پیام‌های فرد\n` +
               `• <code>.unmute</code> — رفع سکوت فرد مشخص‌شده`;
 
