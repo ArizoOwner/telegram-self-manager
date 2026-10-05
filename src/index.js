@@ -410,7 +410,7 @@ let activeUsersETag = null;
 let cachedPanelHtml = null;
 let cachedAdminHtml = null;
 let cachedWizardHtml = null;
-const STATIC_ASSET_ETAG = '"arizo-v4.2.0-ai-model-select"';
+const STATIC_ASSET_ETAG = '"arizo-v4.3.0-ai-robust-reply"';
 let cachedFaviconResponse = null;
 
 export default {
@@ -2703,140 +2703,204 @@ export default {
     }
 
 /**
+ * پاکسازی، اعتبارسنجی و تکمیل پاسخ هوش مصنوعی در سرور جهت تضمین ارسال جملات سالم و کامل
+ */
+function sanitizeAiReply(raw) {
+  if (!raw || typeof raw !== 'string') return null;
+  let text = raw.trim();
+  if (!text) return null;
+
+  if (text.startsWith('```') && text.endsWith('```')) {
+    text = text.replace(/^```[a-zA-Z]*\n?/, '').replace(/\n?```$/, '').trim();
+  }
+
+  if (text.length > 700) {
+    const slice = text.slice(0, 700);
+    const lastPunct = Math.max(
+      slice.lastIndexOf('. '),
+      slice.lastIndexOf('! '),
+      slice.lastIndexOf('؟ '),
+      slice.lastIndexOf('? '),
+      slice.lastIndexOf('.\n'),
+      slice.lastIndexOf('!\n'),
+      slice.lastIndexOf('؟\n'),
+      slice.lastIndexOf('?\n')
+    );
+    if (lastPunct > 120) {
+      text = slice.slice(0, lastPunct + 1).trim();
+    } else {
+      text = slice.trim();
+    }
+  }
+
+  const terminalPunctuation = ['.', '!', '؟', '?', '…', '؛', ';', ')', '»', '"', '\''];
+  const lastChar = text[text.length - 1];
+
+  if (!terminalPunctuation.includes(lastChar)) {
+    const lastSentenceBreak = Math.max(
+      text.lastIndexOf('. '),
+      text.lastIndexOf('! '),
+      text.lastIndexOf('؟ '),
+      text.lastIndexOf('? '),
+      text.lastIndexOf('.\n'),
+      text.lastIndexOf('!\n'),
+      text.lastIndexOf('؟\n'),
+      text.lastIndexOf('?\n'),
+      text.lastIndexOf('\n\n')
+    );
+
+    if (lastSentenceBreak > 20 && (text.length - lastSentenceBreak) > 4) {
+      text = text.slice(0, lastSentenceBreak + 1).trim();
+    } else {
+      text = text + '.';
+    }
+  }
+
+  return text;
+}
+
+/**
  * فراخوانی مستقیم API هوش مصنوعی در محیط کلادفلر جهت تست زنده و پاسخگویی ربات تلگرام
  */
 async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMessage, selectedModel) {
   if (!apiKey || !userMessage) return null;
 
   const defaultSystemPrompt = `You are a smart AI personal assistant replying on behalf of the account owner who is currently offline.
-قوانین و دستورالعمل‌ها:
-۱. تشخیص و تطبیق خودکار زبان: زبان پاسخ باید دقیقاً هماهنگ با زبان پیام مخاطب باشد. اگر مخاطب به زبان انگلیسی (English) پیام داده است، پاسخ را کاملاً به زبان روان انگلیسی بنویس. اگر به زبان فارسی پیام داده به فارسی پاسخ بده. برای هر زبان دیگر به همان زبان پیام بده.
-۲. لحن و ساختار: پاسخ کوتاه (حداکثر ۲ تا ۳ جمله)، مودبانه، طبیعی و صمیمی باشد.
-۳. وضعیت مالک: حتماً قید کن که مالک حساب در حال حاضر آفلاین است و به محض آنلاین شدن پیام را بررسی و پاسخ خواهد داد.
-۴. محرمانگی: از اطلاعات خصوصی یا محرمانه صحبت نکن و وعده نامعتبر نده.`;
+قوانین و دستورالعمل‌های حیاتی:
+۱. اتمام قطعی کلمات و جملات: به هیچ وجه هیچ کلمه یا جمله‌ای را نیمه‌کاره رها نکن. تمام جملات باید با معنی کامل و نقطه/علامت پایان به پایان برسند.
+۲. تشخیص و تطبیق خودکار زبان: زبان پاسخ باید دقیقاً هماهنگ با زبان پیام مخاطب باشد. اگر مخاطب به زبان انگلیسی (English) پیام داده است، پاسخ را کاملاً به زبان روان انگلیسی بنویس. اگر به زبان فارسی پیام داده به فارسی پاسخ بده. برای هر زبان دیگر به همان زبان پیام بده.
+۳. لحن و ساختار: پاسخ کوتاه (حداکثر ۲ تا ۳ جمله کامل)، مودبانه، طبیعی و صمیمی باشد.
+۴. وضعیت مالک: حتماً قید کن که مالک حساب در حال حاضر آفلاین است و به محض آنلاین شدن پیام را بررسی و پاسخ خواهد داد.
+۵. محرمانگی: از اطلاعات خصوصی یا محرمانه صحبت نکن و وعده نامعتبر نده.`;
 
   const fullSystemPrompt = [
     systemPrompt || defaultSystemPrompt,
     context ? `\nاطلاعات پایه درباره مالک حساب (User Context):\n${context}` : '',
-    '\nدستور قطعی زبان: زبان پاسخ باید دقیقاً بر اساس زبان پیام دریافتی باشد (اگر انگلیسی است حتماً به انگلیسی، اگر فارسی است به فارسی). پاسخ کوتاه حداکثر ۳ جمله باشد و اشاره کن مالک حساب آفلاین است.'
+    '\nدستور اکید: تمام کلمات و جملات را با معنی کامل تمام کن و هرگز کلمه‌ای را ناتمام نگذار. زبان پاسخ هماهنگ با پیام مخاطب باشد. پاسخ کوتاه حداکثر ۲ الی ۳ جمله کامل باشد و اشاره کن مالک آفلاین است.'
   ].filter(Boolean).join('\n');
 
-  if (provider === 'gemini') {
-    const defaultGeminiModels = [
-      'gemini-2.5-flash',
-      'gemini-2.0-flash',
-      'gemini-1.5-flash',
-      'gemini-1.5-pro',
-      'gemini-flash-lite-latest',
-      'gemini-flash-latest',
-      'gemini-3.5-flash-lite',
-      'gemini-3.5-flash',
-      'gemini-3.8-flash'
-    ];
-    const modelToUse = (selectedModel && selectedModel.trim()) || 'gemini-2.5-flash';
-    // مدل انتخابی کاربر دارای اولویت نخست است؛ در صورت بروز خطا به ترتیب به سایر مدل‌ها فال‌بک می‌شود
-    const geminiModels = [modelToUse, ...defaultGeminiModels.filter(m => m !== modelToUse)];
+  try {
+    if (provider === 'gemini') {
+      const defaultGeminiModels = [
+        'gemini-2.5-flash',
+        'gemini-2.0-flash',
+        'gemini-1.5-flash',
+        'gemini-1.5-pro',
+        'gemini-flash-lite-latest',
+        'gemini-flash-latest',
+        'gemini-3.5-flash-lite',
+        'gemini-3.5-flash',
+        'gemini-3.8-flash'
+      ];
+      const modelToUse = (selectedModel && selectedModel.trim()) || 'gemini-2.5-flash';
+      // مدل انتخابی کاربر دارای اولویت نخست است؛ در صورت بروز خطا به ترتیب به سایر مدل‌ها فال‌بک می‌شود
+      const geminiModels = [modelToUse, ...defaultGeminiModels.filter(m => m !== modelToUse)];
 
-    let lastError = null;
-    for (const model of geminiModels) {
-      try {
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-        const res = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          signal: AbortSignal.timeout(9000),
-          body: JSON.stringify({
-            system_instruction: { parts: [{ text: fullSystemPrompt }] },
-            contents: [{ parts: [{ text: userMessage }] }],
-            generationConfig: { maxOutputTokens: 250, temperature: 0.7, topP: 0.9 }
-          })
-        });
+      let lastError = null;
+      for (const model of geminiModels) {
+        try {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+          const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            signal: AbortSignal.timeout(10000),
+            body: JSON.stringify({
+              system_instruction: { parts: [{ text: fullSystemPrompt }] },
+              contents: [{ parts: [{ text: userMessage }] }],
+              generationConfig: { maxOutputTokens: 800, temperature: 0.7, topP: 0.9 }
+            })
+          });
 
-        if (res.ok) {
-          const data = await res.json();
-          const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (reply && reply.trim()) {
-            return reply.trim().slice(0, 500);
+          if (res.ok) {
+            const data = await res.json();
+            const candidate = data?.candidates?.[0];
+            const reply = candidate?.content?.parts?.[0]?.text;
+            if (reply && reply.trim()) {
+              const sanitized = sanitizeAiReply(reply);
+              if (sanitized) return sanitized;
+            }
+          } else {
+            const errText = await res.text().catch(() => '');
+            lastError = `${model} (${res.status}): ${errText.slice(0, 120)}`;
           }
-        } else {
-          const errText = await res.text().catch(() => '');
-          lastError = `${model} (${res.status}): ${errText.slice(0, 120)}`;
+        } catch (err) {
+          lastError = `${model}: ${err.message}`;
         }
-      } catch (err) {
-        lastError = `${model}: ${err.message}`;
       }
+
+      const safeErr = String(lastError || 'اتصال برقرار نشد').replaceAll(apiKey, '[REDACTED_KEY]');
+      throw new Error(`خطای Gemini: ${safeErr}`);
+
+    } else if (provider === 'openai') {
+      const modelToUse = (selectedModel && selectedModel.trim()) || 'gpt-4o-mini';
+      const url = 'https://api.openai.com/v1/chat/completions';
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        signal: AbortSignal.timeout(12000),
+        body: JSON.stringify({
+          model: modelToUse,
+          messages: [
+            { role: 'system', content: fullSystemPrompt },
+            { role: 'user', content: userMessage }
+          ],
+          max_tokens: 800,
+          temperature: 0.7
+        })
+      }).catch(() => null);
+
+      if (!res || !res.ok) {
+        const errText = res ? await res.text().catch(() => '') : 'اتصال برقرار نشد';
+        const safeErr = String(errText || '').replaceAll(apiKey, '[REDACTED_KEY]');
+        throw new Error(`خطای OpenAI (${modelToUse}): ${safeErr.slice(0, 150)}`);
+      }
+      const data = await res.json();
+      const reply = data?.choices?.[0]?.message?.content;
+      return reply ? sanitizeAiReply(reply) : null;
+
+    } else if (provider === 'custom') {
+      const modelToUse = (selectedModel && selectedModel.trim()) || 'deepseek-chat';
+      const isDeepSeek = modelToUse.toLowerCase().includes('deepseek');
+      const endpoint = isDeepSeek
+        ? 'https://api.deepseek.com/v1/chat/completions'
+        : 'https://api.openai.com/v1/chat/completions';
+
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        signal: AbortSignal.timeout(15000),
+        body: JSON.stringify({
+          model: modelToUse,
+          messages: [
+            { role: 'system', content: fullSystemPrompt },
+            { role: 'user', content: userMessage }
+          ],
+          max_tokens: 800,
+          temperature: 0.7
+        })
+      }).catch(() => null);
+
+      if (!res || !res.ok) {
+        const errText = res ? await res.text().catch(() => '') : 'اتصال برقرار نشد';
+        const safeErr = String(errText || '').replaceAll(apiKey, '[REDACTED_KEY]');
+        throw new Error(`خطای Custom API (${modelToUse}): ${safeErr.slice(0, 150)}`);
+      }
+
+      const data = await res.json();
+      const reply = data?.choices?.[0]?.message?.content;
+      return reply ? sanitizeAiReply(reply) : null;
+
+    } else {
+      throw new Error(`سرویس‌دهنده ${provider} پشتیبانی نمی‌شود.`);
     }
-
-    const safeErr = String(lastError || 'اتصال برقرار نشد').replaceAll(apiKey, '[REDACTED_KEY]');
-    throw new Error(`خطای Gemini: ${safeErr}`);
-
-  } else if (provider === 'openai') {
-    const modelToUse = (selectedModel && selectedModel.trim()) || 'gpt-4o-mini';
-    const url = 'https://api.openai.com/v1/chat/completions';
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      signal: AbortSignal.timeout(12000),
-      body: JSON.stringify({
-        model: modelToUse,
-        messages: [
-          { role: 'system', content: fullSystemPrompt },
-          { role: 'user', content: userMessage }
-        ],
-        max_tokens: 250,
-        temperature: 0.7
-      })
-    }).catch(() => null);
-
-    if (!res || !res.ok) {
-      const errText = res ? await res.text().catch(() => '') : 'اتصال برقرار نشد';
-      const safeErr = String(errText || '').replaceAll(apiKey, '[REDACTED_KEY]');
-      throw new Error(`خطای OpenAI (${modelToUse}): ${safeErr.slice(0, 150)}`);
-    }
-    const data = await res.json();
-    const reply = data?.choices?.[0]?.message?.content;
-    return reply ? reply.trim().slice(0, 500) : null;
-
-  } else if (provider === 'custom') {
-    const modelToUse = (selectedModel && selectedModel.trim()) || 'deepseek-chat';
-    const isDeepSeek = modelToUse.toLowerCase().includes('deepseek');
-    const endpoint = isDeepSeek
-      ? 'https://api.deepseek.com/v1/chat/completions'
-      : 'https://api.openai.com/v1/chat/completions';
-
-    const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      signal: AbortSignal.timeout(15000),
-      body: JSON.stringify({
-        model: modelToUse,
-        messages: [
-          { role: 'system', content: fullSystemPrompt },
-          { role: 'user', content: userMessage }
-        ],
-        max_tokens: 250,
-        temperature: 0.7
-      })
-    }).catch(() => null);
-
-    if (!res || !res.ok) {
-      const errText = res ? await res.text().catch(() => '') : 'اتصال برقرار نشد';
-      const safeErr = String(errText || '').replaceAll(apiKey, '[REDACTED_KEY]');
-      throw new Error(`خطای Custom API (${modelToUse}): ${safeErr.slice(0, 150)}`);
-    }
-
-    const data = await res.json();
-    const reply = data?.choices?.[0]?.message?.content;
-    return reply ? reply.trim().slice(0, 500) : null;
-
-  } else {
-    throw new Error(`سرویس‌دهنده ${provider} پشتیبانی نمی‌شود.`);
+  } catch (err) {
+    throw err;
   }
 }
 
@@ -2950,11 +3014,90 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
           return { inline_keyboard: rows };
         };
 
-        // تولید کیبورد اختصاصی مدیریت هوش مصنوعی با گزینه حذف کامل کلید
+        // تولید کیبورد اختصاصی مدیریت مدل‌های هوش مصنوعی
+        const renderAiModelsKeyboard = (targetU) => {
+          const currentModel = (targetU.telegram?.aiModel || (targetU.telegram?.aiProvider === 'gemini' ? 'gemini-2.5-flash' : (targetU.telegram?.aiProvider === 'custom' ? 'deepseek-chat' : 'gpt-4o-mini'))).trim().toLowerCase();
+
+          const models = [
+            { id: 'gemini-2.5-flash', name: '⚡ Gemini 2.5 Flash (پیشنهادی)' },
+            { id: 'gemini-2.0-flash', name: '🚀 Gemini 2.0 Flash' },
+            { id: 'gemini-1.5-flash', name: '🌟 Gemini 1.5 Flash' },
+            { id: 'gemini-1.5-pro', name: '🧠 Gemini 1.5 Pro' },
+            { id: 'gemini-flash-lite-latest', name: '💨 Gemini Flash Lite' },
+            { id: 'gpt-4o-mini', name: '⚡ GPT-4o Mini' },
+            { id: 'gpt-4o', name: '🧠 GPT-4o' },
+            { id: 'deepseek-chat', name: '🐳 DeepSeek V3 (Chat)' },
+            { id: 'deepseek-reasoner', name: '🧠 DeepSeek R1 (Reasoner)' }
+          ];
+
+          const rows = [];
+          for (let i = 0; i < models.length; i += 2) {
+            const row = [];
+            const m1 = models[i];
+            const isSel1 = currentModel === m1.id.toLowerCase();
+            row.push({
+              text: `${isSel1 ? '✅ ' : ''}${m1.name}`,
+              callback_data: `ai_set_model:${m1.id}`
+            });
+            if (i + 1 < models.length) {
+              const m2 = models[i + 1];
+              const isSel2 = currentModel === m2.id.toLowerCase();
+              row.push({
+                text: `${isSel2 ? '✅ ' : ''}${m2.name}`,
+                callback_data: `ai_set_model:${m2.id}`
+              });
+            }
+            rows.push(row);
+          }
+          rows.push([
+            { text: '🔙 بازگشت به منوی هوش مصنوعی', callback_data: 'ai_menu', style: 'danger' }
+          ]);
+          return { inline_keyboard: rows };
+        };
+
+        // تولید کیبورد اختصاصی مدیریت لیست نادیده‌گیری هوش مصنوعی
+        const renderAiIgnoreKeyboard = (targetU) => {
+          const ignored = Array.isArray(targetU.telegram?.aiIgnoredUsers) ? targetU.telegram.aiIgnoredUsers : [];
+          const rows = [
+            [
+              { text: '➕ افزودن کاربر به لیست نادیده‌گیری', callback_data: 'ai_add_ignore_prompt', style: 'primary' }
+            ]
+          ];
+          if (ignored.length > 0) {
+            rows.push([
+              { text: '🗑️ پاکسازی کامل لیست نادیده‌گیری', callback_data: 'ai_clear_ignore', style: 'danger' }
+            ]);
+          }
+          rows.push([
+            { text: '🔙 بازگشت به منوی هوش مصنوعی', callback_data: 'ai_menu', style: 'danger' }
+          ]);
+          return { inline_keyboard: rows };
+        };
+
+        // تولید متن پیام مدیریت لیست نادیده‌گیری هوش مصنوعی
+        const renderAiIgnoreMessage = (targetU) => {
+          const ignored = Array.isArray(targetU.telegram?.aiIgnoredUsers) ? targetU.telegram.aiIgnoredUsers : [];
+          const listText = ignored.length > 0
+            ? ignored.map((id, idx) => `${idx + 1}. <code>${escapeHtml(id)}</code>`).join('\n')
+            : '<i>هنوز هیچ کاربری در لیست نادیده‌گیری قرار ندارد (هوش مصنوعی به تمام پیام‌های خصوصی مجاز پاسخ خواهد داد).</i>';
+
+          return `🚫 <b>[مدیریت لیست نادیده‌گیری هوش مصنوعی — AI Ignore List]</b>\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `هوش مصنوعی به پیام‌های کاربران موجود در این لیست هرگز پاسخ نخواهد داد.\n\n` +
+            `📋 <b>کاربران مسدودشده فعلی (${ignored.length} کاربر):</b>\n${listText}\n\n` +
+            `━━━━━━━━━━━━━━━━━━━━\n` +
+            `💡 <b>افزودن و حذف سریع:</b>\n` +
+            `• روی دکمه <b>➕ افزودن کاربر به لیست</b> کلیک کنید یا در چت بنویسید:\n` +
+            `<code>/ai_ignore 12345678</code> یا <code>/ai_ignore @username</code>\n` +
+            `• برای حذف کاربر خاص: <code>/ai_unignore [id]</code>`;
+        };
+
+        // تولید کیبورد اختصاصی مدیریت هوش مصنوعی با دکمه‌های تعاملی مدل و نادیده‌گیری
         const renderAiKeyboard = (targetU) => {
           const aiAct = !!targetU.telegram?.aiReplyEnabled;
-          const hasKey = !!targetU.telegram?.aiApiKey;
           const provider = targetU.telegram?.aiProvider || 'gemini';
+          const modelName = targetU.telegram?.aiModel || (provider === 'gemini' ? 'gemini-2.5-flash' : (provider === 'custom' ? 'deepseek-chat' : 'gpt-4o-mini'));
+          const ignoredCount = Array.isArray(targetU.telegram?.aiIgnoredUsers) ? targetU.telegram.aiIgnoredUsers.length : 0;
 
           return {
             inline_keyboard: [
@@ -2962,7 +3105,10 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
                 { text: `🔄 وضعیت پاسخگویی هوشمند: ${aiAct ? 'غیرفعال‌سازی ⚪' : 'فعال‌سازی 🟢'}`, callback_data: 'bot_toggle_ai', style: aiAct ? 'danger' : 'success' }
               ],
               [
-                { text: `🌐 مدل: ${provider === 'openai' ? 'OpenAI GPT 🧠' : 'Google Gemini ♊'}`, callback_data: 'ai_toggle_provider', style: 'primary' },
+                { text: `🤖 مدل هوش مصنوعی: ${modelName}`, callback_data: 'ai_models_menu', style: 'primary' }
+              ],
+              [
+                { text: `🚫 نادیده‌گیری: ${ignoredCount > 0 ? `${ignoredCount} کاربر` : 'همه مجاز'}`, callback_data: 'ai_ignore_menu', style: 'primary' },
                 { text: `⏱️ فاصله: ${targetU.telegram?.aiCooldown === 0 ? 'بدون محدودیت ⚡' : `هر ${targetU.telegram?.aiCooldown || 5} دقیقه`}`, callback_data: 'ai_toggle_cooldown', style: 'primary' }
               ],
               [
@@ -3002,11 +3148,11 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
             `🛡️ <b>سپر هوشمند ۴ لایه:</b> فعال ✅\n` +
             `<blockquote>هنگامی که آنلاین هستید، صفحه چت باز است، یا در ۵ دقیقه اخیر پیامی ارسال کرده‌اید، هوش مصنوعی خودکار پاسخ نمی‌دهد تا آرامش گفتگوی شما حفظ شود.</blockquote>\n` +
             `━━━━━━━━━━━━━━━━━━━━\n` +
-            `💡 <b>راهنمای کلید API و تنظیمات:</b>\n` +
-            `• برای تغییر مدل هوش مصنوعی: <code>/ai_model [نام_مدل]</code> (مثلاً <code>/ai_model gemini-2.5-flash</code>)\n` +
-            `• برای تغییر فاصله زمانی بین پاسخ‌ها، روی دکمه <b>⏱️ فاصله</b> کلیک فرمایید.\n` +
-            `• برای مدیریت کاربران مستثنی از دستور <code>/ai_ignore [id]</code> یا پنل تحت وب استفاده کنید.\n` +
-            `• با انتخاب <b>🔑 ثبت / تغییر کلید API</b> کلید جدید را مستقیماً در همین چت ارسال فرمایید.`;
+            `💡 <b>راهنمای سریع دکمه‌ها:</b>\n` +
+            `• برای انتخاب مدل مورد نظر، روی دکمه <b>🤖 مدل هوش مصنوعی</b> کلیک کنید.\n` +
+            `• برای مسدودسازی کاربران از پاسخ هوش مصنوعی، روی دکمه <b>🚫 نادیده‌گیری</b> کلیک کنید.\n` +
+            `• برای تغییر فاصله زمانی، روی دکمه <b>⏱️ فاصله</b> کلیک فرمایید.\n` +
+            `• با انتخاب <b>🔑 ثبت / ویرایش کلید API</b> کلید جدید را مستقیماً ارسال فرمایید.`;
         };
 
         // تولید متن پیام وضعیت زنده با دیزاین رسمی و چشم‌نواز
@@ -3149,6 +3295,46 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
                 text: okText,
                 parse_mode: 'HTML',
                 reply_markup: renderAiKeyboard(u)
+              })
+            }).catch(() => {});
+            return new Response('OK');
+          }
+
+          // بررسی آیا کاربر در حال افزودن فردی به لیست نادیده‌گیری AI است
+          if (pendingReply && pendingReply.waitingFor === 'ai_ignore_user' && text) {
+            globalThis.botUserReplyStates.delete(String(chatId));
+            await env.KV.delete('bot_state:' + chatId);
+
+            if (text === '/cancel') {
+              await fetch(`https://api.telegram.org/bot${actualBotToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  chat_id: chatId,
+                  text: '❌ عملیات افزودن کاربر به لیست نادیده‌گیری لغو شد.',
+                  parse_mode: 'HTML',
+                  reply_markup: renderAiIgnoreKeyboard(u)
+                })
+              }).catch(() => {});
+              return new Response('OK');
+            }
+
+            const cleanTarget = text.trim();
+            u.telegram.aiIgnoredUsers = Array.isArray(u.telegram.aiIgnoredUsers) ? u.telegram.aiIgnoredUsers : [];
+            const cleanCheck = cleanTarget.toLowerCase().replace(/^@/, '');
+            if (!u.telegram.aiIgnoredUsers.some(x => x.toLowerCase().replace(/^@/, '') === cleanCheck)) {
+              u.telegram.aiIgnoredUsers.push(cleanTarget);
+              await env.KV.put('user:' + targetUsername, JSON.stringify(u));
+            }
+
+            await fetch(`https://api.telegram.org/bot${actualBotToken}/sendMessage`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                chat_id: chatId,
+                text: `🚫 کاربر <code>${escapeHtml(cleanTarget)}</code> به لیست نادیده‌گیری هوش مصنوعی اضافه شد.\nاز این پس هوش مصنوعی به پیام‌های این کاربر پاسخی نخواهد داد.`,
+                parse_mode: 'HTML',
+                reply_markup: renderAiIgnoreKeyboard(u)
               })
             }).catch(() => {});
             return new Response('OK');
@@ -4549,6 +4735,168 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
                   `<code>/ai_test سلام وقت بخیر، امروز چه برنامه‌ای داری؟</code>\n\n` +
                   `پاسخ بلافاصله توسط مدل هوش مصنوعی تولید و در اینجا به شما نشان داده خواهد شد.`,
                 parse_mode: 'HTML'
+              })
+            }).catch(() => {});
+
+          } else if (data === 'ai_models_menu') {
+            await fetch(`https://api.telegram.org/bot${actualBotToken}/answerCallbackQuery`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ callback_query_id: cb.id, text: '🤖 منوی انتخاب مدل هوش مصنوعی باز شد' })
+            }).catch(() => {});
+
+            const modelsMsg = `🤖 <b>[انتخاب مدل هوش مصنوعی — AI Models Menu]</b>\n` +
+              `━━━━━━━━━━━━━━━━━━━━\n` +
+              `مدل مورد نظر خود را برای پاسخگویی خودکار به مخاطبین انتخاب فرمایید:\n\n` +
+              `💡 <i>مدل‌های Gemini برای اکثر کاربران پرسرعت و رایگان هستند. برای استفاده از DeepSeek یا GPT به کلید API مربوطه نیاز دارید.</i>`;
+
+            if (messageId) {
+              await fetch(`https://api.telegram.org/bot${actualBotToken}/editMessageText`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  chat_id: chatId,
+                  message_id: messageId,
+                  text: modelsMsg,
+                  parse_mode: 'HTML',
+                  reply_markup: renderAiModelsKeyboard(u)
+                })
+              }).catch(() => {});
+            } else {
+              await fetch(`https://api.telegram.org/bot${actualBotToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  chat_id: chatId,
+                  text: modelsMsg,
+                  parse_mode: 'HTML',
+                  reply_markup: renderAiModelsKeyboard(u)
+                })
+              }).catch(() => {});
+            }
+
+          } else if (data.startsWith('ai_set_model:')) {
+            const chosenModel = data.replace('ai_set_model:', '').trim();
+            u.telegram.aiModel = chosenModel;
+
+            if (chosenModel.toLowerCase().startsWith('gemini')) {
+              u.telegram.aiProvider = 'gemini';
+            } else if (chosenModel.toLowerCase().startsWith('gpt')) {
+              u.telegram.aiProvider = 'openai';
+            } else if (chosenModel.toLowerCase().includes('deepseek') || chosenModel.toLowerCase().includes('claude')) {
+              u.telegram.aiProvider = 'custom';
+            }
+
+            await env.KV.put('user:' + targetUsername, JSON.stringify(u));
+
+            await fetch(`https://api.telegram.org/bot${actualBotToken}/answerCallbackQuery`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                callback_query_id: cb.id,
+                text: `✅ مدل هوش مصنوعی به ${chosenModel} تغییر یافت.`
+              })
+            }).catch(() => {});
+
+            if (messageId) {
+              await fetch(`https://api.telegram.org/bot${actualBotToken}/editMessageText`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  chat_id: chatId,
+                  message_id: messageId,
+                  text: renderAiMessage(u),
+                  parse_mode: 'HTML',
+                  reply_markup: renderAiKeyboard(u)
+                })
+              }).catch(() => {});
+            }
+
+          } else if (data === 'ai_ignore_menu') {
+            await fetch(`https://api.telegram.org/bot${actualBotToken}/answerCallbackQuery`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ callback_query_id: cb.id, text: '🚫 منوی لیست نادیده‌گیری هوش مصنوعی باز شد' })
+            }).catch(() => {});
+
+            if (messageId) {
+              await fetch(`https://api.telegram.org/bot${actualBotToken}/editMessageText`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  chat_id: chatId,
+                  message_id: messageId,
+                  text: renderAiIgnoreMessage(u),
+                  parse_mode: 'HTML',
+                  reply_markup: renderAiIgnoreKeyboard(u)
+                })
+              }).catch(() => {});
+            } else {
+              await fetch(`https://api.telegram.org/bot${actualBotToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  chat_id: chatId,
+                  text: renderAiIgnoreMessage(u),
+                  parse_mode: 'HTML',
+                  reply_markup: renderAiIgnoreKeyboard(u)
+                })
+              }).catch(() => {});
+            }
+
+          } else if (data === 'ai_clear_ignore') {
+            u.telegram.aiIgnoredUsers = [];
+            await env.KV.put('user:' + targetUsername, JSON.stringify(u));
+
+            await fetch(`https://api.telegram.org/bot${actualBotToken}/answerCallbackQuery`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                callback_query_id: cb.id,
+                text: '✅ لیست نادیده‌گیری هوش مصنوعی کاملاً پاکسازی شد.',
+                show_alert: true
+              })
+            }).catch(() => {});
+
+            if (messageId) {
+              await fetch(`https://api.telegram.org/bot${actualBotToken}/editMessageText`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  chat_id: chatId,
+                  message_id: messageId,
+                  text: renderAiIgnoreMessage(u),
+                  parse_mode: 'HTML',
+                  reply_markup: renderAiIgnoreKeyboard(u)
+                })
+              }).catch(() => {});
+            }
+
+          } else if (data === 'ai_add_ignore_prompt') {
+            await env.KV.put('bot_state:' + chatId, JSON.stringify({ waitingFor: 'ai_ignore_user' }), { expirationTtl: 600 });
+            await fetch(`https://api.telegram.org/bot${actualBotToken}/answerCallbackQuery`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                callback_query_id: cb.id,
+                text: 'لطفاً شناسه یا یوزرنیم کاربر را ارسال فرمایید.'
+              })
+            }).catch(() => {});
+
+            await fetch(`https://api.telegram.org/bot${actualBotToken}/sendMessage`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                chat_id: chatId,
+                text: `➕ <b>افزودن کاربر به لیست نادیده‌گیری هوش مصنوعی:</b>\n` +
+                  `━━━━━━━━━━━━━━━━━━━━\n` +
+                  `لطفاً <b>شناسه عددی (Numeric ID)</b> یا <b>نام کاربری (@username)</b> فردی که مایلید هوش مصنوعی به پیام‌های او پاسخ ندهد را در پاسخ به این پیام ارسال فرمایید:\n\n` +
+                  `❌ برای انصراف، دستور <code>/cancel</code> را ارسال کنید.`,
+                parse_mode: 'HTML',
+                reply_markup: {
+                  force_reply: true,
+                  selective: true
+                }
               })
             }).catch(() => {});
 
