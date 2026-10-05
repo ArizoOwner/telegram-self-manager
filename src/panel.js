@@ -4009,6 +4009,18 @@ export function panelHTML(env, options = {}) {
           </div>
         </div>
 
+        <!-- 🚫 کاربران مستثنی از پاسخ هوش مصنوعی (لیست نادیده‌گیری / Blacklist) -->
+        <div class="form-group" style="margin-top: 14px;">
+          <label class="form-label" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+            <span>🚫 کاربران مستثنی از پاسخ هوش مصنوعی (لیست نادیده‌گیری)</span>
+            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:normal;">عدم ارسال پاسخ AI به این افراد</span>
+          </label>
+          <input type="text" id="aiIgnoredUsersInput" class="input-field mono" placeholder="شناسه عددی یا یوزرنیم افراد را با ویرگول جدا کنید (مثال: 123456789, @username, @friend)">
+          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px; line-height: 1.6;">
+            💡 هوش مصنوعی به پیام‌های خصوصی این کاربران <b>هیچ پاسخی نخواهد داد</b>. می‌توانید شناسه عددی (Numeric ID) یا نام کاربری تلگرام (با یا بدون @) را وارد کرده و با ویرگول (,) جدا فرمایید.
+          </div>
+        </div>
+
         <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--accent-green-border); border-radius: var(--radius-md); padding: 14px; margin-top: 10px;">
           <div style="font-size: 0.8rem; color: var(--accent-green); line-height: 1.7;">
             ✅ <b>تشخیص فوق‌هوشمند آفلاین بودن:</b> سیستم به صورت چندلایه‌ای با بررسی نشست‌های متصل (گوشی و دسکتاپ)، چت فعال دوطرفه (۱۰ دقیقه)، پیش‌نویس‌ها و خواندن پیام‌ها تضمین می‌کند که منشی فقط در زمان آفلاین بودن پاسخ دهد و در حین چت فعال یا آنلاین بودن شما هرگز مزاحمتی ایجاد نکند (به همراه فرجه هوشمند ۱۲ ثانیه‌ای برای لغو خودکار).
@@ -7016,6 +7028,7 @@ export function panelHTML(env, options = {}) {
           aiContext: (document.getElementById('aiContextInput') && document.getElementById('aiContextInput').value) || '',
           aiMaxReplies: document.getElementById('aiMaxRepliesSelect') ? parseInt(document.getElementById('aiMaxRepliesSelect').value, 10) : 3,
           aiCooldown: document.getElementById('aiCooldownSelect') ? parseInt(document.getElementById('aiCooldownSelect').value, 10) : 5,
+          aiIgnoredUsers: (document.getElementById('aiIgnoredUsersInput') && document.getElementById('aiIgnoredUsersInput').value) || '',
           bot: {
             token: (document.getElementById('botTokenInput') && document.getElementById('botTokenInput').value.trim()) || (window.currentBotToken || ''),
             antiDeleteEnabled: document.getElementById('botAntiDeleteToggle') ? document.getElementById('botAntiDeleteToggle').checked : true,
@@ -7426,6 +7439,7 @@ export function panelHTML(env, options = {}) {
             setSafeValue('aiContextInput', data.aiContext || '');
             if (data.aiMaxReplies !== undefined) setSafeValue('aiMaxRepliesSelect', String(data.aiMaxReplies));
             if (data.aiCooldown !== undefined) setSafeValue('aiCooldownSelect', String(data.aiCooldown));
+            setSafeValue('aiIgnoredUsersInput', Array.isArray(data.aiIgnoredUsers) ? data.aiIgnoredUsers.join(', ') : (data.aiIgnoredUsers || ''));
 
             // 🔐 بارگذاری وضعیت ۲FA (تنها در صورتی که کاربر وسط راه‌اندازی و اسکن ۲FA نباشد)
             if (window.updateTotpUI) {
