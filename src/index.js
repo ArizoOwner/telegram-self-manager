@@ -410,7 +410,7 @@ let activeUsersETag = null;
 let cachedPanelHtml = null;
 let cachedAdminHtml = null;
 let cachedWizardHtml = null;
-const STATIC_ASSET_ETAG = '"arizo-v4.4.2-ai-test-auth-fix"';
+const STATIC_ASSET_ETAG = '"arizo-v4.4.3-ai-ignore-chips-ui"';
 let cachedFaviconResponse = null;
 
 export default {
