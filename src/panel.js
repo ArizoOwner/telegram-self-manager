@@ -3160,6 +3160,185 @@ export function panelHTML(env, options = {}) {
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
     }
+
+    /* 🤖 نوار ابزار تعاملی و کامپوننت‌های ریسپانسیو API هوش مصنوعی */
+    .ai-key-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .ai-key-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .ai-key-helper-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 10px;
+      padding: 10px 14px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      font-size: 0.78rem;
+      flex-wrap: wrap;
+    }
+    .ai-key-link-badge {
+      color: var(--accent-blue);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(59, 130, 246, 0.08);
+      padding: 4px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      transition: all 0.2s ease;
+    }
+    .ai-key-link-badge:hover {
+      background: rgba(59, 130, 246, 0.16);
+      border-color: rgba(59, 130, 246, 0.4);
+      transform: translateY(-1px);
+    }
+    @media (max-width: 680px) {
+      .ai-key-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .ai-key-btn-group {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        gap: 8px;
+      }
+      .ai-key-btn-group .btn {
+        flex: 1 1 auto;
+        min-width: 140px;
+        justify-content: center;
+        padding: 9px 12px !important;
+        font-size: 0.78rem !important;
+      }
+      .ai-key-helper-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
+    @media (max-width: 440px) {
+      .ai-key-btn-group {
+        flex-direction: column;
+      }
+      .ai-key-btn-group .btn {
+        width: 100%;
+      }
+    }
+
+    /* 🚫 کارت و چیپ‌های تعاملی کاربران مستثنی از هوش مصنوعی */
+    .ai-ignore-manager-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      margin-top: 16px;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s ease;
+    }
+    .ai-ignore-manager-card:focus-within {
+      border-color: var(--accent-purple-border);
+    }
+    .ai-ignore-input-row {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
+    @media (max-width: 540px) {
+      .ai-ignore-input-row {
+        flex-direction: column;
+      }
+      .ai-ignore-input-row .btn {
+        width: 100%;
+        justify-content: center;
+        height: 38px;
+      }
+    }
+    .ai-ignore-chips-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 48px;
+      padding: 10px 12px;
+      background: var(--bg-surface);
+      border: 1px dashed var(--border-subtle);
+      border-radius: var(--radius-md);
+      align-items: center;
+      margin-top: 10px;
+      transition: all 0.2s ease;
+    }
+    .ai-ignore-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px 4px 8px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-main);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+    .ai-ignore-chip:hover {
+      border-color: var(--accent-purple-border);
+      background: var(--bg-surface);
+      transform: translateY(-1px);
+    }
+    .ai-ignore-chip.chip-numeric {
+      border-color: rgba(59, 130, 246, 0.35);
+    }
+    .ai-ignore-chip.chip-username {
+      border-color: rgba(16, 185, 129, 0.35);
+    }
+    .ai-chip-icon {
+      font-size: 0.85rem;
+      line-height: 1;
+    }
+    .ai-chip-text {
+      direction: ltr;
+      font-weight: 600;
+    }
+    .ai-chip-remove {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(244, 63, 94, 0.12);
+      color: var(--accent-rose);
+      border: none;
+      cursor: pointer;
+      font-size: 0.72rem;
+      font-weight: bold;
+      line-height: 1;
+      padding: 0;
+      transition: all 0.15s ease;
+      margin-right: -2px;
+    }
+    .ai-chip-remove:hover {
+      background: var(--accent-rose);
+      color: #ffffff;
+      transform: scale(1.15);
+    }
   </style>
 </head>
 <body>
@@ -3978,19 +4157,32 @@ export function panelHTML(env, options = {}) {
             <input type="password" id="aiApiKeyInput" class="input-field mono" placeholder="کلید API خود را از پنل Gemini یا OpenAI دریافت و اینجا وارد کنید" dir="ltr" style="padding-left:40px;">
             <button type="button" id="btnToggleAiKeyVisibility" style="position:absolute; left:10px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem; padding:4px;" title="نمایش / مخفی‌سازی کلید">👁️</button>
           </div>
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; flex-wrap:wrap; gap:8px;">
-            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-              <button type="button" id="btnTestAiKey" class="btn btn-sm" style="display:none; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#fff; border:none; font-size:0.8rem; padding:6px 14px; border-radius:8px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(16, 185, 129, 0.25); transition:all 0.2s ease; align-items:center; gap:6px;">
+          <div class="ai-key-toolbar">
+            <div class="ai-key-btn-group">
+              <button type="button" id="btnTestAiKey" class="btn btn-sm" style="display:none; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#fff; border:none; font-size:0.8rem; padding:8px 16px; border-radius:8px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(16, 185, 129, 0.25); transition:all 0.2s ease; align-items:center; gap:6px;">
                 <span id="btnTestAiKeyIcon">⚡</span>
                 <span id="btnTestAiKeyText">تست سلامت و درستی API</span>
               </button>
-              <button type="button" id="btnDeleteAiKey" class="btn btn-secondary btn-sm" style="color:var(--accent-rose); border-color:var(--accent-rose-border); font-size:0.8rem; padding:6px 14px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; background:var(--accent-rose-bg); border-radius:8px; transition:all 0.2s ease;">
+              <button type="button" id="btnDeleteAiKey" class="btn btn-secondary btn-sm" style="color:var(--accent-rose); border-color:var(--accent-rose-border); font-size:0.8rem; padding:8px 16px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; background:var(--accent-rose-bg); border-radius:8px; transition:all 0.2s ease;" title="حذف کامل کلید API و رفع تداخل">
                 <span>🗑️</span>
-                <span style="font-weight:600;">حذف کامل کلید API (رفع تداخل)</span>
+                <span style="font-weight:600;">حذف کلید API</span>
               </button>
             </div>
-            <div style="font-size: 0.75rem; color: var(--text-muted);">
-              💡 <b>Gemini:</b> از <a href="https://aistudio.google.com/apikey" target="_blank" style="color: var(--accent-blue);">اینجا</a> رایگان دریافت کنید | <b>OpenAI:</b> از <a href="https://platform.openai.com/api-keys" target="_blank" style="color: var(--accent-blue);">اینجا</a>
+          </div>
+          <div class="ai-key-helper-card">
+            <div style="display:flex; align-items:center; gap:6px; color:var(--text-muted);">
+              <span>💡</span>
+              <span style="font-weight:600;">دریافت رایگان کلید API:</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer" class="ai-key-link-badge">
+                <span>Google AI Studio</span>
+                <span style="font-size:0.68rem; background:var(--accent-green); color:#fff; padding:1px 6px; border-radius:4px; font-weight:700;">رایگان</span>
+              </a>
+              <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" class="ai-key-link-badge">
+                <span>OpenAI Console</span>
+                <span style="font-size:0.68rem; color:var(--text-muted);">↗</span>
+              </a>
             </div>
           </div>
           <!-- کادر نتیجه تست سلامت و وضعیت لحظه‌ای API -->
@@ -4038,16 +4230,55 @@ export function panelHTML(env, options = {}) {
           </div>
         </div>
 
-        <!-- 🚫 کاربران مستثنی از پاسخ هوش مصنوعی (لیست نادیده‌گیری / Blacklist) -->
-        <div class="form-group" style="margin-top: 14px;">
-          <label class="form-label" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
-            <span>🚫 کاربران مستثنی از پاسخ هوش مصنوعی (لیست نادیده‌گیری)</span>
-            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:normal;">عدم ارسال پاسخ AI به این افراد</span>
-          </label>
-          <input type="text" id="aiIgnoredUsersInput" class="input-field mono" placeholder="شناسه عددی یا یوزرنیم افراد را با ویرگول جدا کنید (مثال: 123456789, @username, @friend)">
-          <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px; line-height: 1.6;">
-            💡 هوش مصنوعی به پیام‌های خصوصی این کاربران <b>هیچ پاسخی نخواهد داد</b>. می‌توانید شناسه عددی (Numeric ID) یا نام کاربری تلگرام (با یا بدون @) را وارد کرده و با ویرگول (,) جدا فرمایید.
+        <!-- 🚫 کاربران مستثنی از پاسخ هوش مصنوعی (لیست نادیده‌گیری و بلک‌لیست تعاملی) -->
+        <div class="form-group ai-ignore-manager-card">
+          <!-- عنوان و شمارنده تعداد افراد -->
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+            <label class="form-label" style="margin: 0; display: flex; align-items: center; gap: 8px;">
+              <span>🚫 کاربران مستثنی از پاسخ هوش مصنوعی (لیست نادیده‌گیری)</span>
+              <span id="aiIgnoredCountBadge" style="font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 12px; background: rgba(16, 185, 129, 0.12); color: var(--accent-green); border: 1px solid var(--accent-green-border);">تمام مخاطبان مجاز</span>
+            </label>
+            <div id="aiIgnoredBulkActions" style="display: none; align-items: center; gap: 8px;">
+              <button type="button" id="btnCopyAllAiIgnored" class="btn btn-sm btn-secondary" style="font-size: 0.74rem; padding: 4px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;" title="کپی همه آیدی‌ها در کلیپ‌بورد">
+                <span>📋</span>
+                <span>کپی همه</span>
+              </button>
+              <button type="button" id="btnClearAllAiIgnored" class="btn btn-sm btn-secondary" style="font-size: 0.74rem; padding: 4px 10px; border-radius: 6px; color: var(--accent-rose); border-color: var(--accent-rose-border); background: var(--accent-rose-bg); display: inline-flex; align-items: center; gap: 4px;" title="حذف تمام افراد از لیست">
+                <span>🗑️</span>
+                <span>پاکسازی همه</span>
+              </button>
+            </div>
           </div>
+
+          <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.6;">
+            💡 هوش مصنوعی به پیام‌های خصوصی افرادی که در این لیست قرار دارند <b>هیچ پاسخی نخواهد داد</b>. می‌توانید آیدی عددی تلگرام یا یوزرنیم (با یا بدون @) را وارد کنید:
+          </div>
+
+          <!-- ورودی افزودن کاربر سریع (تک یا گروهی با پیست) -->
+          <div class="ai-ignore-input-row">
+            <div style="position: relative; flex: 1;">
+              <input type="text" id="aiIgnoredQuickAddInput" class="input-field mono" placeholder="آیدی عددی (مثال: 123456789) یا یوزرنیم (@username)..." dir="ltr" style="padding-left: 36px; height: 100%; font-size: 0.85rem;">
+              <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 0.95rem; color: var(--text-muted); pointer-events: none;">➕</span>
+            </div>
+            <button type="button" id="btnAddAiIgnoredUser" class="btn btn-primary btn-sm" style="display: inline-flex; align-items: center; gap: 6px; padding: 0 16px; border-radius: 8px; font-weight: 700; white-space: nowrap; font-size: 0.82rem; height: 42px;">
+              <span>افزودن به لیست</span>
+            </button>
+          </div>
+
+          <!-- لیست چیپ‌ها / برچسب‌های تعاملی -->
+          <div id="aiIgnoredChipsContainer" class="ai-ignore-chips-box" style="display: none;">
+            <!-- چیپ‌ها به صورت پویا با جاوااسکریپت اینجا رندر می‌شوند -->
+          </div>
+
+          <!-- وضعیت خالی (Empty State) -->
+          <div id="aiIgnoredEmptyState" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px 12px; text-align: center; color: var(--text-muted); font-size: 0.8rem; line-height: 1.6;">
+            <span style="font-size: 1.6rem; margin-bottom: 6px; opacity: 0.85;">🛡️</span>
+            <span style="font-weight: 700; color: var(--text-main); margin-bottom: 2px;">تمام مخاطبان مجاز هستند</span>
+            <span style="font-size: 0.75rem;">در حال حاضر هیچ کاربری در لیست نادیده‌گیری نیست و هوش مصنوعی در پیوی به همه پاسخ می‌دهد.</span>
+          </div>
+
+          <!-- فیلد مخفی همگام‌ساز برای حفظ ۱۰۰٪ سازگاری با پایگاه داده و فرم ذخیره -->
+          <input type="hidden" id="aiIgnoredUsersInput" value="">
         </div>
 
         <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid var(--accent-green-border); border-radius: var(--radius-md); padding: 14px; margin-top: 10px;">
@@ -5140,7 +5371,23 @@ export function panelHTML(env, options = {}) {
       // 🚫 AI Ignore List
       '🚫 کاربران مستثنی از پاسخ هوش مصنوعی (لیست نادیده‌گیری)': '🚫 Users Excluded from AI Replies (Ignore List / Blacklist)',
       'کاربران مستثنی از پاسخ هوش مصنوعی (لیست نادیده‌گیری)': 'Users Excluded from AI Replies (Ignore List / Blacklist)',
+      'کاربران مستثنی از پاسخ هوش مصنوعی': 'Users Excluded from AI Replies',
       'عدم ارسال پاسخ AI به این افراد': 'Do not send AI auto-replies to these users',
+      'تمام مخاطبان مجاز': 'All Contacts Allowed',
+      'تمام مخاطبان مجاز هستند': 'All Contacts Allowed',
+      'در حال حاضر هیچ کاربری در لیست نادیده‌گیری نیست و هوش مصنوعی در پیوی به همه پاسخ می‌دهد.': 'Currently no users are in the ignore list and AI responds to all private messages.',
+      'هیچ کاربری در لیست نادیده‌گیری نیست': 'No users in ignore list',
+      'افزودن به لیست': 'Add to List',
+      'کپی همه': 'Copy All',
+      'پاکسازی همه': 'Clear All',
+      'کپی همه آیدی‌ها در کلیپ‌بورد': 'Copy all IDs to clipboard',
+      'حذف تمام افراد از لیست': 'Remove all users from ignore list',
+      'آیدی عددی (مثال: 123456789) یا یوزرنیم (@username)...': 'Numeric ID (e.g. 123456789) or username (@username)...',
+      'حذف کلید API': 'Delete API Key',
+      'حذف کامل کلید API و رفع تداخل': 'Delete API Key & reset conflicts',
+      'دریافت رایگان کلید API:': 'Get Free API Key:',
+      'هوش مصنوعی به پیام‌های خصوصی افرادی که در این لیست قرار دارند هیچ پاسخی نخواهد داد. می‌توانید آیدی عددی تلگرام یا یوزرنیم (با یا بدون @) را وارد کنید:': 'AI will never respond to private messages from users in this list. You can enter numeric Telegram IDs or usernames (with or without @):',
+      '💡 هوش مصنوعی به پیام‌های خصوصی افرادی که در این لیست قرار دارند هیچ پاسخی نخواهد داد. می‌توانید آیدی عددی تلگرام یا یوزرنیم (با یا بدون @) را وارد کنید:': '💡 AI will never respond to private messages from users in this list. You can enter numeric Telegram IDs or usernames (with or without @):',
       'شناسه عددی یا یوزرنیم افراد را با ویرگول جدا کنید (مثال: 123456789, @username, @friend)': 'Enter numerical IDs or usernames separated by commas (e.g. 123456789, @username, @friend)',
       'هوش مصنوعی به پیام‌های خصوصی این کاربران هیچ پاسخی نخواهد داد. می‌توانید شناسه عددی (Numeric ID) یا نام کاربری تلگرام (با یا بدون @) را وارد کرده و با ویرگول (,) جدا فرمایید.': 'AI will never send automatic replies to private messages from these users. You can enter Telegram numeric user IDs or usernames (with or without @) separated by commas (,).',
       'هوش مصنوعی به پیام‌های خصوصی این کاربران': 'AI to private messages from these users',
@@ -5501,6 +5748,9 @@ export function panelHTML(env, options = {}) {
           if (customInputEl && customInputEl.value) curModel = customInputEl.value;
         }
         window.updateAiModelOptions(curProv, curModel);
+      }
+      if (typeof window.syncAiIgnoredHiddenInput === 'function') {
+        window.syncAiIgnoredHiddenInput();
       }
       
 
@@ -7646,6 +7896,249 @@ export function panelHTML(env, options = {}) {
       };
     }
 
+    // ==========================================
+    // 🚫 مدیریت تعاملی چیپ‌های کاربران مستثنی از AI (Interactive AI Ignore List)
+    // ==========================================
+    window.aiIgnoredList = [];
+
+    // تجزیه مقدار رشته‌ای یا آرایه‌ای به لیست تمیز
+    window.parseAiIgnoredUsers = function(raw) {
+      if (!raw) return [];
+      var arr = [];
+      if (Array.isArray(raw)) {
+        arr = raw;
+      } else if (typeof raw === 'string') {
+        arr = raw.split(new RegExp('[,;،\\\\s\\\\r\\\\n]+'));
+      }
+      var seen = {};
+      var res = [];
+      for (var i = 0; i < arr.length; i++) {
+        var item = String(arr[i] || '').trim();
+        if (!item) continue;
+        var cleanKey = item.toLowerCase();
+        if (cleanKey.startsWith('@')) cleanKey = cleanKey.slice(1);
+        if (!seen[cleanKey]) {
+          seen[cleanKey] = true;
+          if (/^\\d+$/.test(item)) {
+            res.push(item);
+          } else {
+            res.push(item.startsWith('@') ? item : ('@' + item));
+          }
+        }
+      }
+      return res;
+    };
+
+    // به‌روزرسانی مقدار فیلد همگام‌ساز مخفی و شمارنده‌ها
+    window.syncAiIgnoredHiddenInput = function() {
+      var hiddenInp = document.getElementById('aiIgnoredUsersInput');
+      if (hiddenInp) {
+        hiddenInp.value = window.aiIgnoredList.join(', ');
+      }
+      var countBadge = document.getElementById('aiIgnoredCountBadge');
+      var bulkBox = document.getElementById('aiIgnoredBulkActions');
+      var emptyBox = document.getElementById('aiIgnoredEmptyState');
+      var chipsContainer = document.getElementById('aiIgnoredChipsContainer');
+      var isEn = (window.currentLang === 'en');
+
+      var count = window.aiIgnoredList.length;
+      if (countBadge) {
+        if (count > 0) {
+          countBadge.textContent = isEn
+            ? (count + ' user' + (count === 1 ? '' : 's'))
+            : (count + ' کاربر مستثنی');
+          countBadge.style.background = 'rgba(244, 63, 94, 0.12)';
+          countBadge.style.color = 'var(--accent-rose)';
+          countBadge.style.borderColor = 'var(--accent-rose-border)';
+        } else {
+          countBadge.textContent = isEn ? 'All Contacts Allowed' : 'تمام مخاطبان مجاز';
+          countBadge.style.background = 'rgba(16, 185, 129, 0.12)';
+          countBadge.style.color = 'var(--accent-green)';
+          countBadge.style.borderColor = 'var(--accent-green-border)';
+        }
+      }
+
+      if (bulkBox) {
+        bulkBox.style.display = count > 0 ? 'inline-flex' : 'none';
+      }
+
+      if (emptyBox) {
+        emptyBox.style.display = count === 0 ? 'flex' : 'none';
+      }
+
+      if (chipsContainer) {
+        chipsContainer.style.display = count > 0 ? 'flex' : 'none';
+      }
+    };
+
+    // رندر چیپ‌های تصویری و تعاملی
+    window.renderAiIgnoredChips = function() {
+      var container = document.getElementById('aiIgnoredChipsContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      window.aiIgnoredList.forEach(function(user, idx) {
+        var isNumeric = /^\\d+$/.test(user);
+        var chip = document.createElement('div');
+        chip.className = 'ai-ignore-chip ' + (isNumeric ? 'chip-numeric' : 'chip-username');
+        chip.setAttribute('title', isNumeric ? ('شناسه عددی کاربر: ' + user) : ('نام کاربری تلگرام: ' + user));
+
+        var iconSpan = document.createElement('span');
+        iconSpan.className = 'ai-chip-icon';
+        iconSpan.textContent = isNumeric ? '🆔' : '👤';
+
+        var textSpan = document.createElement('span');
+        textSpan.className = 'ai-chip-text';
+        textSpan.textContent = user;
+
+        var removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'ai-chip-remove';
+        removeBtn.innerHTML = '✕';
+        removeBtn.setAttribute('title', 'حذف ' + user + ' از لیست نادیده‌گیری');
+        removeBtn.onclick = function(e) {
+          e.stopPropagation();
+          window.removeAiIgnoredUser(idx);
+        };
+
+        chip.appendChild(iconSpan);
+        chip.appendChild(textSpan);
+        chip.appendChild(removeBtn);
+
+        chip.onclick = function() {
+          try {
+            navigator.clipboard.writeText(user);
+            showToast('📋 ' + user + ' کپی شد!', 'success');
+          } catch (_) {}
+        };
+
+        container.appendChild(chip);
+      });
+
+      window.syncAiIgnoredHiddenInput();
+    };
+
+    // افزودن یک یا چند کاربر (پشتیبانی کامل از پیست گروهی و ورودی دستی)
+    window.addAiIgnoredUsers = function(rawInput) {
+      if (!rawInput) return;
+      var newUsers = window.parseAiIgnoredUsers(rawInput);
+      if (!newUsers.length) return;
+
+      var addedCount = 0;
+      var dupCount = 0;
+
+      newUsers.forEach(function(u) {
+        var uClean = u.toLowerCase().replace(/^@/, '');
+        var exists = window.aiIgnoredList.some(function(item) {
+          return item.toLowerCase().replace(/^@/, '') === uClean;
+        });
+
+        if (!exists) {
+          window.aiIgnoredList.push(u);
+          addedCount++;
+        } else {
+          dupCount++;
+        }
+      });
+
+      if (addedCount > 0) {
+        window.isStudioDirty = true;
+        window.renderAiIgnoredChips();
+        var isEn = (window.currentLang === 'en');
+        showToast(isEn ? (addedCount + ' user(s) added to ignore list') : (addedCount + ' مخاطب به لیست نادیده‌گیری اضافه شد ✨'), 'success');
+      } else if (dupCount > 0) {
+        var isEn = (window.currentLang === 'en');
+        showToast(isEn ? 'User is already in the ignore list' : 'این کاربر قبلاً در لیست نادیده‌گیری ثبت شده است', 'info');
+      }
+    };
+
+    // حذف یک کاربر از لیست
+    window.removeAiIgnoredUser = function(idx) {
+      if (idx < 0 || idx >= window.aiIgnoredList.length) return;
+      var removed = window.aiIgnoredList.splice(idx, 1)[0];
+      window.isStudioDirty = true;
+      window.renderAiIgnoredChips();
+      var isEn = (window.currentLang === 'en');
+      showToast(isEn ? ('Removed ' + removed + ' from ignore list') : (removed + ' از لیست نادیده‌گیری خارج شد'), 'success');
+    };
+
+    // همگام‌سازی از مقدار اولیه موجود در اینپوت به چیپ‌ها (هنگام بارگذاری پروفایل)
+    window.syncAiIgnoredChipsFromInput = function() {
+      var hiddenInp = document.getElementById('aiIgnoredUsersInput');
+      var val = hiddenInp ? hiddenInp.value : '';
+      window.aiIgnoredList = window.parseAiIgnoredUsers(val);
+      window.renderAiIgnoredChips();
+    };
+
+    // راه‌اندازی رویدادهای افزودن، کپی و پاکسازی چیپ‌ها
+    var quickAddInp = document.getElementById('aiIgnoredQuickAddInput');
+    var btnAddIgnore = document.getElementById('btnAddAiIgnoredUser');
+    if (quickAddInp) {
+      quickAddInp.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          var val = quickAddInp.value.trim();
+          if (val) {
+            window.addAiIgnoredUsers(val);
+            quickAddInp.value = '';
+          }
+        }
+      });
+      quickAddInp.addEventListener('paste', function(e) {
+        var pastedText = (e.clipboardData || window.clipboardData).getData('text');
+        if (pastedText && /[,;،\\r\\n\\t]/.test(pastedText)) {
+          e.preventDefault();
+          window.addAiIgnoredUsers(pastedText);
+          quickAddInp.value = '';
+        }
+      });
+    }
+
+    if (btnAddIgnore) {
+      btnAddIgnore.addEventListener('click', function() {
+        if (!quickAddInp) return;
+        var val = quickAddInp.value.trim();
+        if (val) {
+          window.addAiIgnoredUsers(val);
+          quickAddInp.value = '';
+          quickAddInp.focus();
+        } else {
+          var isEn = (window.currentLang === 'en');
+          showToast(isEn ? 'Please enter a numeric ID or @username' : 'لطفاً شناسه عددی یا نام کاربری تلگرام را وارد کنید', 'warning');
+        }
+      });
+    }
+
+    var btnCopyAllIgnore = document.getElementById('btnCopyAllAiIgnored');
+    if (btnCopyAllIgnore) {
+      btnCopyAllIgnore.addEventListener('click', function() {
+        if (!window.aiIgnoredList.length) return;
+        var text = window.aiIgnoredList.join(', ');
+        try {
+          navigator.clipboard.writeText(text);
+          showToast('📋 لیست تمام کاربران مستثنی در کلیپ‌بورد کپی شد', 'success');
+        } catch (_) {
+          showToast('خطا در دسترسی به کلیپ‌بورد', 'error');
+        }
+      });
+    }
+
+    var btnClearAllIgnore = document.getElementById('btnClearAllAiIgnored');
+    if (btnClearAllIgnore) {
+      btnClearAllIgnore.addEventListener('click', function() {
+        if (!window.aiIgnoredList.length) return;
+        window.aiIgnoredList = [];
+        window.isStudioDirty = true;
+        window.renderAiIgnoredChips();
+        showToast('🗑️ تمام کاربران از لیست نادیده‌گیری پاکسازی شدند', 'success');
+      });
+    }
+
+    // همگام‌سازی اولیه در صورت وجود مقدار پیش‌فرض
+    if (typeof window.syncAiIgnoredChipsFromInput === 'function') {
+      window.syncAiIgnoredChipsFromInput();
+    }
+
     // 🤖 تعریف و مدیریت مدل‌های هوش مصنوعی (AI Models)
     var AI_PROVIDER_MODELS = {
       gemini: [
@@ -8000,6 +8493,7 @@ export function panelHTML(env, options = {}) {
             if (data.aiMaxReplies !== undefined) setSafeValue('aiMaxRepliesSelect', String(data.aiMaxReplies));
             if (data.aiCooldown !== undefined) setSafeValue('aiCooldownSelect', String(data.aiCooldown));
             setSafeValue('aiIgnoredUsersInput', Array.isArray(data.aiIgnoredUsers) ? data.aiIgnoredUsers.join(', ') : (data.aiIgnoredUsers || ''));
+            if (window.syncAiIgnoredChipsFromInput) window.syncAiIgnoredChipsFromInput();
 
             // 🔐 بارگذاری وضعیت ۲FA (تنها در صورتی که کاربر وسط راه‌اندازی و اسکن ۲FA نباشد)
             if (window.updateTotpUI) {
