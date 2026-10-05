@@ -410,7 +410,7 @@ let activeUsersETag = null;
 let cachedPanelHtml = null;
 let cachedAdminHtml = null;
 let cachedWizardHtml = null;
-const STATIC_ASSET_ETAG = '"arizo-v4.5.5-admin-renew-button-fonts"';
+const STATIC_ASSET_ETAG = '"arizo-v4.5.6-remove-setup-button"';
 let cachedFaviconResponse = null;
 
 export default {
