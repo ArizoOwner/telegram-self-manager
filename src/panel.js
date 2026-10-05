@@ -3947,8 +3947,29 @@ export function panelHTML(env, options = {}) {
           <select id="aiProviderSelect" class="input-field" style="background:var(--bg-input);">
             <option value="gemini" selected>Google Gemini (رایگان — پیشنهادی)</option>
             <option value="openai">OpenAI (GPT-4o / GPT-3.5)</option>
-            <option value="custom">Custom API (سرویس سفارشی)</option>
+            <option value="custom">Custom API (سرویس سفارشی / DeepSeek)</option>
           </select>
+        </div>
+
+        <div class="form-group" id="aiModelGroup">
+          <label class="form-label" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+            <span>🤖 مدل هوش مصنوعی (AI Model)</span>
+            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:normal;" id="aiModelHint">انتخاب مدل پاسخ‌دهی</span>
+          </label>
+          <select id="aiModelSelect" class="input-field" style="background:var(--bg-input);">
+            <option value="gemini-2.5-flash">⚡ Gemini 2.5 Flash (جدیدترین، پرسرعت و رایگان — پیشنهادی)</option>
+            <option value="gemini-2.0-flash">🚀 Gemini 2.0 Flash (پایدار و هوشمند)</option>
+            <option value="gemini-1.5-flash">🌟 Gemini 1.5 Flash (سریع و سبک)</option>
+            <option value="gemini-1.5-pro">🧠 Gemini 1.5 Pro (قدرت تحلیل بالا)</option>
+            <option value="gemini-flash-lite-latest">💨 Gemini Flash Lite (فوق سبک)</option>
+            <option value="custom">✏️ مدل دستی دیگر (تایپ نام مدل دلخواه)...</option>
+          </select>
+          <div id="aiCustomModelWrapper" style="display:none; margin-top:8px;">
+            <input type="text" id="aiCustomModelInput" class="input-field mono" placeholder="نام دقیق مدل (مثال: deepseek-chat یا gemini-2.5-flash یا gpt-4o)" dir="ltr">
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">
+              💡 نام شناسه مدل اختصاصی یا آزمایشی ارائه‌دهنده را با حروف کوچک انگلیسی وارد فرمایید.
+            </div>
+          </div>
         </div>
 
         <div class="form-group">
@@ -7023,6 +7044,17 @@ export function panelHTML(env, options = {}) {
           // 🤖 AI Smart Reply
           aiReplyEnabled: document.getElementById('aiReplyToggle') ? document.getElementById('aiReplyToggle').checked : false,
           aiProvider: document.getElementById('aiProviderSelect') ? document.getElementById('aiProviderSelect').value : 'gemini',
+          aiModel: (function() {
+            var sel = document.getElementById('aiModelSelect');
+            var customInp = document.getElementById('aiCustomModelInput');
+            if (sel && sel.value === 'custom' && customInp && customInp.value.trim()) {
+              return customInp.value.trim();
+            }
+            if (sel && sel.value && sel.value !== 'custom') {
+              return sel.value.trim();
+            }
+            return (customInp && customInp.value.trim()) || 'gemini-2.5-flash';
+          })(),
           aiApiKey: (document.getElementById('aiApiKeyInput') && document.getElementById('aiApiKeyInput').value.trim()) || '',
           aiSystemPrompt: (document.getElementById('aiSystemPromptInput') && document.getElementById('aiSystemPromptInput').value) || '',
           aiContext: (document.getElementById('aiContextInput') && document.getElementById('aiContextInput').value) || '',
@@ -7204,6 +7236,113 @@ export function panelHTML(env, options = {}) {
           btnToggleKey.textContent = '👁️';
         }
       };
+    }
+
+    // 🤖 تعریف و مدیریت مدل‌های هوش مصنوعی (AI Models)
+    var AI_PROVIDER_MODELS = {
+      gemini: [
+        { value: 'gemini-2.5-flash', label: '⚡ Gemini 2.5 Flash (جدیدترین، پرسرعت و رایگان — پیشنهادی)' },
+        { value: 'gemini-2.0-flash', label: '🚀 Gemini 2.0 Flash (پایدار و هوشمند)' },
+        { value: 'gemini-1.5-flash', label: '🌟 Gemini 1.5 Flash (سریع و سبک)' },
+        { value: 'gemini-1.5-pro', label: '🧠 Gemini 1.5 Pro (قدرت تحلیل بالا)' },
+        { value: 'gemini-flash-lite-latest', label: '💨 Gemini Flash Lite (فوق سبک)' },
+        { value: 'custom', label: '✏️ مدل دستی دیگر (تایپ نام مدل دلخواه)...' }
+      ],
+      openai: [
+        { value: 'gpt-4o-mini', label: '⚡ GPT-4o Mini (سریع، اقتصادی و دقیق — پیشنهادی)' },
+        { value: 'gpt-4o', label: '🧠 GPT-4o (پرچمدار هوشمند همه‌کاره)' },
+        { value: 'gpt-4-turbo', label: '🚀 GPT-4 Turbo' },
+        { value: 'gpt-3.5-turbo', label: '💨 GPT-3.5 Turbo (اقتصادی و سبک)' },
+        { value: 'custom', label: '✏️ مدل دستی دیگر (تایپ نام مدل دلخواه)...' }
+      ],
+      custom: [
+        { value: 'deepseek-chat', label: '🐳 DeepSeek V3 (Chat)' },
+        { value: 'deepseek-reasoner', label: '🧠 DeepSeek R1 (استدلال و تفکر)' },
+        { value: 'claude-3-5-sonnet-20241022', label: '🎭 Claude 3.5 Sonnet' },
+        { value: 'custom', label: '✏️ تایپ مدل اختصاصی دیگر...' }
+      ]
+    };
+
+    window.updateAiModelOptions = function(provider, selectedModel) {
+      var select = document.getElementById('aiModelSelect');
+      var customWrapper = document.getElementById('aiCustomModelWrapper');
+      var customInput = document.getElementById('aiCustomModelInput');
+      var hint = document.getElementById('aiModelHint');
+      if (!select) return;
+
+      var prov = provider || (document.getElementById('aiProviderSelect') ? document.getElementById('aiProviderSelect').value : 'gemini');
+      var models = AI_PROVIDER_MODELS[prov] || AI_PROVIDER_MODELS.gemini;
+
+      select.innerHTML = '';
+      var matched = false;
+      var targetModel = selectedModel || (prov === 'openai' ? 'gpt-4o-mini' : (prov === 'custom' ? 'deepseek-chat' : 'gemini-2.5-flash'));
+
+      models.forEach(function(m) {
+        var opt = document.createElement('option');
+        opt.value = m.value;
+        opt.textContent = m.label;
+        if (m.value !== 'custom' && m.value === targetModel) {
+          opt.selected = true;
+          matched = true;
+        }
+        select.appendChild(opt);
+      });
+
+      if (!matched && targetModel) {
+        select.value = 'custom';
+        if (customInput) customInput.value = targetModel;
+        if (customWrapper) customWrapper.style.display = 'block';
+      } else {
+        if (select.value === 'custom') {
+          if (customWrapper) customWrapper.style.display = 'block';
+        } else {
+          if (customWrapper) customWrapper.style.display = 'none';
+        }
+      }
+
+      if (hint) {
+        if (prov === 'gemini') hint.textContent = 'مدل‌های پرسرعت گوگل (رایگان)';
+        else if (prov === 'openai') hint.textContent = 'مدل‌های OpenAI GPT';
+        else hint.textContent = 'مدل سفارشی / DeepSeek / کلاود';
+      }
+    };
+
+    var provSelect = document.getElementById('aiProviderSelect');
+    if (provSelect) {
+      provSelect.addEventListener('change', function() {
+        window.isStudioDirty = true;
+        window.updateAiModelOptions(provSelect.value);
+        window.saveFonts();
+      });
+    }
+
+    var modelSelect = document.getElementById('aiModelSelect');
+    if (modelSelect) {
+      modelSelect.addEventListener('change', function() {
+        var customWrapper = document.getElementById('aiCustomModelWrapper');
+        if (modelSelect.value === 'custom') {
+          if (customWrapper) customWrapper.style.display = 'block';
+          var customInput = document.getElementById('aiCustomModelInput');
+          if (customInput) customInput.focus();
+        } else {
+          if (customWrapper) customWrapper.style.display = 'none';
+        }
+        window.isStudioDirty = true;
+        window.saveFonts();
+      });
+    }
+
+    var customModelInput = document.getElementById('aiCustomModelInput');
+    if (customModelInput) {
+      customModelInput.addEventListener('input', function() {
+        window.isStudioDirty = true;
+      });
+      customModelInput.addEventListener('change', function() {
+        window.saveFonts();
+      });
+      customModelInput.addEventListener('blur', function() {
+        if (window.isStudioDirty) window.saveFonts();
+      });
     }
 
     // فعال‌سازی و ذخیره خودکار هنگام تایپ یا تغییر لیست کاربران سکوت
@@ -7434,6 +7573,9 @@ export function panelHTML(env, options = {}) {
             // 🤖 بارگذاری پاسخ هوشمند AI
             setSafeChecked('aiReplyToggle', !!data.aiReplyEnabled);
             if (data.aiProvider) setSafeValue('aiProviderSelect', data.aiProvider);
+            if (window.updateAiModelOptions) {
+              window.updateAiModelOptions(data.aiProvider || 'gemini', data.aiModel || '');
+            }
             setSafeValue('aiApiKeyInput', data.aiApiKey || '');
             setSafeValue('aiSystemPromptInput', data.aiSystemPrompt || '');
             setSafeValue('aiContextInput', data.aiContext || '');
