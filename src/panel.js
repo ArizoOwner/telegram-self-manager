@@ -6195,6 +6195,36 @@ export function panelHTML(env, options = {}) {
       "مانیتور ضد ویرایش (Anti-Edit)": "Message Edit History Monitor (Anti-Edit)",
       "حالت روح و نامرئی (حالت شبح)": "Invisible Stealth Mode (Ghost Mode)",
       "مدیریت سکوت و فیلتر (بی‌صدا کردن)": "Silence Filter Management (Mute Filter)",
+
+      // 🌟 پلن‌ها و مدت زمان اشتراک (Subscription Plans & Custom Days)
+      "روزه (سفارشی)": "Days (Custom)",
+      "روزه سفارشی": "Days (Custom)",
+      "روزه": "Days",
+      "سفارشی": "Custom",
+      "(سفارشی)": "(Custom)",
+      "⭐ سفارشی (تعیین روز دلخواه توسط ادمین)": "⭐ Custom (Admin Custom Days)",
+      "اشتراک ۱ ماهه (۳۰ روز)": "1 Month Subscription (30 Days)",
+      "اشتراک ۳ ماهه (۹۰ روز)": "3 Month Subscription (90 Days)",
+      "اشتراک ۶ ماهه (۱۸۰ روز)": "6 Month Subscription (180 Days)",
+      "اشتراک دائمی و نامحدود": "Unlimited Lifetime Subscription",
+      "دائمی و نامحدود": "Lifetime Unlimited",
+      "دائمی": "Lifetime",
+      "۱ ماهه (۳۰ روز)": "1 Month (30 Days)",
+      "1 ماهه (30 روز)": "1 Month (30 Days)",
+      "۳۰ روزه": "30 Days",
+      "30 روزه": "30 Days",
+      "۱۵ روزه": "15 Days",
+      "15 روزه": "15 Days",
+      "۶۰ روزه": "60 Days",
+      "60 روزه": "60 Days",
+      "۹۰ روزه": "90 Days",
+      "90 روزه": "90 Days",
+      "۳۶۵ روزه": "365 Days",
+      "365 روزه": "365 Days",
+      "نوع اشتراک و اعتبار": "Subscription Plan & Validity",
+      "تعداد روزهای اعتبار": "Validity Duration (Days)",
+      "مثال: ۱۵ (تعداد روز اعتبار لایسنس)": "Example: 15 (License validity days)",
+      "پلن اشتراک فعلی:": "Current Subscription Plan:",
     };
 
     try {
@@ -6245,7 +6275,63 @@ export function panelHTML(env, options = {}) {
       if (window.TRANSLATIONS_MAP[trimmed]) return leadingWs + window.TRANSLATIONS_MAP[trimmed] + trailingWs;
       if (window.NORMALIZED_TRANSLATIONS_MAP[norm]) return leadingWs + window.NORMALIZED_TRANSLATIONS_MAP[norm] + trailingWs;
 
-      // ۲. استخراج هسته فارسی (جلوگیری از تأثیر ایموجی‌ها، پرانتزها، و علائم در تطابق)
+      // ۲. الگوهای پویای اشتراک، روزها و سفارشی (مانند: "30 روزه (سفارشی)"، "۳۰ روزه (سفارشی)"، "روزه (سفارشی)")
+      var normDigits = trimmed;
+      for (var di = 0; di < 10; di++) {
+        normDigits = normDigits.split(faDigits[di]).join(enDigits[di]);
+        normDigits = normDigits.split(arDigits[di]).join(enDigits[di]);
+      }
+
+      var planMatch = normDigits.match(/^(\\d+)\\s*روزه\\s*(?:\\(\\s*سفارشی\\s*\\)|سفارشی)$/);
+      if (planMatch) {
+        return leadingWs + planMatch[1] + ' Days (Custom)' + trailingWs;
+      }
+      var plainDaysMatch = normDigits.match(/^(\\d+)\\s*روزه$/);
+      if (plainDaysMatch) {
+        return leadingWs + plainDaysMatch[1] + ' Days' + trailingWs;
+      }
+      var bareCustomMatch = normDigits.match(/^روزه\\s*(?:\\(\\s*سفارشی\\s*\\)|سفارشی)$/);
+      if (bareCustomMatch) {
+        return leadingWs + 'Days (Custom)' + trailingWs;
+      }
+      if (/^روزه$/.test(normDigits)) {
+        return leadingWs + 'Days' + trailingWs;
+      }
+      if (/^\\(?\\s*سفارشی\\s*\\)?$/.test(normDigits)) {
+        return leadingWs + (normDigits.indexOf('(') !== -1 ? '(Custom)' : 'Custom') + trailingWs;
+      }
+      if (/^دائمی\\s*و\\s*نامحدود$/.test(normDigits)) {
+        return leadingWs + 'Lifetime Unlimited' + trailingWs;
+      }
+      if (/^دائمی$/.test(normDigits)) {
+        return leadingWs + 'Lifetime' + trailingWs;
+      }
+
+      // جایگزینی الگوهای روزه و سفارشی درون عبارات ترکیبی
+      if (normDigits.indexOf('روزه') !== -1 || normDigits.indexOf('سفارشی') !== -1 || normDigits.indexOf('دائمی') !== -1) {
+        var dynReplaced = normDigits
+          .replace(/(\\d+)\\s*روزه\\s*\\(\\s*سفارشی\\s*\\)/g, '$1 Days (Custom)')
+          .replace(/(\\d+)\\s*روزه\\s*سفارشی/g, '$1 Days (Custom)')
+          .replace(/(\\d+)\\s*روزه/g, '$1 Days')
+          .replace(/روزه\\s*\\(\\s*سفارشی\\s*\\)/g, 'Days (Custom)')
+          .replace(/روزه\\s*سفارشی/g, 'Days (Custom)')
+          .replace(/\\(\\s*سفارشی\\s*\\)/g, '(Custom)')
+          .replace(/دائمی\\s*و\\s*نامحدود/g, 'Lifetime Unlimited')
+          .replace(/دائمی/g, 'Lifetime');
+        if (dynReplaced !== normDigits) {
+          if (persianRegex.test(dynReplaced)) {
+            for (var si = 0; si < safeLongPhrases.length; si++) {
+              var sk = safeLongPhrases[si];
+              if (dynReplaced.indexOf(sk) !== -1) {
+                dynReplaced = dynReplaced.split(sk).join(window.TRANSLATIONS_MAP[sk]);
+              }
+            }
+          }
+          return leadingWs + dynReplaced + trailingWs;
+        }
+      }
+
+      // ۳. استخراج هسته فارسی (جلوگیری از تأثیر ایموجی‌ها، پرانتزها، و علائم در تطابق)
       if (persianRegex.test(trimmed)) {
         var first = -1, last = -1;
         for (var pi = 0; pi < trimmed.length; pi++) {
@@ -6306,6 +6392,46 @@ export function panelHTML(env, options = {}) {
 
       if (window.REVERSE_TRANSLATIONS_MAP[trimmed]) return leadingWs + window.REVERSE_TRANSLATIONS_MAP[trimmed] + trailingWs;
       if (window.REVERSE_TRANSLATIONS_MAP[norm]) return leadingWs + window.REVERSE_TRANSLATIONS_MAP[norm] + trailingWs;
+
+      // الگوهای پویای اشتراک و روزها (معکوس از انگلیسی به فارسی)
+      var planMatchFa = trimmed.match(/^(\\d+)\\s*Days\\s*(?:\\(\\s*Custom\\s*\\)|Custom)$/i);
+      if (planMatchFa) {
+        return leadingWs + planMatchFa[1] + ' روزه (سفارشی)' + trailingWs;
+      }
+      var plainDaysMatchFa = trimmed.match(/^(\\d+)\\s*Days$/i);
+      if (plainDaysMatchFa) {
+        return leadingWs + plainDaysMatchFa[1] + ' روزه' + trailingWs;
+      }
+      var bareCustomMatchFa = trimmed.match(/^Days\\s*(?:\\(\\s*Custom\\s*\\)|Custom)$/i);
+      if (bareCustomMatchFa) {
+        return leadingWs + 'روزه (سفارشی)' + trailingWs;
+      }
+      if (/^Days$/i.test(trimmed)) {
+        return leadingWs + 'روزه' + trailingWs;
+      }
+      if (/^\\(?\\s*Custom\\s*\\)?$/i.test(trimmed)) {
+        return leadingWs + (trimmed.indexOf('(') !== -1 ? '(سفارشی)' : 'سفارشی') + trailingWs;
+      }
+      if (/^Lifetime\\s*Unlimited$/i.test(trimmed)) {
+        return leadingWs + 'دائمی و نامحدود' + trailingWs;
+      }
+      if (/^Lifetime$/i.test(trimmed)) {
+        return leadingWs + 'دائمی' + trailingWs;
+      }
+      if (/days|custom|lifetime/i.test(trimmed)) {
+        var dynFa = trimmed
+          .replace(/(\\d+)\\s*Days\\s*\\(\\s*Custom\\s*\\)/gi, '$1 روزه (سفارشی)')
+          .replace(/(\\d+)\\s*Days\\s*Custom/gi, '$1 روزه (سفارشی)')
+          .replace(/(\\d+)\\s*Days/gi, '$1 روزه')
+          .replace(/Days\\s*\\(\\s*Custom\\s*\\)/gi, 'روزه (سفارشی)')
+          .replace(/Days\\s*Custom/gi, 'روزه (سفارشی)')
+          .replace(/\\(\\s*Custom\\s*\\)/gi, '(سفارشی)')
+          .replace(/Lifetime\\s*Unlimited/gi, 'دائمی و نامحدود')
+          .replace(/Lifetime/gi, 'دائمی');
+        if (dynFa !== trimmed) {
+          return leadingWs + dynFa + trailingWs;
+        }
+      }
 
       // استخراج هسته انگلیسی
       var engRegex = /[a-zA-Z]/;
@@ -7696,6 +7822,7 @@ export function panelHTML(env, options = {}) {
       var planName = data.planName || data.plan || (isEn ? 'Standard' : 'استاندارد');
       var isVip = /vip|ویژه|پرمیوم|پریمیوم|الماس/i.test(planName);
       var planIcon = isLifetime ? '♾️' : (isVip ? '💎' : '⭐');
+      var displayPlanName = isEn ? window.t(planName) : planName;
 
       // ۱. به‌روزرسانی چیپ بالای سایت در ناوبار (#navUserPlanChip)
       var navChip = document.getElementById('navUserPlanChip');
@@ -7706,7 +7833,10 @@ export function panelHTML(env, options = {}) {
       if (navChip) {
         navChip.classList.remove('hidden');
         if (navIcon) navIcon.textContent = planIcon;
-        if (navName) navName.textContent = planName;
+        if (navName) {
+          navName.__origFa = planName;
+          navName.textContent = displayPlanName;
+        }
         if (navVal) {
           if (isSuspended) {
             navVal.textContent = isEn ? 'Expired 🔴' : 'منقضی شده 🔴';
@@ -7780,7 +7910,10 @@ export function panelHTML(env, options = {}) {
         if (planIconEl) planIconEl.textContent = planIcon;
 
         var planNameEl = document.getElementById('subBannerPlanName');
-        if (planNameEl) planNameEl.textContent = planName;
+        if (planNameEl) {
+          planNameEl.__origFa = planName;
+          planNameEl.textContent = displayPlanName;
+        }
 
         var planStatusEl = document.getElementById('subBannerPlanStatus');
         if (planStatusEl) {
@@ -9477,7 +9610,10 @@ export function panelHTML(env, options = {}) {
 
           var remText = data.isLifetime ? (isEn ? 'Lifetime ♾️' : 'دائمی ♾️') : (data.remainingDays + (isEn ? ' days remaining' : ' روز اعتبار باقی‌مانده'));
           if (planBadge) {
-            planBadge.textContent = (isEn ? 'Subscription: ' : 'اشتراک: ') + (data.planName || (isEn ? 'Standard' : 'استاندارد')) + ' (' + remText + ')';
+            var rawPlanName = data.planName || 'استاندارد';
+            var badgePlanName = isEn ? window.t(rawPlanName) : rawPlanName;
+            planBadge.__origFa = 'اشتراک: ' + rawPlanName + ' (' + remText + ')';
+            planBadge.textContent = (isEn ? 'Subscription: ' : 'اشتراک: ') + badgePlanName + ' (' + remText + ')';
             planBadge.style.color = 'var(--accent-green)';
             planBadge.style.borderColor = 'var(--accent-green-border)';
           }
