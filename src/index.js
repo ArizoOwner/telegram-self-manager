@@ -410,7 +410,7 @@ let activeUsersETag = null;
 let cachedPanelHtml = null;
 let cachedAdminHtml = null;
 let cachedWizardHtml = null;
-const STATIC_ASSET_ETAG = '"arizo-v4.3.0-ai-robust-reply"';
+const STATIC_ASSET_ETAG = '"arizo-v4.4.0-ai-health-check"';
 let cachedFaviconResponse = null;
 
 export default {
@@ -2036,6 +2036,90 @@ export default {
         return json({ ok: true });
       } catch (err) {
         return json({ error: err.message || 'خطا در ثبت سشن' }, 500);
+      }
+    }
+
+    // 🧪 تست سلامت و بررسی ۱۰۰٪ صحت کلید API هوش مصنوعی (AI API Health & Verification Check)
+    if (url.pathname === '/api/user/test-ai' && request.method === 'POST') {
+      try {
+        const auth = await getAuthUser(request, env);
+        if (!auth) return json({ ok: false, error: 'احراز هویت ناموفق بود', errorEn: 'Unauthorized session' }, 401);
+
+        const sub = checkUserSubscription(auth.user);
+        if (!sub.active || auth.user.isSuspended) {
+          return json({
+            ok: false,
+            error: 'اشتراک شما به پایان رسیده و پنل در حالت تعلیق است.',
+            errorEn: 'Your subscription has expired.'
+          }, 403);
+        }
+
+        const b = await request.json().catch(() => ({}));
+        let apiKey = (b.apiKey || '').trim();
+        const provider = (b.provider || auth.user.telegram?.aiProvider || 'gemini').toLowerCase().trim();
+        const model = (b.model || auth.user.telegram?.aiModel || '').trim();
+
+        if (!apiKey) {
+          apiKey = (auth.user.telegram?.aiApiKey || '').trim();
+        }
+
+        if (!apiKey) {
+          return json({
+            ok: false,
+            error: 'کلید API هوش مصنوعی وارد نشده است. لطفاً ابتدا کلید خود را در کادر مربوطه وارد نمایید.',
+            errorEn: 'AI API Key is empty. Please enter your API key first.'
+          }, 400);
+        }
+
+        const tStart = Date.now();
+        const testUserMsg = 'Ping test: Reply with exactly: "OK - API Connected"';
+        const testSysPrompt = 'You are an API diagnostic tester. Reply strictly and only with: "OK - API Connected"';
+
+        const reply = await callAIApiWorker(provider, apiKey, testSysPrompt, '', testUserMsg, model);
+        const latency = Date.now() - tStart;
+
+        if (reply && reply.trim()) {
+          const effectiveModel = model || (provider === 'gemini' ? 'gemini-2.5-flash' : (provider === 'custom' ? 'deepseek-chat' : 'gpt-4o-mini'));
+          return json({
+            ok: true,
+            latency,
+            provider,
+            model: effectiveModel,
+            sample: reply.trim(),
+            message: 'اتصال به API هوش مصنوعی ۱۰۰٪ سالم و بدون اختلال است.',
+            messageEn: 'AI API connection is 100% healthy and verified successfully.'
+          });
+        } else {
+          return json({
+            ok: false,
+            latency,
+            provider,
+            error: 'پاسخی از سرور هوش مصنوعی دریافت نشد. ممکن است مدل انتخاب‌شده در دسترس نباشد یا کلید فاقد اعتبار باشد.',
+            errorEn: 'No response received from AI server. The selected model may be unavailable or the API key lacks permissions.'
+          }, 400);
+        }
+      } catch (err) {
+        const errMsg = String(err.message || 'خطای اتصال به هوش مصنوعی');
+        let friendlyFa = errMsg;
+        let friendlyEn = 'Failed to verify AI API key.';
+
+        if (errMsg.includes('401') || errMsg.includes('API_KEY_INVALID') || errMsg.includes('Incorrect API key') || errMsg.includes('unauthorized') || errMsg.includes('Invalid API key')) {
+          friendlyFa = 'کلید API وارد شده نامعتبر یا غیرمجاز است (401 Unauthorized). لطفاً کلید صحیح را از کنسول هوش مصنوعی کپی و وارد کنید.';
+          friendlyEn = 'Invalid or unauthorized API Key (401 Unauthorized). Please check your key in the provider console.';
+        } else if (errMsg.includes('429') || errMsg.includes('RESOURCE_EXHAUSTED') || errMsg.includes('insufficient_quota') || errMsg.includes('Rate limit')) {
+          friendlyFa = 'محدودیت یا سهمیه اعتبار کلید شما به پایان رسیده است (429 Quota Exceeded).';
+          friendlyEn = 'API Key quota exceeded or rate limit reached (429 Quota Exceeded).';
+        } else if (errMsg.includes('404') || errMsg.includes('not found') || errMsg.includes('models/')) {
+          friendlyFa = 'مدل انتخابی در سرویس‌دهنده یافت نشد یا در منطقه سرور مجاز نیست (404 Model Not Found).';
+          friendlyEn = 'Selected model not found or unsupported by your provider (404 Model Not Found).';
+        }
+
+        return json({
+          ok: false,
+          error: friendlyFa,
+          errorEn: friendlyEn,
+          rawError: errMsg.slice(0, 180)
+        }, 400);
       }
     }
 
