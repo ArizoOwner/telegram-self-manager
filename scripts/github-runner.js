@@ -616,20 +616,85 @@ async function sendAfkReply(entry, message, afkText, username, senderIdStr) {
  * @param {string} userMessage - پیام دریافتی مخاطب
  * @returns {Promise<string|null>}
  */
+/**
+ * پاکسازی، تکمیل و اعتبارسنجی پاسخ هوش مصنوعی جهت جلوگیری قطعی از ارسال پاسخ‌های ناقص یا بریده‌شده
+ */
+function sanitizeAiReply(raw) {
+  if (!raw || typeof raw !== 'string') return null;
+  let text = raw.trim();
+  if (!text) return null;
+
+  // حذف بلوک‌های کد نامربوط اگر مدل اشتباهاً تولید کرده باشد
+  if (text.startsWith('```') && text.endsWith('```')) {
+    text = text.replace(/^```[a-zA-Z]*\n?/, '').replace(/\n?```$/, '').trim();
+  }
+
+  // محدودسازی ایمن طول متن بر اساس مرز جملات به جای قطع کردن وسط کلمه
+  if (text.length > 700) {
+    const slice = text.slice(0, 700);
+    const lastPunct = Math.max(
+      slice.lastIndexOf('. '),
+      slice.lastIndexOf('! '),
+      slice.lastIndexOf('؟ '),
+      slice.lastIndexOf('? '),
+      slice.lastIndexOf('.\n'),
+      slice.lastIndexOf('!\n'),
+      slice.lastIndexOf('؟\n'),
+      slice.lastIndexOf('?\n')
+    );
+    if (lastPunct > 120) {
+      text = slice.slice(0, lastPunct + 1).trim();
+    } else {
+      text = slice.trim();
+    }
+  }
+
+  // بررسی وضعیت پایان متن: اگر جمله به علت محدودیت ناقص رها شده باشد، بخش ناقص انتهای متن حذف یا تصحیح می‌گردد
+  const terminalPunctuation = ['.', '!', '؟', '?', '…', '؛', ';', ')', '»', '"', '\''];
+  const lastChar = text[text.length - 1];
+
+  if (!terminalPunctuation.includes(lastChar)) {
+    const lastSentenceBreak = Math.max(
+      text.lastIndexOf('. '),
+      text.lastIndexOf('! '),
+      text.lastIndexOf('؟ '),
+      text.lastIndexOf('? '),
+      text.lastIndexOf('.\n'),
+      text.lastIndexOf('!\n'),
+      text.lastIndexOf('؟\n'),
+      text.lastIndexOf('?\n'),
+      text.lastIndexOf('\n\n')
+    );
+
+    // اگر جمله کاملی قبل از بریدگی وجود دارد و بخش ناقص انتهایی کوتاه/ناقص است
+    if (lastSentenceBreak > 20 && (text.length - lastSentenceBreak) > 4) {
+      text = text.slice(0, lastSentenceBreak + 1).trim();
+    } else {
+      text = text + '.';
+    }
+  }
+
+  return text;
+}
+
+/**
+ * فراخوانی امن و پرسرعت API هوش مصنوعی (Google Gemini / OpenAI / Custom API) با فال‌بک خودکار
+ */
 async function callAIApi(provider, apiKey, systemPrompt, context, userMessage, selectedModel) {
   if (!apiKey || !userMessage) return null;
 
   const defaultSystemPrompt = `You are a smart AI personal assistant replying on behalf of the account owner who is currently offline.
-قوانین و دستورالعمل‌ها:
-۱. تشخیص و تطبیق خودکار زبان: زبان پاسخ باید دقیقاً هماهنگ با زبان پیام مخاطب باشد. اگر مخاطب به زبان انگلیسی (English) پیام داده است، پاسخ را کاملاً به زبان روان انگلیسی بنویس. اگر به زبان فارسی پیام داده به فارسی پاسخ بده. برای هر زبان دیگر به همان زبان پیام بده.
-۲. لحن و ساختار: پاسخ کوتاه (حداکثر ۲ تا ۳ جمله)، مودبانه، طبیعی و صمیمی باشد.
-۳. وضعیت مالک: حتماً قید کن که مالک حساب در حال حاضر آفلاین است و به محض آنلاین شدن پیام را بررسی و پاسخ خواهد داد.
-۴. محرمانگی: از اطلاعات خصوصی یا محرمانه صحبت نکن و وعده نامعتبر نده.`;
+قوانین و دستورالعمل‌های حیاتی:
+۱. اتمام قطعی کلمات و جملات: به هیچ وجه هیچ کلمه یا جمله‌ای را نیمه‌کاره رها نکن. تمام جملات باید با معنی کامل و نقطه/علامت پایان به پایان برسند.
+۲. تشخیص و تطبیق خودکار زبان: زبان پاسخ باید دقیقاً هماهنگ با زبان پیام مخاطب باشد. اگر مخاطب به زبان انگلیسی (English) پیام داده است، پاسخ را کاملاً به زبان روان انگلیسی بنویس. اگر به زبان فارسی پیام داده به فارسی پاسخ بده. برای هر زبان دیگر به همان زبان پیام بده.
+۳. لحن و ساختار: پاسخ کوتاه (حداکثر ۲ تا ۳ جمله کامل)، مودبانه، طبیعی و صمیمی باشد.
+۴. وضعیت مالک: حتماً قید کن که مالک حساب در حال حاضر آفلاین است و به محض آنلاین شدن پیام را بررسی و پاسخ خواهد داد.
+۵. محرمانگی: از اطلاعات خصوصی یا محرمانه صحبت نکن و وعده نامعتبر نده.`;
 
   const fullSystemPrompt = [
     systemPrompt || defaultSystemPrompt,
     context ? `\nاطلاعات پایه درباره مالک حساب (User Context):\n${context}` : '',
-    '\nدستور قطعی زبان: زبان پاسخ باید دقیقاً بر اساس زبان پیام دریافتی باشد (اگر انگلیسی است حتماً به انگلیسی، اگر فارسی است به فارسی). پاسخ کوتاه حداکثر ۳ جمله باشد و اشاره کن مالک حساب آفلاین است.'
+    '\nدستور اکید: تمام کلمات و جملات را با معنی کامل تمام کن و هرگز کلمه‌ای را ناتمام نگذار. زبان پاسخ هماهنگ با پیام مخاطب باشد. پاسخ کوتاه حداکثر ۲ الی ۳ جمله کامل باشد و اشاره کن مالک آفلاین است.'
   ].filter(Boolean).join('\n');
 
   try {
@@ -655,12 +720,12 @@ async function callAIApi(provider, apiKey, systemPrompt, context, userMessage, s
           const res = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            signal: AbortSignal.timeout(9000),
+            signal: AbortSignal.timeout(10000),
             body: JSON.stringify({
               system_instruction: { parts: [{ text: fullSystemPrompt }] },
               contents: [{ parts: [{ text: userMessage }] }],
               generationConfig: {
-                maxOutputTokens: 250,
+                maxOutputTokens: 800,
                 temperature: 0.7,
                 topP: 0.9
               }
@@ -669,9 +734,14 @@ async function callAIApi(provider, apiKey, systemPrompt, context, userMessage, s
 
           if (res.ok) {
             const data = await res.json();
-            const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+            const candidate = data?.candidates?.[0];
+            const reply = candidate?.content?.parts?.[0]?.text;
+            if (candidate?.finishReason === 'MAX_TOKENS') {
+              console.warn(`⚠️ [AI-Gemini] Model ${model} reached token limit`);
+            }
             if (reply && reply.trim()) {
-              return reply.trim().slice(0, 500);
+              const sanitized = sanitizeAiReply(reply);
+              if (sanitized) return sanitized;
             }
           } else {
             const errTxt = await res.text().catch(() => '');
@@ -701,7 +771,7 @@ async function callAIApi(provider, apiKey, systemPrompt, context, userMessage, s
             { role: 'system', content: fullSystemPrompt },
             { role: 'user', content: userMessage }
           ],
-          max_tokens: 250,
+          max_tokens: 800,
           temperature: 0.7
         })
       }).catch(() => null);
@@ -714,7 +784,7 @@ async function callAIApi(provider, apiKey, systemPrompt, context, userMessage, s
       }
       const data = await res.json();
       const reply = data?.choices?.[0]?.message?.content;
-      return reply ? reply.trim().slice(0, 500) : null;
+      return reply ? sanitizeAiReply(reply) : null;
 
     } else if (provider === 'custom') {
       const modelToUse = (selectedModel && selectedModel.trim()) || 'deepseek-chat';
@@ -736,7 +806,7 @@ async function callAIApi(provider, apiKey, systemPrompt, context, userMessage, s
             { role: 'system', content: fullSystemPrompt },
             { role: 'user', content: userMessage }
           ],
-          max_tokens: 250,
+          max_tokens: 800,
           temperature: 0.7
         })
       }).catch(() => null);
@@ -749,7 +819,7 @@ async function callAIApi(provider, apiKey, systemPrompt, context, userMessage, s
       }
       const data = await res.json();
       const reply = data?.choices?.[0]?.message?.content;
-      return reply ? reply.trim().slice(0, 500) : null;
+      return reply ? sanitizeAiReply(reply) : null;
 
     } else {
       console.warn('⚠️ [AI] Provider not supported:', provider);
@@ -2121,7 +2191,8 @@ class TelegramConnectionPool {
                 );
 
                 if (aiResponse) {
-                  const aiText = `🤖 ${aiResponse}`;
+                  const cleanAiResponse = aiResponse.replace(/^🤖\s*/, '').trim();
+                  const aiText = `🤖 ${cleanAiResponse}`;
                   const sent = await sendAfkReply(entry, pendingItem.lastMessage, aiText, username, senderIdStr);
                   if (sent) {
                     const sendNow = Date.now();
