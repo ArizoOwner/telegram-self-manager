@@ -94,7 +94,9 @@ export function checkRateLimit(ip = '127.0.0.1', path = '/', options = {}) {
       let pruned = 0;
       for (const [k, v] of memoryIpStore.entries()) {
         if (pruned++ > 300) break;
-        if (!v.expiresAt || now > v.expiresAt) {
+        const isBanExpired = v.expiresAt && now > v.expiresAt;
+        const isWindowExpired = v.startTime && (now - v.startTime) > windowMs;
+        if (isBanExpired || isWindowExpired) {
           memoryIpStore.delete(k);
         }
       }
