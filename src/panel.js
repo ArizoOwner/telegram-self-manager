@@ -3979,14 +3979,22 @@ export function panelHTML(env, options = {}) {
             <button type="button" id="btnToggleAiKeyVisibility" style="position:absolute; left:10px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem; padding:4px;" title="نمایش / مخفی‌سازی کلید">👁️</button>
           </div>
           <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; flex-wrap:wrap; gap:8px;">
-            <button type="button" id="btnDeleteAiKey" class="btn btn-secondary btn-sm" style="color:var(--accent-rose); border-color:var(--accent-rose-border); font-size:0.8rem; padding:6px 14px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; background:var(--accent-rose-bg); border-radius:8px; transition:all 0.2s ease;">
-              <span>🗑️</span>
-              <span style="font-weight:600;">حذف کامل کلید API (رفع تداخل)</span>
-            </button>
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <button type="button" id="btnTestAiKey" class="btn btn-sm" style="display:none; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#fff; border:none; font-size:0.8rem; padding:6px 14px; border-radius:8px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(16, 185, 129, 0.25); transition:all 0.2s ease; align-items:center; gap:6px;">
+                <span id="btnTestAiKeyIcon">⚡</span>
+                <span id="btnTestAiKeyText">تست سلامت و درستی API</span>
+              </button>
+              <button type="button" id="btnDeleteAiKey" class="btn btn-secondary btn-sm" style="color:var(--accent-rose); border-color:var(--accent-rose-border); font-size:0.8rem; padding:6px 14px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; background:var(--accent-rose-bg); border-radius:8px; transition:all 0.2s ease;">
+                <span>🗑️</span>
+                <span style="font-weight:600;">حذف کامل کلید API (رفع تداخل)</span>
+              </button>
+            </div>
             <div style="font-size: 0.75rem; color: var(--text-muted);">
               💡 <b>Gemini:</b> از <a href="https://aistudio.google.com/apikey" target="_blank" style="color: var(--accent-blue);">اینجا</a> رایگان دریافت کنید | <b>OpenAI:</b> از <a href="https://platform.openai.com/api-keys" target="_blank" style="color: var(--accent-blue);">اینجا</a>
             </div>
           </div>
+          <!-- کادر نتیجه تست سلامت و وضعیت لحظه‌ای API -->
+          <div id="aiTestResultBox" style="display:none; margin-top:10px; border-radius:var(--radius-md); padding:12px 14px; font-size:0.82rem; line-height:1.6; transition:all 0.3s ease;"></div>
         </div>
 
         <div class="form-group">
@@ -5256,7 +5264,21 @@ export function panelHTML(env, options = {}) {
       'هر ۱ ساعت یک‌بار به هر فرد': 'Once every 1 hour per person',
       'فقط یک‌بار در طول شبانه‌روز به هر فرد': 'Only once every 24 hours per person',
       'این قابلیت مانع از اسپم شدن چت هنگامی که مخاطب چندین پیام متوالی می‌فرستد می‌شود.': 'This prevents chat spam when a contact sends multiple consecutive messages.',
-      'منشی خودکار': 'Auto-Secretary'
+      'منشی خودکار': 'Auto-Secretary',
+
+      // 🧪 تست سلامت و بررسی صحت کلید API هوش مصنوعی (AI API Health Check)
+      'تست سلامت و درستی API': 'Test API Health & Operation',
+      'در حال بررسی سلامت API...': 'Verifying API Key...',
+      'اتصال هوش مصنوعی ۱۰۰٪ سالم و آماده به کار است!': 'AI API is 100% Healthy & Operational!',
+      'مدل تأیید شده:': 'Model Verified:',
+      'سرویس‌دهنده:': 'Provider:',
+      'نمونه پاسخ دریافتی:': 'Sample Test Response:',
+      'خطا در بررسی سلامت API': 'API Verification Failed',
+      'در حال ارسال پرامپت تستی به سرور هوش مصنوعی و سنجش پاسخگویی...': 'Sending test prompt to AI server & measuring latency...',
+      'کلید API با موفقیت تأیید شد! ۱۰۰٪ سالم و فعال است': 'API Key verified successfully! 100% operational',
+      'خطای شبکه در حین آزمایش API': 'Network error during API test',
+      'خطای شبکه یا عدم پاسخگویی سرور': 'Network error or server timeout',
+      'لطفاً ابتدا کلید API خود را وارد فرمایید': 'Please enter an API Key first'
     };
 
     try {
@@ -7440,6 +7462,158 @@ export function panelHTML(env, options = {}) {
       }
     });
 
+    // کنترل پویای نمایش دکمه تست سلامت بر اساس پر یا خالی بودن کادر API Key
+    window.updateAiTestBtnVisibility = function() {
+      var keyInp = document.getElementById('aiApiKeyInput');
+      var testBtn = document.getElementById('btnTestAiKey');
+      if (!keyInp || !testBtn) return;
+      var hasVal = keyInp.value && keyInp.value.trim().length > 0;
+      testBtn.style.display = hasVal ? 'inline-flex' : 'none';
+      if (!hasVal) {
+        var resBox = document.getElementById('aiTestResultBox');
+        if (resBox) resBox.style.display = 'none';
+      }
+    };
+
+    var keyInputEl = document.getElementById('aiApiKeyInput');
+    if (keyInputEl) {
+      keyInputEl.addEventListener('input', function() {
+        window.isStudioDirty = true;
+        window.updateAiTestBtnVisibility();
+      });
+      keyInputEl.addEventListener('change', function() {
+        window.isStudioDirty = true;
+        window.updateAiTestBtnVisibility();
+      });
+      keyInputEl.addEventListener('paste', function() {
+        setTimeout(window.updateAiTestBtnVisibility, 50);
+      });
+    }
+
+    // عملکرد دکمه تست سلامت و بررسی ۱۰۰٪ صحت کلید API
+    window.doTestAiKey = async function() {
+      var keyInp = document.getElementById('aiApiKeyInput');
+      var testBtn = document.getElementById('btnTestAiKey');
+      var btnText = document.getElementById('btnTestAiKeyText');
+      var btnIcon = document.getElementById('btnTestAiKeyIcon');
+      var resBox = document.getElementById('aiTestResultBox');
+      var isEn = (window.currentLang === 'en');
+
+      if (!keyInp) return;
+      var key = keyInp.value.trim();
+      if (!key) {
+        showToast(isEn ? 'Please enter an API Key first' : 'لطفاً ابتدا کلید API خود را وارد فرمایید', 'warning');
+        return;
+      }
+
+      var provEl = document.getElementById('aiProviderSelect');
+      var modelEl = document.getElementById('aiModelSelect');
+      var customModelEl = document.getElementById('aiCustomModelInput');
+
+      var provider = provEl ? provEl.value : 'gemini';
+      var model = '';
+      if (modelEl) {
+        model = (modelEl.value === 'custom' && customModelEl) ? customModelEl.value.trim() : modelEl.value;
+      }
+
+      testBtn.disabled = true;
+      testBtn.style.opacity = '0.75';
+      if (btnIcon) btnIcon.textContent = '⏳';
+      if (btnText) btnText.textContent = isEn ? 'Testing API...' : 'در حال بررسی سلامت API...';
+
+      if (resBox) {
+        resBox.style.display = 'block';
+        resBox.style.background = 'var(--bg-surface-elevated)';
+        resBox.style.border = '1px solid var(--border-subtle)';
+        resBox.style.color = 'var(--text-main)';
+        resBox.innerHTML = '<div style="display:flex; align-items:center; gap:8px;">' +
+          '<span class="dot-pulse"></span>' +
+          '<span>' + (isEn ? 'Sending test prompt to AI server & measuring latency...' : 'در حال ارسال پرامپت تستی به سرور هوش مصنوعی و سنجش پاسخگویی...') + '</span>' +
+          '</div>';
+      }
+
+      try {
+        var res = await fetch('/api/user/test-ai', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ apiKey: key, provider: provider, model: model })
+        });
+        var data = await res.json().catch(function() { return {}; });
+
+        if (res.ok && data.ok) {
+          if (resBox) {
+            resBox.style.background = 'rgba(16, 185, 129, 0.12)';
+            resBox.style.border = '1px solid var(--accent-green-border)';
+            resBox.style.color = 'var(--text-main)';
+            resBox.innerHTML =
+              '<div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:6px;">' +
+                '<div style="font-weight:800; color:var(--accent-green); display:flex; align-items:center; gap:6px;">' +
+                  '<span>✅</span> <span>' + (isEn ? 'AI API is 100% Healthy & Operational!' : 'اتصال هوش مصنوعی ۱۰۰٪ سالم و آماده به کار است!') + '</span>' +
+                '</div>' +
+                '<span style="font-family:var(--font-mono); font-size:0.75rem; background:rgba(16, 185, 129, 0.2); color:var(--accent-green); padding:2px 8px; border-radius:6px; font-weight:700;">' +
+                  '⚡ ' + data.latency + ' ms' +
+                '</span>' +
+              '</div>' +
+              '<div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:6px;">' +
+                '🤖 <b>' + (isEn ? 'Model Verified:' : 'مدل تأیید شده:') + '</b> <code>' + (data.model || model) + '</code>' +
+                ' &nbsp;|&nbsp; 🌐 <b>' + (isEn ? 'Provider:' : 'سرویس‌دهنده:') + '</b> ' + (data.provider || provider).toUpperCase() +
+              '</div>' +
+              (data.sample ? (
+                '<div style="background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:6px; padding:8px 10px; font-size:0.76rem; color:var(--text-main); margin-top:6px;">' +
+                  '💬 <b>' + (isEn ? 'Sample Test Response:' : 'نمونه پاسخ دریافتی:') + '</b> ' + data.sample +
+                '</div>'
+              ) : '');
+          }
+          showToast(isEn ? 'API Key verified successfully! 100% operational' : 'کلید API با موفقیت تأیید شد! ۱۰۰٪ سالم و فعال است', 'success');
+        } else {
+          var errMsg = isEn ? (data.errorEn || data.error || 'API test failed') : (data.error || 'خطا در برقراری ارتباط با API');
+          if (resBox) {
+            resBox.style.background = 'var(--accent-rose-bg)';
+            resBox.style.border = '1px solid var(--accent-rose-border)';
+            resBox.style.color = 'var(--text-main)';
+            resBox.innerHTML =
+              '<div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px; margin-bottom:6px;">' +
+                '<div style="font-weight:800; color:var(--accent-rose); display:flex; align-items:center; gap:6px;">' +
+                  '<span>❌</span> <span>' + (isEn ? 'API Verification Failed' : 'خطا در بررسی سلامت API') + '</span>' +
+                '</div>' +
+                (data.latency ? (
+                  '<span style="font-family:var(--font-mono); font-size:0.75rem; background:rgba(244, 63, 94, 0.2); color:var(--accent-rose); padding:2px 8px; border-radius:6px;">' +
+                    data.latency + ' ms' +
+                  '</span>'
+                ) : '') +
+              '</div>' +
+              '<div style="font-size:0.8rem; color:var(--accent-rose); line-height:1.6;">' +
+                errMsg +
+              '</div>' +
+              (data.rawError ? (
+                '<div style="font-family:var(--font-mono); font-size:0.72rem; color:var(--text-muted); margin-top:6px; word-break:break-all;">' +
+                  'Details: ' + data.rawError +
+                '</div>'
+              ) : '');
+          }
+          showToast(errMsg, 'error');
+        }
+      } catch (e) {
+        if (resBox) {
+          resBox.style.background = 'var(--accent-rose-bg)';
+          resBox.style.border = '1px solid var(--accent-rose-border)';
+          resBox.style.color = 'var(--text-main)';
+          resBox.innerHTML = '<div style="color:var(--accent-rose); font-weight:700;">❌ ' + (isEn ? 'Connection timeout or network error' : 'خطای شبکه یا عدم پاسخگویی سرور') + '</div>';
+        }
+        showToast(isEn ? 'Network error during API test' : 'خطای شبکه در حین آزمایش API', 'error');
+      } finally {
+        testBtn.disabled = false;
+        testBtn.style.opacity = '1';
+        if (btnIcon) btnIcon.textContent = '⚡';
+        if (btnText) btnText.textContent = isEn ? 'Test API Health & Operation' : 'تست سلامت و درستی API';
+      }
+    };
+
+    var btnTestEl = document.getElementById('btnTestAiKey');
+    if (btnTestEl) {
+      btnTestEl.addEventListener('click', window.doTestAiKey);
+    }
+
     // دکمه حذف کامل و ریشه‌ای کلید API هوش مصنوعی
     var btnDelAi = document.getElementById('btnDeleteAiKey');
     if (btnDelAi) {
@@ -7450,6 +7624,7 @@ export function panelHTML(env, options = {}) {
         if (aiTgl) aiTgl.checked = false;
         window.isStudioDirty = true;
         window.saveFonts();
+        if (window.updateAiTestBtnVisibility) window.updateAiTestBtnVisibility();
         showToast('🗑️ کلید API هوش مصنوعی به طور کامل پاکسازی شد و تداخل برطرف گردید!', 'success');
       };
     }
@@ -7818,6 +7993,7 @@ export function panelHTML(env, options = {}) {
               window.updateAiModelOptions(data.aiProvider || 'gemini', data.aiModel || '');
             }
             setSafeValue('aiApiKeyInput', data.aiApiKey || '');
+            if (window.updateAiTestBtnVisibility) window.updateAiTestBtnVisibility();
             setSafeValue('aiSystemPromptInput', data.aiSystemPrompt || '');
             setSafeValue('aiContextInput', data.aiContext || '');
             if (data.aiMaxReplies !== undefined) setSafeValue('aiMaxRepliesSelect', String(data.aiMaxReplies));
