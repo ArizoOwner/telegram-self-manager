@@ -410,7 +410,7 @@ let activeUsersETag = null;
 let cachedPanelHtml = null;
 let cachedAdminHtml = null;
 let cachedWizardHtml = null;
-const STATIC_ASSET_ETAG = '"arizo-v4.5.0-top-sub-banner-human-copy"';
+const STATIC_ASSET_ETAG = '"arizo-v4.5.1-ai-side-by-side-and-ignore-box"';
 let cachedFaviconResponse = null;
 
 export default {
