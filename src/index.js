@@ -410,7 +410,7 @@ let activeUsersETag = null;
 let cachedPanelHtml = null;
 let cachedAdminHtml = null;
 let cachedWizardHtml = null;
-const STATIC_ASSET_ETAG = '"arizo-v4.5.3-ai-ignore-input-layout-fixed"';
+const STATIC_ASSET_ETAG = '"arizo-v4.5.4-custom-days-plan-i18n"';
 let cachedFaviconResponse = null;
 
 export default {
