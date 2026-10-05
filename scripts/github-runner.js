@@ -994,7 +994,8 @@ class TelegramConnectionPool {
           aiSystemPrompt: userSettings?.aiSystemPrompt || '',
           aiContext: userSettings?.aiContext || '',
           aiMaxReplies: userSettings?.aiMaxReplies ?? 3,
-          aiCooldown: userSettings?.aiCooldown ?? 5
+          aiCooldown: userSettings?.aiCooldown ?? 5,
+          aiIgnoredUsers: Array.isArray(userSettings?.aiIgnoredUsers) ? userSettings.aiIgnoredUsers : []
         },
         afkCooldownMap: new Map(),
         aiReplyCountMap: new Map(),
@@ -1085,7 +1086,8 @@ class TelegramConnectionPool {
         aiSystemPrompt: userSettings.aiSystemPrompt || '',
         aiContext: userSettings.aiContext || '',
         aiMaxReplies: userSettings.aiMaxReplies ?? 3,
-        aiCooldown: userSettings.aiCooldown ?? 5
+        aiCooldown: userSettings.aiCooldown ?? 5,
+        aiIgnoredUsers: Array.isArray(userSettings.aiIgnoredUsers) ? userSettings.aiIgnoredUsers : []
       };
       resolveMutedUsernames(entry);
     }
@@ -1502,6 +1504,28 @@ class TelegramConnectionPool {
         syncUserFeatureToCloudflare(username, { aiReplyEnabled: newState });
         await message.edit({ text: newState ? '🤖 پاسخ هوشمند AI فعال شد 🟢' : '🤖 پاسخ هوشمند AI غیرفعال شد ⚪' }).catch(() => {});
         setTimeout(() => message.delete({ revoke: true }).catch(() => {}), 3500);
+        return;
+      }
+
+      // دستور .ai ignore <target> و .ai unignore <target>
+      const aiIgnoreMatch = text.match(/^\.ai\s+(ignore|unignore|block)\s+(.+)$/i);
+      if (aiIgnoreMatch) {
+        const action = aiIgnoreMatch[1].toLowerCase();
+        const targetRaw = aiIgnoreMatch[2].trim();
+        const clean = cleanMuteTarget(targetRaw);
+        entry.settings.aiIgnoredUsers = Array.isArray(entry.settings.aiIgnoredUsers) ? entry.settings.aiIgnoredUsers : [];
+        if (action === 'unignore') {
+          entry.settings.aiIgnoredUsers = entry.settings.aiIgnoredUsers.filter(x => cleanMuteTarget(x) !== clean);
+          syncUserFeatureToCloudflare(username, { aiIgnoredUsers: entry.settings.aiIgnoredUsers });
+          await message.edit({ text: `✅ کاربر ${targetRaw} از لیست نادیده‌گیری AI حذف شد (پاسخ هوش مصنوعی مجاز است)` }).catch(() => {});
+        } else {
+          if (!entry.settings.aiIgnoredUsers.some(x => cleanMuteTarget(x) === clean)) {
+            entry.settings.aiIgnoredUsers.push(targetRaw);
+          }
+          syncUserFeatureToCloudflare(username, { aiIgnoredUsers: entry.settings.aiIgnoredUsers });
+          await message.edit({ text: `🚫 کاربر ${targetRaw} به لیست نادیده‌گیری AI اضافه شد (هوش مصنوعی به این فرد پاسخ نخواهد داد)` }).catch(() => {});
+        }
+        setTimeout(() => message.delete({ revoke: true }).catch(() => {}), 4000);
         return;
       }
     }
@@ -1961,6 +1985,22 @@ class TelegramConnectionPool {
 
         // ——— ۴.B 🤖 پاسخ هوشمند AI (اولویت بالاتر از AFK ثابت) با فرجه هوشمند ۱۲ ثانیه ———
         if (entry.settings.aiReplyEnabled && entry.settings.aiApiKey) {
+          // 🚫 بررسی لیست استثنا و نادیده‌گیری کاربران در هوش مصنوعی (AI Ignore List)
+          const aiIgnoredUsers = entry.settings.aiIgnoredUsers || [];
+          const isAiIgnored = Array.isArray(aiIgnoredUsers) && aiIgnoredUsers.some(target => {
+            const clean = cleanMuteTarget(target);
+            return clean && (clean === senderIdStr || clean === (sender?.username || '').toLowerCase());
+          });
+
+          if (isAiIgnored) {
+            console.log(`🚫 [${username}] Suppressing AI reply: user ${senderIdStr} (@${sender?.username || 'no_user'}) is in AI ignore list`);
+            if (entry.pendingAiReplies?.has(senderIdStr)) {
+              clearTimeout(entry.pendingAiReplies.get(senderIdStr).timeoutId);
+              entry.pendingAiReplies.delete(senderIdStr);
+            }
+            return;
+          }
+
           const aiCooldownMin = entry.settings.aiCooldown ?? 5;
           const aiCooldownMs = aiCooldownMin > 0 ? (aiCooldownMin * 60 * 1000) : 0;
           const lastAiReply = entry.aiCooldownMap?.get(senderIdStr) || 0;
@@ -2593,7 +2633,8 @@ async function syncUserSettings(usersList) {
         aiSystemPrompt: u.aiSystemPrompt || '',
         aiContext: u.aiContext || '',
         aiMaxReplies: u.aiMaxReplies ?? 3,
-        aiCooldown: u.aiCooldown ?? 5
+        aiCooldown: u.aiCooldown ?? 5,
+        aiIgnoredUsers: Array.isArray(u.aiIgnoredUsers) ? u.aiIgnoredUsers : []
       };
       resolveMutedUsernames(entry);
 
