@@ -3036,7 +3036,7 @@ export function panelHTML(env, options = {}) {
         <div class="brand-title-wrap">
           <h1>
             <span class="brand-title-gradient">Arizo Self</span>
-            <span class="badge-pro">PRO v3.6.2</span>
+            <span class="badge-pro">PRO v4.0</span>
           </h1>
         </div>
       </div>
