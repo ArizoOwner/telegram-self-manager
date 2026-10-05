@@ -3168,13 +3168,33 @@ export function panelHTML(env, options = {}) {
       justify-content: flex-start;
       gap: 10px;
       margin-top: 10px;
-      flex-wrap: wrap;
+      width: 100%;
     }
     .ai-key-btn-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      gap: 10px !important;
+      width: 100% !important;
+      flex-wrap: nowrap !important;
+    }
+    .ai-key-btn-group .btn {
+      flex: 1 1 50% !important;
+      min-width: 0 !important;
+      height: 44px !important;
+      min-height: 44px !important;
+      padding: 8px 12px !important;
+      font-size: 0.82rem !important;
+      font-weight: 700 !important;
+      border-radius: var(--radius-md) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      white-space: nowrap !important;
+      box-sizing: border-box !important;
+      cursor: pointer !important;
+      transition: all 0.2s ease !important;
     }
     .ai-key-helper-card {
       display: flex;
@@ -3209,34 +3229,25 @@ export function panelHTML(env, options = {}) {
     }
     @media (max-width: 680px) {
       .ai-key-toolbar {
-        flex-direction: column;
-        align-items: stretch;
+        width: 100%;
       }
       .ai-key-btn-group {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        gap: 8px;
+        display: flex !important;
+        flex-direction: row !important;
+        width: 100% !important;
+        gap: 8px !important;
+        flex-wrap: nowrap !important;
       }
       .ai-key-btn-group .btn {
-        flex: 1 1 auto;
-        min-width: 140px;
-        justify-content: center;
-        padding: 9px 12px !important;
-        font-size: 0.78rem !important;
+        flex: 1 1 50% !important;
+        min-width: 0 !important;
+        padding: 8px 10px !important;
+        font-size: 0.76rem !important;
       }
       .ai-key-helper-card {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
-      }
-    }
-    @media (max-width: 440px) {
-      .ai-key-btn-group {
-        flex-direction: column;
-      }
-      .ai-key-btn-group .btn {
-        width: 100%;
       }
     }
 
@@ -3245,7 +3256,7 @@ export function panelHTML(env, options = {}) {
       background: var(--bg-surface-elevated);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
-      padding: 16px;
+      padding: 18px;
       margin-top: 16px;
       box-shadow: var(--shadow-sm);
       transition: border-color 0.2s ease;
@@ -3255,17 +3266,94 @@ export function panelHTML(env, options = {}) {
     }
     .ai-ignore-input-row {
       display: flex;
-      gap: 8px;
-      align-items: stretch;
+      gap: 10px;
+      align-items: center;
+      width: 100%;
+    }
+    .ai-ignore-input-wrap {
+      position: relative;
+      flex: 1 1 auto;
+      width: 100%;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+    }
+    .ai-ignore-input-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      pointer-events: none;
+      user-select: none;
+      z-index: 2;
+    }
+    .ai-ignore-quick-input {
+      width: 100% !important;
+      height: 48px !important;
+      min-height: 48px !important;
+      padding: 10px 16px 10px 44px !important;
+      background: var(--bg-input) !important;
+      border: 1.5px solid var(--border-subtle) !important;
+      border-radius: var(--radius-md) !important;
+      color: var(--text-main) !important;
+      font-size: 0.95rem !important;
+      font-family: inherit !important;
+      line-height: normal !important;
+      box-sizing: border-box !important;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+      transition: all 0.22s ease !important;
+      outline: none !important;
+    }
+    .ai-ignore-quick-input:focus {
+      border-color: var(--accent-indigo) !important;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25), inset 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+      background: var(--bg-surface-elevated) !important;
+    }
+    .ai-ignore-quick-input::placeholder {
+      color: var(--text-muted) !important;
+      opacity: 0.85 !important;
+      font-size: 0.86rem !important;
+      font-family: 'Vazirmatn', sans-serif !important;
+      direction: rtl !important;
+      text-align: right !important;
+    }
+    .btn-add-ai-ignore {
+      height: 48px !important;
+      min-height: 48px !important;
+      padding: 0 20px !important;
+      font-size: 0.88rem !important;
+      font-weight: 700 !important;
+      border-radius: var(--radius-md) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+      color: #ffffff !important;
+      border: none !important;
+      cursor: pointer !important;
+      box-shadow: 0 3px 10px rgba(99, 102, 241, 0.3) !important;
+      transition: all 0.2s ease !important;
+    }
+    .btn-add-ai-ignore:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 14px rgba(99, 102, 241, 0.45) !important;
+      background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important;
     }
     @media (max-width: 540px) {
       .ai-ignore-input-row {
         flex-direction: column;
+        align-items: stretch;
       }
-      .ai-ignore-input-row .btn {
+      .ai-ignore-input-wrap {
         width: 100%;
-        justify-content: center;
-        height: 38px;
+      }
+      .btn-add-ai-ignore {
+        width: 100% !important;
       }
     }
     .ai-ignore-chips-box {
@@ -4470,13 +4558,13 @@ export function panelHTML(env, options = {}) {
           </div>
           <div class="ai-key-toolbar">
             <div class="ai-key-btn-group">
-              <button type="button" id="btnTestAiKey" class="btn btn-sm" style="display:none; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#fff; border:none; font-size:0.8rem; padding:8px 16px; border-radius:8px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(16, 185, 129, 0.25); transition:all 0.2s ease; align-items:center; gap:6px;">
+              <button type="button" id="btnTestAiKey" class="btn btn-sm btn-ai-test" style="display:none; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#fff; border:none; box-shadow:0 2px 8px rgba(16, 185, 129, 0.25);">
                 <span id="btnTestAiKeyIcon">⚡</span>
-                <span id="btnTestAiKeyText">تست سلامت و درستی API</span>
+                <span id="btnTestAiKeyText" data-i18n="btnTestAiKeyShort">تست سلامت API</span>
               </button>
-              <button type="button" id="btnDeleteAiKey" class="btn btn-secondary btn-sm" style="color:var(--accent-rose); border-color:var(--accent-rose-border); font-size:0.8rem; padding:8px 16px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; background:var(--accent-rose-bg); border-radius:8px; transition:all 0.2s ease;" title="حذف کامل کلید API و رفع تداخل">
+              <button type="button" id="btnDeleteAiKey" class="btn btn-secondary btn-sm btn-ai-delete" style="color:var(--accent-rose); border-color:var(--accent-rose-border); background:var(--accent-rose-bg);" title="حذف کامل کلید API و رفع تداخل">
                 <span>🗑️</span>
-                <span style="font-weight:600;">حذف کلید API</span>
+                <span style="font-weight:700;" data-i18n="btnDeleteAiKey">حذف کلید API</span>
               </button>
             </div>
           </div>
@@ -4567,12 +4655,13 @@ export function panelHTML(env, options = {}) {
 
           <!-- ورودی افزودن کاربر سریع (تک یا گروهی با پیست) -->
           <div class="ai-ignore-input-row">
-            <div style="position: relative; flex: 1;">
-              <input type="text" id="aiIgnoredQuickAddInput" class="input-field mono" placeholder="آیدی عددی (مثال: 123456789) یا یوزرنیم (@username)..." dir="ltr" style="padding-left: 36px; height: 100%; font-size: 0.85rem;">
-              <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 0.95rem; color: var(--text-muted); pointer-events: none;">➕</span>
+            <div class="ai-ignore-input-wrap">
+              <span class="ai-ignore-input-icon">👤</span>
+              <input type="text" id="aiIgnoredQuickAddInput" class="ai-ignore-quick-input mono" placeholder="آیدی عددی (مثال: 123456789) یا یوزرنیم (@username)..." autocomplete="off" spellcheck="false" dir="auto">
             </div>
-            <button type="button" id="btnAddAiIgnoredUser" class="btn btn-primary btn-sm" style="display: inline-flex; align-items: center; gap: 6px; padding: 0 16px; border-radius: 8px; font-weight: 700; white-space: nowrap; font-size: 0.82rem; height: 42px;">
-              <span>افزودن به لیست</span>
+            <button type="button" id="btnAddAiIgnoredUser" class="btn btn-primary btn-add-ai-ignore">
+              <span>➕</span>
+              <span data-i18n="addAiIgnoredBtn">افزودن به لیست</span>
             </button>
           </div>
 
@@ -5900,6 +5989,7 @@ export function panelHTML(env, options = {}) {
       'منشی خودکار': 'Auto-Secretary',
 
       // 🧪 تست سلامت و بررسی صحت کلید API هوش مصنوعی (AI API Health Check)
+      'تست سلامت API': 'Test API Health',
       'تست سلامت و درستی API': 'Test API Health & Operation',
       'در حال بررسی سلامت API...': 'Verifying API Key...',
       'اتصال هوش مصنوعی ۱۰۰٪ سالم و آماده به کار است!': 'AI API is 100% Healthy & Operational!',
@@ -8486,7 +8576,7 @@ export function panelHTML(env, options = {}) {
         testBtn.disabled = false;
         testBtn.style.opacity = '1';
         if (btnIcon) btnIcon.textContent = '⚡';
-        if (btnText) btnText.textContent = isEn ? 'Test API Health & Operation' : 'تست سلامت و درستی API';
+        if (btnText) btnText.textContent = isEn ? 'Test API Health' : 'تست سلامت API';
       }
     };
 
@@ -8545,6 +8635,9 @@ export function panelHTML(env, options = {}) {
       for (var i = 0; i < arr.length; i++) {
         var item = String(arr[i] || '').trim();
         if (!item) continue;
+        // تبدیل ارقام فارسی و عربی به انگلیسی
+        item = item.replace(/[۰-۹]/g, function(d) { return '۰۱۲۳۴۵۶۷۸۹'.indexOf(d); })
+                   .replace(/[٠-٩]/g, function(d) { return '٠١٢٣٤٥٦٧٨٩'.indexOf(d); });
         var cleanKey = item.toLowerCase();
         if (cleanKey.startsWith('@')) cleanKey = cleanKey.slice(1);
         if (!seen[cleanKey]) {
