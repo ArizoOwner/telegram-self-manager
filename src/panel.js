@@ -265,8 +265,24 @@ export function panelHTML(env, options = {}) {
       max-width: 100vw;
     }
 
-    body {
+    body,
+    button,
+    input,
+    select,
+    textarea,
+    optgroup {
       font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    button,
+    input,
+    select,
+    textarea,
+    optgroup {
+      font-family: inherit;
+    }
+
+    body {
       background-color: var(--bg-dark);
       color: var(--text-main);
       display: flex;
@@ -283,7 +299,17 @@ export function panelHTML(env, options = {}) {
 
     /* 🌐 استایل‌های هماهنگ با زبان انگلیسی و چیدمان استاندارد LTR */
     html[dir="ltr"] body,
-    html[lang="en"] body {
+    html[dir="ltr"] button,
+    html[dir="ltr"] input,
+    html[dir="ltr"] select,
+    html[dir="ltr"] textarea,
+    html[dir="ltr"] optgroup,
+    html[lang="en"] body,
+    html[lang="en"] button,
+    html[lang="en"] input,
+    html[lang="en"] select,
+    html[lang="en"] textarea,
+    html[lang="en"] optgroup {
       font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       direction: ltr;
       text-align: left;
@@ -583,6 +609,7 @@ export function panelHTML(env, options = {}) {
 
     /* 👑 دکمه طلایی و براق پنل ادمین */
     .btn-admin-highlight {
+      font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
       background: var(--accent-amber-bg);
       border: 1px solid var(--accent-amber-border);
       border-top: 1px solid rgba(251, 191, 36, 0.5);
@@ -603,6 +630,10 @@ export function panelHTML(env, options = {}) {
                   box-shadow 0.22s ease,
                   background-color 0.2s ease,
                   color 0.2s ease;
+    }
+    html[dir="ltr"] .btn-admin-highlight,
+    html[lang="en"] .btn-admin-highlight {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     }
     .btn-admin-highlight::after {
       content: '';
@@ -3698,6 +3729,7 @@ export function panelHTML(env, options = {}) {
       flex: 0 0 auto;
     }
     .btn-sub-renew {
+      font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -3711,6 +3743,10 @@ export function panelHTML(env, options = {}) {
       cursor: pointer;
       box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    html[dir="ltr"] .btn-sub-renew,
+    html[lang="en"] .btn-sub-renew {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     }
     .btn-sub-renew:hover {
       transform: translateY(-2px);
@@ -3738,6 +3774,67 @@ export function panelHTML(env, options = {}) {
       .nav-plan-chip .nav-plan-name {
         display: none;
       }
+    }
+
+    /* 👑 تضمین و اعمال قطعی فونت دکمه‌های پنل مدیریت، تمدید اشتراک و تمامی دکمه‌های تعاملی */
+    button,
+    .btn,
+    .btn-admin-highlight,
+    .btn-sub-renew,
+    .admin-subtab-btn,
+    .btn-modal-action,
+    #adminPortalNavBtn,
+    #subBannerRenewBtn,
+    #adminPanelSection button,
+    #adminPanelSection .btn,
+    #licenseRenewalModal button,
+    #licenseRenewalModal .btn,
+    #adminUserInspectorModal button,
+    #adminUserInspectorModal .btn,
+    #settingsModal button,
+    #settingsModal .btn,
+    #featuresIntroModal button,
+    #featuresIntroModal .btn {
+      font-family: 'Vazirmatn', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    }
+
+    html[dir="ltr"] button,
+    html[dir="ltr"] .btn,
+    html[dir="ltr"] .btn-admin-highlight,
+    html[dir="ltr"] .btn-sub-renew,
+    html[dir="ltr"] .admin-subtab-btn,
+    html[dir="ltr"] .btn-modal-action,
+    html[dir="ltr"] #adminPortalNavBtn,
+    html[dir="ltr"] #subBannerRenewBtn,
+    html[dir="ltr"] #adminPanelSection button,
+    html[dir="ltr"] #adminPanelSection .btn,
+    html[dir="ltr"] #licenseRenewalModal button,
+    html[dir="ltr"] #licenseRenewalModal .btn,
+    html[dir="ltr"] #adminUserInspectorModal button,
+    html[dir="ltr"] #adminUserInspectorModal .btn,
+    html[dir="ltr"] #settingsModal button,
+    html[dir="ltr"] #settingsModal .btn,
+    html[dir="ltr"] #featuresIntroModal button,
+    html[dir="ltr"] #featuresIntroModal .btn,
+    html[lang="en"] button,
+    html[lang="en"] .btn,
+    html[lang="en"] .btn-admin-highlight,
+    html[lang="en"] .btn-sub-renew,
+    html[lang="en"] .admin-subtab-btn,
+    html[lang="en"] .btn-modal-action,
+    html[lang="en"] #adminPortalNavBtn,
+    html[lang="en"] #subBannerRenewBtn,
+    html[lang="en"] #adminPanelSection button,
+    html[lang="en"] #adminPanelSection .btn,
+    html[lang="en"] #licenseRenewalModal button,
+    html[lang="en"] #licenseRenewalModal .btn,
+    html[lang="en"] #adminUserInspectorModal button,
+    html[lang="en"] #adminUserInspectorModal .btn,
+    html[lang="en"] #settingsModal button,
+    html[lang="en"] #settingsModal .btn,
+    html[lang="en"] #featuresIntroModal button,
+    html[lang="en"] #featuresIntroModal .btn {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
     }
   </style>
 </head>
