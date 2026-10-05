@@ -410,7 +410,7 @@ let activeUsersETag = null;
 let cachedPanelHtml = null;
 let cachedAdminHtml = null;
 let cachedWizardHtml = null;
-const STATIC_ASSET_ETAG = '"arizo-v4.0.1-aurora-contrast"';
+const STATIC_ASSET_ETAG = '"arizo-v4.1.0-ai-blacklist"';
 let cachedFaviconResponse = null;
 
 export default {
@@ -1623,6 +1623,7 @@ export default {
         aiContext: auth.user.telegram?.aiContext || '',
         aiMaxReplies: auth.user.telegram?.aiMaxReplies ?? 3,
         aiCooldown: auth.user.telegram?.aiCooldown ?? 5,
+        aiIgnoredUsers: auth.user.telegram?.aiIgnoredUsers || [],
         userId: auth.user.telegram?.userId || null,
         bot: auth.user.telegram?.bot || null,
         totpEnabled: !!auth.user.totp?.enabled,
@@ -2161,6 +2162,15 @@ export default {
           const pCd = parseInt(b.aiCooldown, 10);
           auth.user.telegram.aiCooldown = isNaN(pCd) ? 5 : Math.max(0, pCd);
         }
+        if (b.aiIgnoredUsers !== undefined) {
+          let rawIgnore = [];
+          if (Array.isArray(b.aiIgnoredUsers)) {
+            rawIgnore = b.aiIgnoredUsers;
+          } else if (typeof b.aiIgnoredUsers === 'string') {
+            rawIgnore = b.aiIgnoredUsers.split(/[,،;\s\n]+/);
+          }
+          auth.user.telegram.aiIgnoredUsers = rawIgnore.map(x => String(x).trim()).filter(Boolean).slice(0, 100);
+        }
         if (b.bot !== undefined && typeof b.bot === 'object' && b.bot !== null) {
           if (!auth.user.telegram.bot) auth.user.telegram.bot = {};
           const rawToken = b.bot.token !== undefined ? String(b.bot.token).trim() : null;
@@ -2320,6 +2330,7 @@ export default {
             aiContext: u.telegram.aiContext || '',
             aiMaxReplies: u.telegram.aiMaxReplies ?? 3,
             aiCooldown: u.telegram.aiCooldown ?? 5,
+            aiIgnoredUsers: u.telegram.aiIgnoredUsers || [],
             bot: u.telegram.bot || null
           });
         }
@@ -2428,12 +2439,13 @@ export default {
         return json({ error: 'unauthorized runner' }, 401);
       }
       try {
-        const { username, ghostMode, aiReplyEnabled } = await request.json();
+        const { username, ghostMode, aiReplyEnabled, aiIgnoredUsers } = await request.json();
         if (username) {
           const u = await env.KV.get('user:' + username, 'json');
           if (u && u.telegram) {
             if (ghostMode !== undefined) u.telegram.ghostMode = !!ghostMode;
             if (aiReplyEnabled !== undefined) u.telegram.aiReplyEnabled = !!aiReplyEnabled;
+            if (aiIgnoredUsers !== undefined) u.telegram.aiIgnoredUsers = Array.isArray(aiIgnoredUsers) ? aiIgnoredUsers : [];
             await env.KV.put('user:' + username, JSON.stringify(u));
           }
         }
@@ -2923,12 +2935,13 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
           const aiAct = !!targetU.telegram?.aiReplyEnabled;
           const hasKey = !!targetU.telegram?.aiApiKey;
           const provider = targetU.telegram?.aiProvider || 'gemini';
-          const cdText = targetU.telegram?.aiCooldown === 0 
-            ? 'بدون محدودیت زمانی (فوری و بدون کول‌داون ⚡)' 
+          const cdText = targetU.telegram?.aiCooldown === 0
+            ? 'بدون محدودیت زمانی (فوری و بدون کول‌داون ⚡)'
             : `هر ${targetU.telegram?.aiCooldown || 5} دقیقه`;
-          const keyDisplay = hasKey 
+          const keyDisplay = hasKey
             ? `<code>${targetU.telegram.aiApiKey.slice(0, 6)}••••••••${targetU.telegram.aiApiKey.slice(-4)}</code> (فعال و ذخیره‌شده ✅)`
             : '<i>تنظیم نشده ❌ (کلید ثبت نشده است)</i>';
+          const ignoredCount = Array.isArray(targetU.telegram?.aiIgnoredUsers) ? targetU.telegram.aiIgnoredUsers.length : 0;
 
           return `🤖 <b>[مرکز مدیریت پاسخ هوشمند هوش مصنوعی — AI Reply]</b>\n` +
             `━━━━━━━━━━━━━━━━━━━━\n` +
@@ -2937,11 +2950,13 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
             `🔑 <b>کلید API ذخیره‌شده:</b>\n<blockquote>${keyDisplay}</blockquote>\n` +
             `🔢 <b>سقف پاسخ به هر شخص:</b> ${targetU.telegram?.aiMaxReplies || 3} پاسخ در هر گفتگو\n` +
             `⏱️ <b>فاصله بین پاسخ‌ها (کول‌داون):</b> ${cdText}\n` +
+            `🚫 <b>کاربران مستثنی از پاسخ:</b> ${ignoredCount > 0 ? `<code>${ignoredCount} نفر</code> (عدم ارسال پاسخ)` : '<i>خالی (پاسخ به همه مجاز است)</i>'}\n` +
             `🛡️ <b>سپر هوشمند ۴ لایه:</b> فعال ✅\n` +
             `<blockquote>هنگامی که آنلاین هستید، صفحه چت باز است، یا در ۵ دقیقه اخیر پیامی ارسال کرده‌اید، هوش مصنوعی خودکار پاسخ نمی‌دهد تا آرامش گفتگوی شما حفظ شود.</blockquote>\n` +
             `━━━━━━━━━━━━━━━━━━━━\n` +
             `💡 <b>راهنمای کلید API و تنظیمات:</b>\n` +
             `• برای تغییر فاصله زمانی بین پاسخ‌ها، روی دکمه <b>⏱️ فاصله</b> کلیک فرمایید.\n` +
+            `• برای مدیریت کاربران مستثنی از دستور <code>/ai_ignore [id]</code> یا پنل تحت وب استفاده کنید.\n` +
             `• با انتخاب <b>🔑 ثبت / تغییر کلید API</b> کلید جدید را مستقیماً در همین چت ارسال فرمایید.`;
         };
 
@@ -3532,8 +3547,58 @@ async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMess
             return new Response('OK');
           }
 
+          // دستور مدیریت لیست کاربران مستثنی از پاسخ هوش مصنوعی: /ai_ignore و /ai_unignore
+          if (text === '/ai_ignore' || text.startsWith('/ai_ignore') || text === '/ai_unignore' || text.startsWith('/ai_unignore')) {
+            const isRemove = text.startsWith('/ai_unignore');
+            const targetRaw = text.replace(/^\/(?:ai_ignore|ai_unignore)\s*/i, '').trim();
+            u.telegram.aiIgnoredUsers = Array.isArray(u.telegram.aiIgnoredUsers) ? u.telegram.aiIgnoredUsers : [];
+
+            if (!targetRaw) {
+              const currentList = u.telegram.aiIgnoredUsers.length > 0
+                ? u.telegram.aiIgnoredUsers.map((x, idx) => `${idx + 1}. <code>${x}</code>`).join('\n')
+                : '<i>هنوز هیچ کاربری به لیست نادیده‌گیری اضافه نشده است.</i>';
+              const helpMsg = `🚫 <b>[کاربران مستثنی از پاسخ هوش مصنوعی — AI Ignore List]</b>\n` +
+                `━━━━━━━━━━━━━━━━━━━━\n` +
+                `هوش مصنوعی به پیام‌های خصوصی این افراد هرگز پاسخ نخواهد داد.\n\n` +
+                `📋 <b>لیست فعلی:</b>\n${currentList}\n\n` +
+                `━━━━━━━━━━━━━━━━━━━━\n` +
+                `💡 <b>دستورات سریع:</b>\n` +
+                `• افزودن: <code>/ai_ignore 12345678</code> یا <code>/ai_ignore @username</code>\n` +
+                `• حذف: <code>/ai_unignore 12345678</code>\n` +
+                `همچنین می‌توانید از بخش هوش مصنوعی در استودیوی پنل وب استفاده فرمایید.`;
+              await fetch(`https://api.telegram.org/bot${actualBotToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: chatId, text: helpMsg, parse_mode: 'HTML' })
+              }).catch(() => {});
+              return new Response('OK');
+            }
+
+            const cleanTarget = targetRaw.toLowerCase().replace(/^@/, '');
+            if (isRemove) {
+              u.telegram.aiIgnoredUsers = u.telegram.aiIgnoredUsers.filter(x => x.toLowerCase().replace(/^@/, '') !== cleanTarget);
+              await env.KV.put('user:' + targetUsername, JSON.stringify(u));
+              await fetch(`https://api.telegram.org/bot${actualBotToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: chatId, text: `✅ کاربر <code>${targetRaw}</code> از لیست نادیده‌گیری AI حذف شد (پاسخ مجاز است).`, parse_mode: 'HTML' })
+              }).catch(() => {});
+            } else {
+              if (!u.telegram.aiIgnoredUsers.some(x => x.toLowerCase().replace(/^@/, '') === cleanTarget)) {
+                u.telegram.aiIgnoredUsers.push(targetRaw);
+              }
+              await env.KV.put('user:' + targetUsername, JSON.stringify(u));
+              await fetch(`https://api.telegram.org/bot${actualBotToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: chatId, text: `🚫 کاربر <code>${targetRaw}</code> به لیست نادیده‌گیری AI اضافه شد.\nاز این پس هوش مصنوعی به پیام‌های این کاربر هیچ پاسخی نمی‌دهد.`, parse_mode: 'HTML' })
+              }).catch(() => {});
+            }
+            return new Response('OK');
+          }
+
           // دستور ۴: منو یا تغییر وضعیت پاسخ هوشمند هوش مصنوعی (AI Smart Reply)
-          if (text === '/ai' || (text.startsWith('/ai') && !text.startsWith('/ai_test') && !text.startsWith('/ai_del') && !text.startsWith('/ai_set'))) {
+          if (text === '/ai' || (text.startsWith('/ai') && !text.startsWith('/ai_test') && !text.startsWith('/ai_del') && !text.startsWith('/ai_set') && !text.startsWith('/ai_ignore') && !text.startsWith('/ai_unignore'))) {
             const parts = text.split(/\s+/);
             const sub = (parts[1] || '').toLowerCase();
 
