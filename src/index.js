@@ -2690,21 +2690,26 @@ export default {
 async function callAIApiWorker(provider, apiKey, systemPrompt, context, userMessage) {
   if (!apiKey || !userMessage) return null;
 
-  const defaultSystemPrompt = `تو یک دستیار شخصی هوشمند هستی که به جای مالک این حساب تلگرام پاسخ می‌دهی. مالک حساب الان آفلاین است. پاسخ‌هایت باید کوتاه (حداکثر ۳ جمله)، مودبانه و به زبان فارسی باشد. اگر سوال تخصصی بود بگو مالک حساب به محض آنلاین شدن پاسخ خواهد داد.`;
+  const defaultSystemPrompt = `You are a smart AI personal assistant replying on behalf of the account owner who is currently offline.
+قوانین و دستورالعمل‌ها:
+۱. تشخیص و تطبیق خودکار زبان: زبان پاسخ باید دقیقاً هماهنگ با زبان پیام مخاطب باشد. اگر مخاطب به زبان انگلیسی (English) پیام داده است، پاسخ را کاملاً به زبان روان انگلیسی بنویس. اگر به زبان فارسی پیام داده به فارسی پاسخ بده. برای هر زبان دیگر به همان زبان پیام بده.
+۲. لحن و ساختار: پاسخ کوتاه (حداکثر ۲ تا ۳ جمله)، مودبانه، طبیعی و صمیمی باشد.
+۳. وضعیت مالک: حتماً قید کن که مالک حساب در حال حاضر آفلاین است و به محض آنلاین شدن پیام را بررسی و پاسخ خواهد داد.
+۴. محرمانگی: از اطلاعات خصوصی یا محرمانه صحبت نکن و وعده نامعتبر نده.`;
 
   const fullSystemPrompt = [
     systemPrompt || defaultSystemPrompt,
-    context ? `\nاطلاعات پایه درباره مالک حساب: ${context}` : '',
-    '\nقوانین: پاسخ کوتاه و مختصر بده. از اطلاعات محرمانه صحبت نکن. حتماً اشاره کن که مالک حساب الان آفلاین است و این پاسخ توسط دستیار هوشمند ارسال شده.'
+    context ? `\nاطلاعات پایه درباره مالک حساب (User Context):\n${context}` : '',
+    '\nدستور قطعی زبان: زبان پاسخ باید دقیقاً بر اساس زبان پیام دریافتی باشد (اگر انگلیسی است حتماً به انگلیسی، اگر فارسی است به فارسی). پاسخ کوتاه حداکثر ۳ جمله باشد و اشاره کن مالک حساب آفلاین است.'
   ].filter(Boolean).join('\n');
 
   if (provider === 'gemini') {
     const geminiModels = [
+      'gemini-2.0-flash',
+      'gemini-1.5-flash',
+      'gemini-2.0-flash-lite',
+      'gemini-1.5-pro',
       'gemini-flash-lite-latest',
-      'gemini-3.5-flash-lite',
-      'gemini-3.5-flash',
-      'gemini-3.7-flash',
-      'gemini-3-flash-preview',
       'gemini-flash-latest'
     ];
 
