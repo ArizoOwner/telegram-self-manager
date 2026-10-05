@@ -410,7 +410,7 @@ let activeUsersETag = null;
 let cachedPanelHtml = null;
 let cachedAdminHtml = null;
 let cachedWizardHtml = null;
-const STATIC_ASSET_ETAG = '"arizo-v4.0.0-aurora"';
+const STATIC_ASSET_ETAG = '"arizo-v4.0.1-aurora-contrast"';
 let cachedFaviconResponse = null;
 
 export default {
