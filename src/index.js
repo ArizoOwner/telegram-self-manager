@@ -410,7 +410,7 @@ let activeUsersETag = null;
 let cachedPanelHtml = null;
 let cachedAdminHtml = null;
 let cachedWizardHtml = null;
-const STATIC_ASSET_ETAG = '"arizo-v4.4.3-ai-ignore-chips-ui"';
+const STATIC_ASSET_ETAG = '"arizo-v4.5.0-top-sub-banner-human-copy"';
 let cachedFaviconResponse = null;
 
 export default {
@@ -424,7 +424,7 @@ export default {
 
     const clientIP = getClientIP(request);
 
-    // سپر امنیتی هانی‌پات جهت به دام انداختن و مسدودسازی فوری اسکنرهای آسیب‌پذیری
+    // پایش امنیتی و مهار دسترسی‌های غیرمجاز و اسکنرهای ناخواسته
     if (isHoneypot(url.pathname)) {
       await logSecurityEvent(env, AUDIT_EVENT_TYPES.HONEYPOT_TRIGGERED, {
         ip: clientIP,
@@ -432,11 +432,11 @@ export default {
         details: { path: url.pathname, method: request.method },
         userAgent: request.headers.get('user-agent') || ''
       }, AUDIT_SEVERITY.CRITICAL);
-      return new Response('Access Denied (Honeypot Defense Activated)', {
+      return new Response('Access Denied (Security Protection Active)', {
         status: 403,
         headers: {
           ...SECURITY_HEADERS,
-          'X-Security-Policy': 'Zero-Trust-Honeypot-Armed',
+          'X-Security-Policy': 'Security-Protection-Active',
           'Retry-After': '86400'
         }
       });
