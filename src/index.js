@@ -410,7 +410,7 @@ let activeUsersETag = null;
 let cachedPanelHtml = null;
 let cachedAdminHtml = null;
 let cachedWizardHtml = null;
-const STATIC_ASSET_ETAG = '"arizo-v3.6.2-opt"';
+const STATIC_ASSET_ETAG = '"arizo-v4.0.0-aurora"';
 let cachedFaviconResponse = null;
 
 export default {
@@ -505,7 +505,7 @@ export default {
 
     // 👑 ۲. ورود مستقیم و اختصاصی به پنل ارشد مانیتورینگ (/admin)
     if (url.pathname === '/admin' || url.pathname === '/admin/') {
-      const etag = '"arizo-adm-v3.6.2-opt"';
+      const etag = '"arizo-adm-v4.0.0-aurora"';
       if (etagMatches(request.headers.get('if-none-match'), etag)) {
         return new Response(null, {
           status: 304,
