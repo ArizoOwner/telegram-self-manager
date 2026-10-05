@@ -5,7 +5,7 @@ export function panelHTML(env, options = {}) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>⚡ Arizo Self | پلتفرم استودیوی سلف‌بات هوشمند تلگرام و پنل مدیریت</title>
+  <title>⚡ Arizo Self | سامانه مدیریت نمایه و ابزارهای ارتباطی تلگرام</title>
   <meta name="color-scheme" content="dark light">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -3339,14 +3339,271 @@ export function panelHTML(env, options = {}) {
       color: #ffffff;
       transform: scale(1.15);
     }
+
+    /* 💎 بج و بنر اختصاصی وضعیت اشتراک و اعتبار حساب کاربری در بالای سایت */
+    .nav-plan-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--accent-indigo-border);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      user-select: none;
+    }
+    .nav-plan-chip:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent-indigo);
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.25);
+    }
+    .nav-plan-validity-pill {
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-green);
+      border: 1px solid var(--accent-green-border);
+      font-weight: 700;
+      letter-spacing: -0.2px;
+    }
+    .nav-user-profile-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      border-radius: 8px;
+      background: var(--bg-surface-hover);
+      border: 1px solid var(--border-subtle);
+    }
+    .nav-user-avatar {
+      font-size: 0.85rem;
+      line-height: 1;
+    }
+
+    /* کارت شاخص و شکیل اشتراک و اعتبار بالای داشبورد */
+    .user-sub-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.75) 0%, rgba(15, 23, 42, 0.9) 100%);
+      border: 1px solid var(--border-specular);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    [data-theme="light"] .user-sub-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(241, 245, 249, 0.96) 100%);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 8px 24px rgba(148, 163, 184, 0.15), inset 0 1px 0 #ffffff;
+    }
+    .user-sub-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #6366f1 0%, #a855f7 50%, #10b981 100%);
+    }
+    .user-sub-main {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 220px;
+      flex: 1 1 auto;
+    }
+    .user-sub-avatar-wrap {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+      flex-shrink: 0;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+    }
+    .user-sub-status-dot {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      border: 2px solid var(--bg-card);
+      box-shadow: 0 0 8px var(--accent-green);
+    }
+    .user-sub-user-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .user-sub-greeting {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .user-sub-hello {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .user-sub-uname {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.3px;
+    }
+    .user-sub-role-badge {
+      font-size: 0.7rem;
+      padding: 1px 7px;
+      border-radius: 999px;
+      background: var(--bg-surface-hover);
+      color: var(--text-dim);
+      border: 1px solid var(--border-subtle);
+      font-weight: 700;
+    }
+    .user-sub-plan-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .user-sub-plan-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 6px;
+      background: rgba(99, 102, 241, 0.12);
+      color: var(--accent-indigo);
+      border: 1px solid var(--accent-indigo-border);
+    }
+    .user-sub-plan-status {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
+    .user-sub-meter-box {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 250px;
+      flex: 1 1 290px;
+      background: var(--bg-surface-elevated);
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+    }
+    .user-sub-validity-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .user-sub-validity-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 800;
+      font-size: 0.88rem;
+      color: var(--text-main);
+    }
+    .user-sub-expiry-date {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .user-sub-progress-track {
+      width: 100%;
+      height: 7px;
+      background: var(--bg-surface-hover);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+    }
+    .user-sub-progress-bar {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #10b981 0%, #3b82f6 100%);
+      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+    }
+    .user-sub-action-wrap {
+      display: flex;
+      align-items: center;
+      flex: 0 0 auto;
+    }
+    .btn-sub-renew {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #ffffff;
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-sub-renew:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    }
+    @media (max-width: 640px) {
+      .user-sub-card {
+        padding: 14px;
+        gap: 14px;
+      }
+      .user-sub-main {
+        min-width: 100%;
+      }
+      .user-sub-meter-box {
+        min-width: 100%;
+      }
+      .user-sub-action-wrap {
+        width: 100%;
+      }
+      .btn-sub-renew {
+        width: 100%;
+        justify-content: center;
+      }
+      .nav-plan-chip .nav-plan-name {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- 🌌 بوم الگوریتمی ذرات و شبکه دینامیک -->
+  <!-- 🌌 بوم متحرک ذرات پس‌زمینه -->
   <canvas id="algoCanvas"></canvas>
 
-  <!-- شفق قطبی اتمسفریک -->
+  <!-- نورپردازی پس‌زمینه (Ambient Glow) -->
   <div class="aurora-container">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
@@ -3391,20 +3648,28 @@ export function panelHTML(env, options = {}) {
           <span>👑</span> <span data-i18n="adminPortal">پنل مدیریت</span>
         </button>
 
-        <!-- نشانگر حساب کاربری کاربر متصل -->
+        <!-- نشانگر حساب کاربری و اشتراک کاربر متصل -->
         <div id="userHeaderBadge" class="hidden" style="display:flex; align-items:center; gap:8px;">
-          <span style="font-size:0.85rem; font-weight:700; color:var(--accent-indigo);" id="usernameDisplay">کاربر</span>
+          <div id="navUserPlanChip" class="nav-plan-chip" onclick="openLicenseModal()" title="مشاهده وضعیت اشتراک و تمدید لایسنس">
+            <span id="navPlanIcon" class="nav-plan-icon">⭐</span>
+            <span id="navPlanName" class="nav-plan-name">اشتراک</span>
+            <span id="navPlanValidity" class="nav-plan-validity-pill">⏳ بررسی اعتبار...</span>
+          </div>
+          <div class="nav-user-profile-wrap">
+            <span class="nav-user-avatar">👤</span>
+            <span style="font-size:0.85rem; font-weight:700; color:var(--text-main);" id="usernameDisplay">کاربر</span>
+          </div>
           <button class="btn-nav-action" onclick="openSettingsModal()" title="تنظیمات حساب" data-i18n-title="userSettings">⚙️</button>
           <button class="btn-nav-action" onclick="logoutUser()" title="خروج" data-i18n-title="userLogout" style="color:var(--accent-rose);">🚪</button>
         </div>
       </div>
     </div>
 
-    <!-- 👑 مرکز فرماندهی و مدیریت فروش Arizo Self (Super Admin Portal) -->
+    <!-- 👑 مدیریت سامانه و لایسنس‌ها (Super Admin Portal) -->
     <div id="adminPanelSection" class="glass-card hidden">
       <div class="section-header">
         <div class="section-title">
-          <span>👑</span> <span data-i18n="adminHeaderTitle">مرکز فرماندهی و فروشگاه Arizo Self</span>
+          <span>👑</span> <span data-i18n="adminHeaderTitle">مدیریت سامانه و لایسنس‌ها</span>
         </div>
         <button class="btn-nav-action" onclick="closeAdminPortal()" style="color:var(--accent-rose);">
           <span>✕</span> <span data-i18n="adminReturnBtn">بازگشت به پنل کاربران</span>
@@ -3653,37 +3918,83 @@ export function panelHTML(env, options = {}) {
         </div>
 
         <button class="btn btn-primary" id="regBtn" onclick="doUserRegister()">
-          <span data-i18n="authRegBtn">ثبت‌نام و فعال‌سازی اشتراک Arizo Self</span>
+          <span data-i18n="authRegBtn">ایجاد حساب و فعال‌سازی اشتراک</span>
         </button>
       </div>
     </div>
 
-    <!-- ⚠️ هشدار و فرم تعلیق هوشمند اشتراک کاربر (Suspension Alert Box) -->
+    <!-- 💎 کارت شاخص و وضعیت اشتراک و اعتبار کاربر در بالای سایت -->
+    <div id="userTopSubscriptionBanner" class="user-sub-card hidden">
+      <div class="user-sub-main">
+        <div class="user-sub-avatar-wrap">
+          <div class="user-sub-avatar" id="subBannerAvatar">👤</div>
+          <span class="user-sub-status-dot" id="subBannerStatusDot"></span>
+        </div>
+        <div class="user-sub-user-info">
+          <div class="user-sub-greeting">
+            <span class="user-sub-hello" data-i18n="subBannerHello">حساب کاربری:</span>
+            <span class="user-sub-uname" id="subBannerUsername">کاربر</span>
+            <span class="user-sub-role-badge" id="subBannerRoleBadge"></span>
+          </div>
+          <div class="user-sub-plan-row">
+            <span class="user-sub-plan-badge" id="subBannerPlanBadge">
+              <span id="subBannerPlanIcon">⭐</span>
+              <span id="subBannerPlanName">اشتراک</span>
+            </span>
+            <span class="user-sub-plan-status" id="subBannerPlanStatus">فعال</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="user-sub-meter-box">
+        <div class="user-sub-validity-header">
+          <div class="user-sub-validity-title" id="subBannerValidityTitle">
+            <span class="user-sub-clock-icon">⏳</span>
+            <span id="subBannerRemainingDaysText">درحال بررسی اعتبار...</span>
+          </div>
+          <div class="user-sub-expiry-date" id="subBannerExpiryDateText">
+            تاریخ پایان: -
+          </div>
+        </div>
+        <div class="user-sub-progress-track">
+          <div class="user-sub-progress-bar" id="subBannerProgressBar" style="width: 100%;"></div>
+        </div>
+      </div>
+
+      <div class="user-sub-action-wrap">
+        <button type="button" class="btn-sub-renew" id="subBannerRenewBtn" onclick="openLicenseModal()">
+          <span>🎟️</span>
+          <span data-i18n="subBannerRenewBtn">تمدید یا ارتقای اشتراک</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ⚠️ هشدار و فرم تمدید اشتراک منقضی‌شده (Suspension Alert Box) -->
     <div id="suspensionAlertBox" class="glass-card hidden" style="border: 1px solid var(--accent-rose-border); background: var(--accent-rose-bg);">
       <div style="display:flex; align-items:flex-start; gap:14px; flex-wrap:wrap;">
         <div style="font-size: 2.2rem; line-height: 1;">⚠️</div>
         <div style="flex:1; min-width: 250px;">
           <div style="font-size: 1.05rem; font-weight: 800; color: var(--accent-rose); margin-bottom: 6px;" data-i18n="suspensionTitle">
-            حساب کاربری و سلف‌بات شما در حالت تعلیق قرار دارد (Suspended)
+            اعتبار اشتراک حساب کاربری شما به پایان رسیده است
           </div>
           <div style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 14px;" data-i18n="suspensionDesc">
-            مدت زمان اشتراک شما به پایان رسیده و عملکرد سلف‌بات روی تلگرام متوقف شده است. جهت فعال‌سازی مجدد و خروج آنی از تعلیق، کد لایسنس جدید خود را وارد کنید:
+            مدت زمان اشتراک شما خاتمه یافته و به‌روزرسانی پروفایل موقتاً متوقف گردیده است. جهت تمدید اعتبار و فعال‌سازی مجدد، کد لایسنس جدید خود را در کادر زیر وارد نمایید:
           </div>
           <div class="input-action-row" style="max-width: 580px;">
-            <input type="text" id="quickRenewCodeInput" class="input-field mono" placeholder="کد لایسنس جدید جهت خروج از تعلیق (مثال: ARIZO-XXXX-XXXX-XXXX)" style="text-transform: uppercase; font-weight: 700; color: var(--accent-purple);" data-i18n-placeholder="suspensionPlaceholder">
+            <input type="text" id="quickRenewCodeInput" class="input-field mono" placeholder="کد لایسنس جدید (مثال: ARIZO-XXXX-XXXX-XXXX)" style="text-transform: uppercase; font-weight: 700; color: var(--accent-purple);" data-i18n-placeholder="suspensionPlaceholder">
             <button class="btn btn-primary" id="quickRenewBtn" onclick="doQuickRenew()" style="background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);">
-              <span data-i18n="suspensionBtn">🚀 خروج از تعلیق و شارژ</span>
+              <span data-i18n="suspensionBtn">تمدید اعتبار و فعال‌سازی مجدد</span>
             </button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 🕒 بخش ۱: شبیه‌ساز زنده پروفایل تلگرام (Telegram Profile Live Mockup) -->
+    <!-- 🕒 بخش ۱: پیش‌نمایش زنده نمایه تلگرام (Telegram Profile Live Mockup) -->
     <div id="clockHeroCard" class="glass-card hidden">
       <div class="section-header">
         <div class="section-title">
-          <span>📱</span> <span data-i18n="mockupTitle">شبیه‌ساز زنده پروفایل تلگرام (Live Telegram Mockup)</span>
+          <span>📱</span> <span data-i18n="mockupTitle">پیش‌نمایش زنده نمایه تلگرام</span>
         </div>
         <span class="section-tag" data-i18n="mockupTag">پیش‌نمایش لحظه‌ای</span>
       </div>
@@ -3702,7 +4013,7 @@ export function panelHTML(env, options = {}) {
             </div>
             <div class="tg-mockup-status">
               <span class="tg-status-dot"></span>
-              <span data-i18n="mockupOnline">آنلاین (لحظه‌ای به وقت تهران)</span>
+              <span data-i18n="mockupOnline">آنلاین (همگام با زمان رسمی تهران)</span>
             </div>
           </div>
         </div>
@@ -3711,14 +4022,14 @@ export function panelHTML(env, options = {}) {
           <div class="tg-mockup-field">
             <div class="tg-field-icon">💬</div>
             <div class="tg-field-content">
-              <div class="tg-field-label" data-i18n="mockupBioLabel">بیوگرافی زنده تلگرام (Bio / About)</div>
-              <div class="tg-field-value" id="mockupBio" data-i18n="mockupBioWait">در انتظار فعال‌سازی بیوگرافی هوشمند...</div>
+              <div class="tg-field-label" data-i18n="mockupBioLabel">بخش معرفی نمایه (Bio)</div>
+              <div class="tg-field-value" id="mockupBio" data-i18n="mockupBioWait">در انتظار فعال‌سازی بیوگرافی زنده...</div>
             </div>
           </div>
           <div class="tg-mockup-field">
             <div class="tg-field-icon">🗓️</div>
             <div class="tg-field-content">
-              <div class="tg-field-label" data-i18n="mockupDateLabel">تقویم خورشیدی و زمان اتمی تهران</div>
+              <div class="tg-field-label" data-i18n="mockupDateLabel">تقویم خورشیدی و زمان رسمی تهران</div>
               <div class="tg-field-value" id="persianDateText">درحال محاسبه تقویم خورشیدی...</div>
             </div>
           </div>
@@ -3732,7 +4043,7 @@ export function panelHTML(env, options = {}) {
 
         <div class="clock-badges-row">
           <span class="meta-chip active">
-            <span class="dot-pulse"></span> <span data-i18n="mockupSyncChip">همگام‌سازی لحظه‌ای تهران</span>
+            <span class="dot-pulse"></span> <span data-i18n="mockupSyncChip">همگام‌سازی رسمی با زمان تهران</span>
           </span>
           <span class="meta-chip" id="userPlanBadge">اشتراک: استاندارد</span>
           <span class="meta-chip" id="userFontBadge">فونت: بولد لوکس</span>
@@ -3740,55 +4051,55 @@ export function panelHTML(env, options = {}) {
       </div>
     </div>
 
-    <!-- 📱 بخش ۲: اتصال اکانت تلگرام به سلف‌بات -->
+    <!-- 📱 بخش ۲: اتصال حساب تلگرام -->
     <div id="telegramConnectSection" class="glass-card hidden">
       <div class="section-header">
         <div class="section-title">
-          <span>📱</span> <span data-i18n="tgConnectTitle">بخش ۲: اتصال حساب تلگرام به Arizo Self</span>
+          <span>📱</span> <span data-i18n="tgConnectTitle">اتصال حساب تلگرام به سامانه</span>
         </div>
         <div style="display:flex; align-items:center; gap:8px;">
           <button id="btnCancelTgConnect" class="btn-nav-action hidden" onclick="cancelTelegramConnect()" style="color:var(--text-muted); font-size:0.78rem;">
             <span data-i18n="tgConnectCancel">✕ انصراف و بازگشت</span>
           </button>
-          <span class="section-tag" data-i18n="tgKvTag">ایزوله در Cloudflare KV</span>
+          <span class="section-tag" data-i18n="tgKvTag">ارتباط امن و مستقیم</span>
         </div>
       </div>
 
       <div class="segmented-control">
-        <button id="tabTgPhone" class="segmented-btn active" onclick="switchTgTab('phone')" data-i18n="tgTabPhone">ارسال کد پیامکی</button>
-        <button id="tabTgSess" class="segmented-btn" onclick="switchTgTab('session')" data-i18n="tgTabSession">رشته StringSession مستقیم</button>
+        <button id="tabTgPhone" class="segmented-btn active" onclick="switchTgTab('phone')" data-i18n="tgTabPhone">ورود با شماره تلفن</button>
+        <button id="tabTgSess" class="segmented-btn" onclick="switchTgTab('session')" data-i18n="tgTabSession">اتصال با رشته سشن (StringSession)</button>
       </div>
 
       <!-- با شماره تلفن -->
       <div id="tgPhoneBox">
         <div class="form-group">
-          <label class="form-label" data-i18n="tgPhoneLabel">شماره تلفن اکانت تلگرام</label>
+          <label class="form-label" data-i18n="tgPhoneLabel">شماره همراه حساب تلگرام</label>
           <input type="tel" id="tgPhone" class="input-field mono" placeholder="شماره همراه با پیش‌شماره کشور (مثال: 989123456789+)" dir="ltr" data-i18n-placeholder="tgPhonePlaceholder">
         </div>
 
         <div id="tgCodeGroup" class="form-group hidden">
-          <label class="form-label" data-i18n="tgCodeLabel">کد ۵ رقمی ارسالی از سوی تلگرام</label>
-          <input type="text" id="tgCode" class="input-field mono" placeholder="کد ۵ رقمی ارسالی از تلگرام (مثال: 58291)" maxlength="8" dir="ltr" data-i18n-placeholder="tgCodePlaceholder">
+          <label class="form-label" data-i18n="tgCodeLabel">کد تأیید ارسالی از سوی تلگرام</label>
+          <input type="text" id="tgCode" class="input-field mono" placeholder="کد تأیید ارسالی تلگرام (مثال: 58291)" maxlength="8" dir="ltr" data-i18n-placeholder="tgCodePlaceholder">
         </div>
 
         <div id="tgPassGroup" class="form-group hidden">
-          <label class="form-label" data-i18n="tgPassLabel">رمز تأیید دو مرحله‌ای اکانت (2FA)</label>
-          <input type="password" id="tgPass" class="input-field" placeholder="رمز تأیید دومرحله‌ای (در صورت فعال بودن 2FA)" data-i18n-placeholder="tgPassPlaceholder">
+          <label class="form-label" data-i18n="tgPassLabel">گذرواژه تأیید دو مرحله‌ای تلگرام (2FA)</label>
+          <input type="password" id="tgPass" class="input-field" placeholder="رمز دو مرحله‌ای تلگرام (در صورت فعال بودن 2FA)" data-i18n-placeholder="tgPassPlaceholder">
         </div>
 
         <button class="btn btn-primary" id="tgAuthBtn" onclick="doTelegramAuth()">
-          <span data-i18n="tgAuthBtn">دریافت کد ورود از سرور تلگرام</span>
+          <span data-i18n="tgAuthBtn">دریافت کد ورود از تلگرام</span>
         </button>
       </div>
 
       <!-- با سشن مستقیم -->
       <div id="tgSessBox" class="hidden">
         <div class="form-group">
-          <label class="form-label" data-i18n="tgSessionLabel">رشته سشن خام تلگرام (StringSession)</label>
-          <textarea id="tgSessionInput" class="input-field mono" rows="4" placeholder="رشته طولانی StringSession تلگرام خود را اینجا وارد کنید (Pyrogram یا Telethon/GramJS)..." dir="ltr" data-i18n-placeholder="tgSessionPlaceholder"></textarea>
+          <label class="form-label" data-i18n="tgSessionLabel">رشته سشن تلگرام (StringSession)</label>
+          <textarea id="tgSessionInput" class="input-field mono" rows="4" placeholder="رشته StringSession تلگرام خود را اینجا وارد کنید (Pyrogram یا Telethon/GramJS)..." dir="ltr" data-i18n-placeholder="tgSessionPlaceholder"></textarea>
         </div>
         <button class="btn btn-primary" id="tgSessBtn" onclick="doConnectDirectSession()">
-          <span data-i18n="tgSessBtn">اتصال و رمزنگاری فوری با AES-256</span>
+          <span data-i18n="tgSessBtn">اتصال و ذخیره‌سازی امن سشن</span>
         </button>
       </div>
     </div>
@@ -3951,8 +4262,8 @@ export function panelHTML(env, options = {}) {
       <div id="studioPaneAfk" class="hidden">
         <div class="toggle-row" style="margin-bottom:18px;">
           <div>
-            <div class="toggle-label">منشی خودکار پیوی (AFK Auto-Secretary)</div>
-            <div class="toggle-desc">هنگامی که آنلاین نیستید، پیام‌های خصوصی به طور هوشمند و خودکار پاسخ داده می‌شوند</div>
+            <div class="toggle-label">منشی خودکار گفتگوهای خصوصی (AFK Auto-Secretary)</div>
+            <div class="toggle-desc">پاسخ‌دهی خودکار به پیام‌های خصوصی در زمان عدم حضور یا آفلاین بودن شما</div>
           </div>
           <label class="switch">
             <input type="checkbox" id="afkEnabledToggle">
@@ -3961,35 +4272,35 @@ export function panelHTML(env, options = {}) {
         </div>
 
         <div style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 18px; font-size: 0.8rem; color: var(--text-main); line-height: 1.7;">
-          🛡️ <b>سنسورهای هوشمند پایش آنلاین/آفلاین:</b> منشی خودکار تنها زمانی که <b>کاملاً آفلاین</b> باشید پاسخ می‌دهد. با پایش مستقیم نشست‌های فعال گوشی و دسکتاپ، پنجره ۱۰ دقیقه‌ای عدم تداخل در چت‌های زنده و تشخیص خوانده شدن پیام، منشی مزاحم مکالمات شما نمی‌شود.
+          🛡️ <b>سیستم هوشمند تشخیص حضور:</b> منشی خودکار صرفاً در زمان عدم حضور و آفلاین بودن شما فعال می‌گردد. با بررسی وضعیت نشست‌های فعال (موبایل و دسکتاپ)، بازه اطمینان ۱۰ دقیقه‌ای مکالمات زنده و بررسی پیام‌های خوانده‌شده، از تداخل منشی با گفتگوهای فعال شما جلوگیری می‌شود.
         </div>
 
         <div class="form-group">
-          <label class="form-label">متن پاسخ خودکار منشی به مخاطبان در پیوی</label>
-          <textarea id="afkMessageInput" class="input-field" rows="3" placeholder="متن پاسخ خودکار منشی (مثال: درود! در حال حاضر امکان پاسخگویی ندارم. به محض آنلاین شدن پاسخ خواهم داد ⏳)"></textarea>
+          <label class="form-label">متن پاسخ خودکار منشی به مخاطبان</label>
+          <textarea id="afkMessageInput" class="input-field" rows="3" placeholder="متن پاسخ خودکار (مثال: درود، در حال حاضر امکان پاسخگویی ندارم. به محض آنلاین شدن با شما گفتگو خواهم کرد ⏳)"></textarea>
         </div>
 
         <div class="form-group">
-          <label class="form-label">فاصله زمانی ارسال مجدد برای یک مخاطب (کول‌داون ضد اسپم)</label>
+          <label class="form-label">بازه زمانی ارسال مجدد به هر مخاطب (مدیریت تکرار)</label>
           <select id="afkCooldownSelect" class="input-field" style="background:var(--bg-input);">
-            <option value="5">هر ۵ دقیقه یک‌بار به هر فرد</option>
-            <option value="10" selected>هر ۱۰ دقیقه یک‌بار به هر فرد (پیشنهادی)</option>
-            <option value="30">هر ۳۰ دقیقه یک‌بار به هر فرد</option>
-            <option value="60">هر ۱ ساعت یک‌بار به هر فرد</option>
-            <option value="1440">فقط یک‌بار در طول شبانه‌روز به هر فرد</option>
+            <option value="5">هر ۵ دقیقه یک‌بار به هر مخاطب</option>
+            <option value="10" selected>هر ۱۰ دقیقه یک‌بار به هر مخاطب (پیشنهادی)</option>
+            <option value="30">هر ۳۰ دقیقه یک‌بار به هر مخاطب</option>
+            <option value="60">هر ۱ ساعت یک‌بار به هر مخاطب</option>
+            <option value="1440">فقط یک‌بار در شبانه‌روز به هر مخاطب</option>
           </select>
           <div style="font-size:0.75rem; color:var(--text-muted); margin-top:6px;">
-            💡 این قابلیت مانع از اسپم شدن چت هنگامی که مخاطب چندین پیام متوالی می‌فرستد می‌شود.
+            💡 این تنظیم از ارسال مکرر پیام منشی در صورت دریافت پیام‌های پیاپی از یک مخاطب پیشگیری می‌نماید.
           </div>
         </div>
       </div>
 
-      <!-- 🔇 تب ۴: سکوت و حذف خودکار پیام (Mute) -->
+      <!-- 🔇 تب ۴: مدیریت سکوت و حذف خودکار پیام (Mute) -->
       <div id="studioPaneMute" class="hidden">
         <div class="toggle-row" style="margin-bottom:18px;">
           <div>
-            <div class="toggle-label">سکوت و حذف آنی پیام‌های افراد مزاحم (Mute Filter)</div>
-            <div class="toggle-desc">پیام‌های ارسال‌شده توسط کاربران مشخص‌شده بلافاصله برای دو طرف پاک می‌شوند</div>
+            <div class="toggle-label">مدیریت سکوت و حذف دوطرفه پیام‌ها (Mute Filter)</div>
+            <div class="toggle-desc">پیام‌های دریافتی از کاربران مشخص‌شده بلافاصله برای هر دو طرف حذف می‌گردند</div>
           </div>
           <label class="switch">
             <input type="checkbox" id="muteEnabledToggle">
@@ -3998,20 +4309,20 @@ export function panelHTML(env, options = {}) {
         </div>
 
         <div class="form-group">
-          <label class="form-label">لیست آیدی‌های عددی یا یوزرنیم‌های تلگرام جهت سکوت (با کاما جدا کنید)</label>
-          <input type="text" id="mutedUsersInput" class="input-field mono" placeholder="آیدی‌های عددی یا یوزرنیم‌های تلگرام با کاما (مثال: 123456789, @username, 987654321)" dir="ltr">
+          <label class="form-label">شناسه‌های عددی یا نام‌های کاربری تلگرام جهت سکوت (با ویرگول جدا کنید)</label>
+          <input type="text" id="mutedUsersInput" class="input-field mono" placeholder="شناسه‌های عددی یا نام‌های کاربری تلگرام (مثال: 123456789, @username, 987654321)" dir="ltr">
           <div style="font-size:0.75rem; color:var(--text-muted); margin-top:6px;">
-            💡 شما همچنین در محیط تلگرام می‌توانید با ریپلای روی پیام هر شخص و ارسال <code>.mute</code> او را اضافه کرده و با <code>.unmute</code> از سکوت خارج کنید.
+            💡 در محیط تلگرام نیز می‌توانید با پاسخ به پیام کاربر و ارسال دستور <code>.mute</code> او را اضافه نموده و با <code>.unmute</code> از لیست خارج فرمایید.
           </div>
         </div>
       </div>
 
-      <!-- 🌙 تب ۵: حالت خواب و اتوماسیون -->
+      <!-- 🌙 تب ۵: حالت خواب و اتوماسیون شبانه -->
       <div id="studioPaneAutomation" class="hidden">
         <div class="toggle-row" style="margin-bottom:18px;">
           <div>
             <div class="toggle-label">حالت خواب و استراحت شبانه (Sleep Mode)</div>
-            <div class="toggle-desc">در ساعات مشخص‌شده، به‌روزرسانی متوقف شده یا متن خواب قرار می‌گیرد</div>
+            <div class="toggle-desc">در ساعات تعیین‌شده، به‌روزرسانی متوقف شده یا متن حالت استراحت نمایش داده می‌شود</div>
           </div>
           <label class="switch">
             <input type="checkbox" id="sleepEnabledToggle" onchange="updateLiveClock()">
@@ -4021,7 +4332,7 @@ export function panelHTML(env, options = {}) {
 
         <div style="display:flex; gap:12px; margin-bottom:18px; flex-wrap:wrap;">
           <div class="form-group" style="flex:1; min-width:140px; margin-bottom:0;">
-            <label class="form-label">شروع خواب (ساعت)</label>
+            <label class="form-label">شروع ساعات استراحت</label>
             <select id="sleepStartSelect" class="input-field" style="background:var(--bg-input);" onchange="updateLiveClock()">
               <option value="22">۲۲:۰۰ (۱۰ شب)</option>
               <option value="23" selected>۲۳:۰۰ (۱۱ شب)</option>
@@ -4031,7 +4342,7 @@ export function panelHTML(env, options = {}) {
             </select>
           </div>
           <div class="form-group" style="flex:1; min-width:140px; margin-bottom:0;">
-            <label class="form-label">پایان خواب (ساعت)</label>
+            <label class="form-label">پایان ساعات استراحت</label>
             <select id="sleepEndSelect" class="input-field" style="background:var(--bg-input);" onchange="updateLiveClock()">
               <option value="6">۰۶:۰۰ (صبح)</option>
               <option value="7" selected>۰۷:۰۰ (صبح)</option>
@@ -4043,26 +4354,26 @@ export function panelHTML(env, options = {}) {
         </div>
 
         <div class="form-group">
-          <label class="form-label">متن نام خانوادگی در طول ساعات خواب</label>
-          <input type="text" id="sleepTextInput" class="input-field" value="😴 Sleep" placeholder="متن نام خانوادگی در خواب (مثال: 😴 Sleep یا 🌙 خوابیدم)" maxlength="30" oninput="updateLiveClock()">
+          <label class="form-label">متن نام خانوادگی در ساعات خواب</label>
+          <input type="text" id="sleepTextInput" class="input-field" value="😴 Sleep" placeholder="متن نام خانوادگی در خواب (مثال: 😴 Sleep یا 🌙 در حال استراحت)" maxlength="30" oninput="updateLiveClock()">
         </div>
       </div>
 
-      <!-- 👻 تب ۶: حالت شبح و مدیریت تیک آبی (Ghost Mode / Anti-Read-Receipt) -->
+      <!-- 👻 تب ۶: حالت مشاهده محرمانه و مدیریت خوانده‌شدن (Ghost Mode) -->
       <div id="studioPaneGhost" class="hidden">
         <div style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(56, 189, 248, 0.12) 100%); border: 1px solid var(--accent-blue-border); border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px;">
           <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
-            <span>👻</span> <span>حالت شبح — خواندن بدون تیک آبی (Ghost Read)</span>
+            <span>👻</span> <span>حالت مشاهده محرمانه پیام‌ها (Ghost Mode)</span>
           </div>
           <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.7;">
-            وقتی این قابلیت فعال باشه، تمام پیام‌های خصوصی جدید به صورت خودکار به <b>ربات اختصاصی</b> شما فوروارد می‌شن و می‌تونید اونجا بخونیدشون بدون اینکه تیک آبی بخوره. وقتی آماده بودید، با دستور <code>.read</code> در تلگرام می‌تونید تیک آبی رو دستی بزنید.
+            با فعال‌سازی این قابلیت، پیام‌های دریافتی بدون ثبت وضعیت خوانده‌شده (تیک دوم) جهت مطالعه به ربات پشتیبان شما منتقل می‌شوند. در صورت تمایل می‌توانید با ارسال دستور <code>.read</code> در گفتگوی مورد نظر، وضعیت خوانده‌شدن را به صورت دستی ثبت فرمایید.
           </div>
         </div>
 
         <div class="toggle-row" style="margin-bottom:18px;">
           <div>
-            <div class="toggle-label">فعال‌سازی حالت شبح (Ghost Mode)</div>
-            <div class="toggle-desc">پیام‌های خصوصی رو بخونید بدون تیک آبی — فوروارد خودکار به ربات</div>
+            <div class="toggle-label">فعال‌سازی حالت مشاهده محرمانه (Ghost Mode)</div>
+            <div class="toggle-desc">مشاهده پیام‌های دریافتی بدون ثبت وضعیت خوانده‌شده با انتقال به ربات پشتیبان</div>
           </div>
           <label class="switch">
             <input type="checkbox" id="ghostModeToggle">
@@ -4071,45 +4382,45 @@ export function panelHTML(env, options = {}) {
         </div>
 
         <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px; margin-bottom: 18px;">
-          <div style="font-size: 0.88rem; font-weight: 700; color: var(--text-main); margin-bottom: 10px;">دستورات سریع تلگرامی:</div>
+          <div style="font-size: 0.88rem; font-weight: 700; color: var(--text-main); margin-bottom: 10px;">دستورات کاربردی در محیط تلگرام:</div>
           <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.8;">
-            <code style="color: var(--accent-blue);">.read</code> — تیک آبی رو برای چتی که توش هستید بزنید<br>
-            <code style="color: var(--accent-blue);">.read all</code> — تیک آبی رو برای همه چت‌ها یکجا بزنید<br>
-            <code style="color: var(--accent-blue);">.ghost on</code> — فعال‌سازی سریع حالت شبح<br>
-            <code style="color: var(--accent-blue);">.ghost off</code> — غیرفعال کردن حالت شبح
+            <code style="color: var(--accent-blue);">.read</code> — ثبت وضعیت خوانده‌شده برای گفتگوی جاری<br>
+            <code style="color: var(--accent-blue);">.read all</code> — ثبت وضعیت خوانده‌شده برای تمام گفتگوها<br>
+            <code style="color: var(--accent-blue);">.ghost on</code> — فعال‌سازی سریع حالت محرمانه<br>
+            <code style="color: var(--accent-blue);">.ghost off</code> — غیرفعال‌سازی حالت محرمانه
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label">لیست استثنا — افرادی که همیشه تیک آبی بخوره (اختیاری)</label>
-          <input type="text" id="ghostExcludeInput" class="input-field mono" placeholder="آیدی عددی یا یوزرنیم افرادی که می‌خواید تیک آبی برایشون فعال بمونه (با کاما جدا کنید)" dir="ltr">
+          <label class="form-label">لیست استثنا — کاربرانی که وضعیت خوانده‌شده ثبت شود (اختیاری)</label>
+          <input type="text" id="ghostExcludeInput" class="input-field mono" placeholder="شناسه عددی یا نام کاربری افراد مورد نظر (با ویرگول جدا کنید)" dir="ltr">
           <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">
-            💡 برای این افراد، تیک آبی به صورت عادی کار می‌کنه و حالت شبح روی اونا اعمال نمی‌شه.
+            💡 برای کاربران حاضر در این فهرست، وضعیت خوانده‌شدن به صورت عادی ثبت شده و حالت محرمانه اعمال نمی‌گردد.
           </div>
         </div>
 
         <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid var(--accent-amber-border); border-radius: var(--radius-md); padding: 14px; margin-top: 14px;">
           <div style="font-size: 0.8rem; color: var(--accent-amber); line-height: 1.7;">
-            ⚠️ <b>نکته مهم:</b> حالت شبح فقط زمانی کار می‌کنه که پیام‌ها رو از طریق <b>ربات</b> بخونید. اگر چت رو مستقیم توی اپلیکیشن تلگرام باز کنید، تیک آبی از طرف اپلیکیشن ارسال می‌شه.
+            ⚠️ <b>توجه مهم:</b> حالت محرمانه زمانی عمل می‌کند که پیام‌ها را از طریق <b>ربات پشتیبان</b> مطالعه فرمایید. در صورت گشودن گفتگو در اپلیکیشن اصلی تلگرام، وضعیت خوانده‌شده توسط خود نرم‌افزار اعمال خواهد شد.
           </div>
         </div>
       </div>
 
-      <!-- 🤖 تب ۷: پاسخ هوشمند مبتنی بر AI (Smart AI Auto-Reply) -->
+      <!-- 🤖 تب ۷: پاسخ هوشمند مبتنی بر هوش مصنوعی (AI Smart Reply) -->
       <div id="studioPaneAI" class="hidden">
         <div style="background: linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(244, 63, 94, 0.12) 100%); border: 1px solid var(--accent-purple-border); border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px;">
           <div style="font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
             <span>🤖</span> <span>پاسخ هوشمند مبتنی بر هوش مصنوعی (AI Smart Reply)</span>
           </div>
           <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.7;">
-            به جای یک پیام ثابت AFK، هوش مصنوعی <b>متناسب با محتوای پیام</b> به مخاطبین پاسخ می‌دهد. هر کاربر API Key خودش رو وارد می‌کنه و هزینه‌ای برای سرور نداره.
+            به جای ارسال پاسخ متنی ثابت، هوش مصنوعی متناسب با محتوای پیام مخاطب پاسخی سنجیده ارسال می‌نماید. هر کاربر کلید اختصاصی API خود را وارد نموده و تعاملات به صورت کاملاً مستقل انجام می‌پذیرد.
           </div>
         </div>
 
         <div class="toggle-row" style="margin-bottom:18px;">
           <div>
-            <div class="toggle-label">فعال‌سازی پاسخ هوشمند AI (جایگزین AFK ثابت)</div>
-            <div class="toggle-desc">وقتی فعال باشه، AI به جای پیام ثابت منشی، هوشمندانه پاسخ می‌دهد</div>
+            <div class="toggle-label">فعال‌سازی پاسخ هوشمند مبتنی بر هوش مصنوعی</div>
+            <div class="toggle-desc">هنگام فعال بودن، هوش مصنوعی متناسب با پیام دریافتی پاسخ‌دهی می‌نماید</div>
           </div>
           <label class="switch">
             <input type="checkbox" id="aiReplyToggle">
@@ -4118,11 +4429,11 @@ export function panelHTML(env, options = {}) {
         </div>
 
         <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 18px; font-size: 0.8rem; color: var(--text-main); line-height: 1.7;">
-          🛡️ <b>پایش پیشرفته سنسورهای آنلاین/آفلاین:</b> هوش مصنوعی تنها زمانی پاسخ می‌دهد که <b>آفلاین واقعی</b> باشید. وضعیت نشست‌های زنده تلگرام (موبایل و کامپیوتر)، فعالیت در چت‌های ۱۰ دقیقه اخیر، و صف انتظار ۱۲ ثانیه‌ای مانع از تداخل هوش مصنوعی با گفتگوهای شما می‌شود.
+          🛡️ <b>سیستم پیشرفته تشخیص حضور:</b> هوش مصنوعی تنها در زمان عدم حضور و آفلاین بودن شما به پیام‌ها پاسخ می‌دهد. بررسی وضعیت نشست‌های فعال (موبایل و دسکتاپ)، وقفه مکالمات در ۱۰ دقیقه اخیر و بازه اطمینان ۱۲ ثانیه‌ای، مانع از هرگونه تداخل با گفتگوهای زنده شما می‌گردد.
         </div>
 
         <div class="form-group">
-          <label class="form-label">سرویس‌دهنده هوش مصنوعی (AI Provider)</label>
+          <label class="form-label">ارائه‌دهنده سرویس هوش مصنوعی (AI Provider)</label>
           <select id="aiProviderSelect" class="input-field" style="background:var(--bg-input);">
             <option value="gemini" selected>Google Gemini (رایگان — پیشنهادی)</option>
             <option value="openai">OpenAI (GPT-4o / GPT-3.5)</option>
@@ -4146,15 +4457,15 @@ export function panelHTML(env, options = {}) {
           <div id="aiCustomModelWrapper" style="display:none; margin-top:8px;">
             <input type="text" id="aiCustomModelInput" class="input-field mono" placeholder="نام دقیق مدل (مثال: deepseek-chat یا gemini-2.5-flash یا gpt-4o)" dir="ltr">
             <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">
-              💡 نام شناسه مدل اختصاصی یا آزمایشی ارائه‌دهنده را با حروف کوچک انگلیسی وارد فرمایید.
+              💡 شناسه مدل اختصاصی یا سفارشی ارائه‌دهنده را با حروف کوچک انگلیسی وارد فرمایید.
             </div>
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label">کلید API هوش مصنوعی (API Key)</label>
+          <label class="form-label">کلید دسترسی سرویس هوش مصنوعی (API Key)</label>
           <div style="position:relative; display:flex; align-items:center;">
-            <input type="password" id="aiApiKeyInput" class="input-field mono" placeholder="کلید API خود را از پنل Gemini یا OpenAI دریافت و اینجا وارد کنید" dir="ltr" style="padding-left:40px;">
+            <input type="password" id="aiApiKeyInput" class="input-field mono" placeholder="کلید API دریافت شده از پنل سرویس‌دهنده را اینجا وارد نمایید" dir="ltr" style="padding-left:40px;">
             <button type="button" id="btnToggleAiKeyVisibility" style="position:absolute; left:10px; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:1.1rem; padding:4px;" title="نمایش / مخفی‌سازی کلید">👁️</button>
           </div>
           <div class="ai-key-toolbar">
@@ -4172,7 +4483,7 @@ export function panelHTML(env, options = {}) {
           <div class="ai-key-helper-card">
             <div style="display:flex; align-items:center; gap:6px; color:var(--text-muted);">
               <span>💡</span>
-              <span style="font-weight:600;">دریافت رایگان کلید API:</span>
+              <span style="font-weight:600;">دریافت مستقیم کلید API:</span>
             </div>
             <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
               <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer" class="ai-key-link-badge">
@@ -4190,18 +4501,18 @@ export function panelHTML(env, options = {}) {
         </div>
 
         <div class="form-group">
-          <label class="form-label">شخصیت و دستورالعمل AI (System Prompt)</label>
-          <textarea id="aiSystemPromptInput" class="input-field" rows="3" placeholder="به AI بگویید چطور رفتار کنه (مثلاً: مؤدبانه و رسمی پاسخ بده، از اطلاعات خصوصی صحبت نکنه)"></textarea>
+          <label class="form-label">دستورالعمل و لحن هوش مصنوعی (System Prompt)</label>
+          <textarea id="aiSystemPromptInput" class="input-field" rows="3" placeholder="تعیین شیوه پاسخ‌دهی و لحن هوش مصنوعی (مثال: محترمانه و رسمی پاسخ بده و اطلاعات تماس را ثبت نما)"></textarea>
           <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">
-            💡 حداکثر ۵۰۰ کاراکتر. این متن شخصیت AI را تعیین می‌کند.
+            💡 حداکثر ۵۰۰ کاراکتر. این متن لحن و چارچوب پاسخ‌دهی را تعیین می‌کند.
           </div>
         </div>
 
         <div class="form-group">
-          <label class="form-label">اطلاعات پایه برای AI (زمینه و کانتکست)</label>
-          <textarea id="aiContextInput" class="input-field" rows="3" placeholder="اطلاعاتی که AI اجازه داره بگه (مثلاً: ساعت کاری من ۹ تا ۵ هست، برنامه‌نویس هستم)"></textarea>
+          <label class="form-label">اطلاعات تکمیلی و ساعات کاری (Context)</label>
+          <textarea id="aiContextInput" class="input-field" rows="3" placeholder="اطلاعات تکمیلی جهت آگاهی هوش مصنوعی (مثال: ساعات پاسخگویی از ۹ الی ۱۷ است)"></textarea>
           <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">
-            💡 AI از این اطلاعات برای پاسخ دقیق‌تر استفاده می‌کند.
+            💡 هوش مصنوعی از این اطلاعات برای پاسخ‌دهی هماهنگ و متناسب استفاده می‌نماید.
           </div>
         </div>
 
@@ -4288,14 +4599,14 @@ export function panelHTML(env, options = {}) {
         </div>
       </div>
 
-      <!-- 🤖 تب ۸: ربات اختصاصی و لاگر پیشرفته تلگرام (Telegram Mini App & Loggers) -->
+      <!-- 🤖 تب ۸: ربات دستیار و ثبت گزارش‌ها (Telegram Bot & Loggers) -->
       <div id="studioPaneBot" class="hidden">
         <div style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%); border: 1px solid var(--border-specular); border-radius: var(--radius-md); padding: 18px; margin-bottom: 20px;">
           <div style="font-size: 0.98rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
-            <span>🤖</span> <span>اتصال ربات دستیار اختصاصی تلگرام (BotFather API)</span>
+            <span>🤖</span> <span>اتصال ربات دستیار شخصی تلگرام (BotFather API)</span>
           </div>
           <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.7;">
-            ⚠️ <b>قانون انحصار و امنیت:</b> هر کاربر باید در <b>@BotFather</b> ربات اختصاصی و مجزای خود را بسازد و توکن آن را وارد کند. به منظور حفظ کامل حریم خصوصی و امنیت حساب، این ربات منحصراً به مالک حساب پاسخ می‌دهد و دسترسی هر فرد دیگری به پیام‌ها یا دستورات ربات به طور کامل مسدود و غیرمجاز است.
+            ⚠️ <b>حریم خصوصی و امنیت اطلاعات:</b> هر کاربر می‌تواند ربات اختصاصی خود را در BotFather@ ایجاد کرده و توکن آن را ثبت نماید. به جهت حفظ کامل حریم خصوصی، این ربات منحصراً به شناسه کاربری شما پاسخ داده و دسترسی سایر افراد به آن غیرمجاز و مسدود خواهد بود.
           </div>
         </div>
 
@@ -4338,7 +4649,7 @@ export function panelHTML(env, options = {}) {
           </div>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 0.78rem;">
             <div style="background: var(--bg-surface-hover); color: var(--text-main); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-subtle);">
-              🟢 <b>وضعیت وب‌هوک:</b> متصل و فعال
+              🟢 <b>وضعیت ارتباط:</b> متصل و فعال
             </div>
             <div style="background: var(--bg-surface-hover); color: var(--text-main); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-subtle);">
               🎛️ <b>ورود به پنل (Mini App):</b> دکمه منو فعال شد
@@ -4349,7 +4660,7 @@ export function panelHTML(env, options = {}) {
               <span style="font-size:1.1rem;">🔒</span>
               <div>
                 <div style="font-size:0.82rem; font-weight:700; color:var(--text-main);">امنیت انحصاری (مخصوص شما):</div>
-                <div style="font-size:0.75rem; color:var(--text-muted);" id="botLockStatusText">ربات منحصراً به شناسه تلگرام شما پاسخ می‌دهد و برای بقیه مسدود است.</div>
+                <div style="font-size:0.75rem; color:var(--text-muted);" id="botLockStatusText">ربات منحصراً به شناسه تلگرام شما پاسخ می‌دهد و برای سایرین مسدود است.</div>
               </div>
             </div>
             <div style="display:flex; align-items:center; gap:6px;">
@@ -4362,15 +4673,15 @@ export function panelHTML(env, options = {}) {
             </div>
           </div>
           <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 10px; line-height: 1.6;">
-            💡 <b>نکته:</b> پس از اتصال، یک‌بار وارد ربات تلگرام خود شده و دستور <code>/start</code> را بفرستید تا ربات منحصراً به اکانت شما قفل شده و پنل گرافیکی داخل تلگرام فعال شود.
+            💡 <b>نکته:</b> پس از اتصال، یک‌بار وارد ربات تلگرام خود شده و دستور <code>/start</code> را ارسال نمایید تا ربات منحصراً به حساب کاربری شما متصل گردد.
           </div>
         </div>
 
         <!-- سوییچ ۱: ضد حذف پیام (Anti-Delete) -->
         <div class="toggle-row" style="margin-bottom:14px;">
           <div>
-            <div class="toggle-label">🗑️ سطل زباله و ضد حذف پیام‌های پیوی (Anti-Delete)</div>
-            <div class="toggle-desc">اگر شخصی در پیوی پیامی را پاک کند، متن یا رسانه ذخیره شده فوراً به ربات اختصاصی شما ارسال می‌شود</div>
+            <div class="toggle-label">🗑️ بایگانی خودکار پیام‌های حذف‌شده (Anti-Delete)</div>
+            <div class="toggle-desc">در صورت حذف پیام یا رسانه توسط مخاطب، نسخه ذخیره‌شده بلافاصله جهت آگاهی به ربات پشتیبان شما ارسال می‌شود</div>
           </div>
           <label class="switch">
             <input type="checkbox" id="botAntiDeleteToggle" checked>
@@ -4381,8 +4692,8 @@ export function panelHTML(env, options = {}) {
         <!-- سوییچ ۲: ضد ویرایش پیام (Anti-Edit) -->
         <div class="toggle-row" style="margin-bottom:14px;">
           <div>
-            <div class="toggle-label">✏️ مانیتور و ضد ویرایش پیام‌های پیوی (Anti-Edit)</div>
-            <div class="toggle-desc">اگر شخصی پیامی را تغییر دهد، متن قبل از ویرایش و متن جدید در ربات تلگرام به شما نمایش داده می‌شود</div>
+            <div class="toggle-label">✏️ ثبت تاریخچه ویرایش پیام‌ها (Anti-Edit)</div>
+            <div class="toggle-desc">در صورت ویرایش پیام توسط مخاطب، متن اولیه به همراه متن جدید در ربات پشتیبان ثبت می‌گردد</div>
           </div>
           <label class="switch">
             <input type="checkbox" id="botAntiEditToggle" checked>
@@ -4393,8 +4704,8 @@ export function panelHTML(env, options = {}) {
         <!-- سوییچ ۳: نجات رسانه‌های زمان‌دار (Anti-TTL) -->
         <div class="toggle-row" style="margin-bottom:18px;">
           <div>
-            <div class="toggle-label">📸 نجات و ارسال رسانه‌های زمان‌دار به ربات (Anti-TTL)</div>
-            <div class="toggle-desc">تصاویر، فیلم‌ها و ویس‌های محوشونده (View-Once) مستقیماً به پیوی ربات اختصاصی شما ارسال می‌شوند</div>
+            <div class="toggle-label">📸 ذخیره‌سازی هوشمند رسانه‌های زمان‌دار (Anti-TTL)</div>
+            <div class="toggle-desc">تصاویر، ویدیوها و پیام‌های صوتی دارای محدودیت زمانی (View-Once) مستقیماً به ربات پشتیبان شما ارسال و ذخیره می‌شوند</div>
           </div>
           <label class="switch">
             <input type="checkbox" id="botForwardTtlToggle" checked>
@@ -4403,15 +4714,15 @@ export function panelHTML(env, options = {}) {
         </div>
       </div>
 
-      <!-- 🔐 تب ۹: امنیت پیشرفته، احراز هویت دو مرحله‌ای (2FA) و مدیریت پشتیبان -->
+      <!-- 🔐 تب ۹: امنیت حساب کاربری و ورود دو مرحله‌ای -->
       <div id="studioPaneSecurity" class="hidden">
         <!-- هدر معرفی بخش امنیت -->
         <div style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(16, 185, 129, 0.12) 100%); border: 1px solid var(--accent-indigo-border); border-radius: var(--radius-md); padding: 18px; margin-bottom: 20px;">
           <div style="font-size: 0.98rem; font-weight: 800; color: var(--text-main); margin-bottom: 6px; display: flex; align-items: center; gap: 8px;">
-            <span>🛡️</span> <span>سپر امنیتی پیشرفته Arizo Self & Zero-Trust</span>
+            <span>🛡️</span> <span>امنیت حساب کاربری و تنظیمات ورود دو مرحله‌ای</span>
           </div>
           <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.7;">
-            حساب کاربری شما تحت حفاظت لایه‌های دفاعی چندگانه شامل رمزنگاری کوانتوم‌امن، تله‌های دفاعی Honeypot، سنسورهای تشخیص نفوذ و احراز هویت دوعاملی (TOTP) قرار دارد.
+            حساب کاربری شما با استانداردهای امنیتی، رمزنگاری پیشرفته داده‌ها و امکان ورود دوعاملی (TOTP) محافظت می‌شود.
           </div>
         </div>
 
@@ -4421,8 +4732,8 @@ export function panelHTML(env, options = {}) {
             <div style="display:flex; align-items:center; gap:8px;">
               <span style="font-size:1.3rem;">📱</span>
               <div>
-                <div style="font-weight:700; font-size:0.92rem; color:var(--text-main);">احراز هویت دو مرحله‌ای (Google Authenticator / 2FA)</div>
-                <div style="font-size:0.75rem; color:var(--text-muted);">محافظت از حساب در برابر نفوذ با کدهای ۶ رقمی زمان‌محور</div>
+                <div style="font-weight:700; font-size:0.92rem; color:var(--text-main);">ورود دو مرحله‌ای (Google Authenticator / 2FA)</div>
+                <div style="font-size:0.75rem; color:var(--text-muted);">محافظت از حساب با کدهای ۶ رقمی زمان‌محور</div>
               </div>
             </div>
             <div id="totpStatusBadge" style="padding:4px 12px; border-radius:999px; font-size:0.78rem; font-weight:700; background:var(--accent-rose-bg); color:var(--accent-rose); border:1px solid var(--accent-rose-border);">
@@ -4568,39 +4879,39 @@ export function panelHTML(env, options = {}) {
           </div>
         </div>
 
-        <!-- کارت ۳: سنسورهای Zero-Trust Honeypot و دفاع سایبری -->
+        <!-- کارت ۳: سیستم محافظت در برابر نفوذ و مسدودسازی خودکار -->
         <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
             <div style="display:flex; align-items:center; gap:8px;">
-              <span style="font-size:1.3rem;">🍯</span>
+              <span style="font-size:1.3rem;">🛡️</span>
               <div>
-                <div style="font-weight:700; font-size:0.92rem; color:var(--text-main);">تله‌های دفاعی و حسگر هانی‌پات (Zero-Trust Honeypot)</div>
-                <div style="font-size:0.75rem; color:var(--text-muted);">مسدودسازی خودکار آی‌پی‌های مشکوک و پویشگران آسیب‌پذیری وب</div>
+                <div style="font-weight:700; font-size:0.92rem; color:var(--text-main);">سیستم پایش و محافظت در برابر نفوذ</div>
+                <div style="font-size:0.75rem; color:var(--text-muted);">مسدودسازی خودکار درخواست‌های غیرمجاز و پویشگران امنیتی</div>
               </div>
             </div>
             <div style="padding:4px 12px; border-radius:999px; font-size:0.78rem; font-weight:700; background:var(--accent-green-bg); color:var(--accent-green); border:1px solid var(--accent-green-border);">
-              فعال و هوشیار 🟢
+              فعال 🟢
             </div>
           </div>
           <div style="font-size:0.78rem; color:var(--text-muted); line-height:1.7;">
-            ترافیک‌های اسکنر مانند تلاش برای دسترسی به مسیرهای فرضی ادمین، کدهای شل، فایل‌های دات‌ان‌وی و باگ‌های شناخته‌شده، بلافاصله در لبه شبکه Cloudflare مسدود شده و در لاگ‌های امنیتی ثبت می‌گردند.
+            درخواست‌های مشکوک و تلاش‌های غیرمجاز برای دسترسی به مسیرهای نامعتبر، بلافاصله در لبه شبکه ابری مسدود شده و گزارش آن در لاگ‌های امنیتی سامانه ثبت می‌گردد.
           </div>
         </div>
       </div>
 
-      <!-- 🧭 نوار پیمایش هوشمند بین قابلیت‌های استودیو (Studio Feature Stepper & Navigator) -->
+      <!-- 🧭 نوار پیمایش بین تب‌های استودیو (Studio Feature Stepper) -->
       <div class="studio-nav-bar">
         <button type="button" class="studio-nav-btn prev" id="studioNavPrev" onclick="navigateStudioStep(-1)">
           <span class="nav-arrow">◀</span>
           <div class="nav-btn-text">
-            <span class="nav-btn-sub" data-i18n="stepPrev">قابلیت قبلی</span>
-            <span class="nav-btn-title" id="studioNavPrevTitle">ساعت و استایل</span>
+            <span class="nav-btn-sub" data-i18n="stepPrev">بخش قبلی</span>
+            <span class="nav-btn-title" id="studioNavPrevTitle">ساعت و قالب نوشتاری</span>
           </div>
         </button>
 
         <div class="studio-nav-center">
           <div class="studio-nav-counter">
-            <span id="studioNavCurrentTitle" style="color:var(--text-main); font-weight:800; font-size:0.83rem;">🕒 ساعت و استایل</span>
+            <span id="studioNavCurrentTitle" style="color:var(--text-main); font-weight:800; font-size:0.83rem;">🕒 ساعت و قالب نوشتاری</span>
             <span style="opacity:0.6; font-size:0.75rem;"> (<span id="studioNavCurrentStep">۱</span> <span data-i18n="stepOf">از</span> ۹)</span>
           </div>
           <div class="studio-nav-dots" id="studioNavDots"></div>
@@ -4608,7 +4919,7 @@ export function panelHTML(env, options = {}) {
 
         <button type="button" class="studio-nav-btn next" id="studioNavNext" onclick="navigateStudioStep(1)">
           <div class="nav-btn-text">
-            <span class="nav-btn-sub" data-i18n="stepNext">قابلیت بعدی</span>
+            <span class="nav-btn-sub" data-i18n="stepNext">بخش بعدی</span>
             <span class="nav-btn-title" id="studioNavNextTitle">بیوگرافی زنده</span>
           </div>
           <span class="nav-arrow">▶</span>
@@ -4884,18 +5195,18 @@ export function panelHTML(env, options = {}) {
             </div>
           </div>
 
-          <!-- ۱۲. سیستم دفاع فعال هانی‌پات -->
+          <!-- ۱۲. سیستم پایش و مهار دسترسی‌های غیرمجاز -->
           <div class="feature-card-item">
             <div class="feature-item-icon">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
             </div>
             <div class="feature-item-body">
               <div class="feature-item-top">
-                <span class="feature-item-title">دفاع فعال هانی‌پات (Honeypot)</span>
-                <span class="feature-item-badge">تله امنیتی و بلاک IP</span>
+                <span class="feature-item-title">پایش امنیتی و مهار دسترسی‌های مشکوک</span>
+                <span class="feature-item-badge">فایروال و مسدودسازی خودکار</span>
               </div>
               <div class="feature-item-desc">
-                کشف و مهار اسکنرهای مخرب روی روت‌های حساس، مسدودسازی آنی IP نفوذگر و ارسال گزارش حمله به ربات تلگرام.
+                شناسایی خودکار درخواست‌های نامعتبر، مسدودسازی سریع آی‌پی‌های مشکوک و ارسال اعلان‌های امنیتی به حساب کاربری.
               </div>
             </div>
           </div>
@@ -5021,37 +5332,37 @@ export function panelHTML(env, options = {}) {
     </div>
   </div>
 
-  <!-- 🪟 مودال تنظیمات کاربر -->
+  <!-- 🪟 مودال تنظیمات حساب کاربری -->
   <div id="settingsModal" class="modal-backdrop hidden">
     <div class="modal-container">
       <div class="modal-head">
-        <div class="modal-heading" data-i18n="settingsHeading">⚙️ تنظیمات و امنیت حساب Arizo Self</div>
+        <div class="modal-heading" data-i18n="settingsHeading">⚙️ تنظیمات و امنیت حساب کاربری</div>
         <button class="btn-close" onclick="closeSettingsModal()">&times;</button>
       </div>
 
       <!-- تمدید اشتراک با ردیم‌کد -->
       <div style="background: var(--accent-purple-bg); border: 1px solid var(--accent-purple-border); border-radius: 14px; padding: 16px; margin-bottom: 20px;">
-        <div style="font-size:0.88rem; font-weight:700; color:var(--accent-purple); margin-bottom:10px;" data-i18n="redeemExtendTitle">🎟️ تمدید اعتبار با ردیم‌کد جدید Arizo</div>
+        <div style="font-size:0.88rem; font-weight:700; color:var(--accent-purple); margin-bottom:10px;" data-i18n="redeemExtendTitle">🎟️ تمدید اعتبار اشتراک با کد لایسنس</div>
         <div class="input-action-row">
-          <input type="text" id="extendCodeInput" class="input-field mono" placeholder="کد لایسنس تمدید (مثال: ARIZO-XXXX-XXXX-XXXX)" style="text-transform: uppercase;" data-i18n-placeholder="extendPlaceholder">
+          <input type="text" id="extendCodeInput" class="input-field mono" placeholder="کد لایسنس جدید (مثال: ARIZO-XXXX-XXXX-XXXX)" style="text-transform: uppercase;" data-i18n-placeholder="extendPlaceholder">
           <button class="btn btn-secondary" onclick="doRedeemExtend()" style="color:var(--accent-purple); border-color:var(--accent-purple-border); white-space:nowrap;">
-            <span data-i18n="extendBtn">تمدید و شارژ اشتراک</span>
+            <span data-i18n="extendBtn">تمدید و افزایش اعتبار</span>
           </button>
         </div>
       </div>
 
       <!-- تغییر پسورد -->
       <div style="margin-bottom: 24px;">
-        <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px; color: var(--accent-indigo);" data-i18n="changePassTitle">🔑 تغییر رمز عبور ورود</div>
+        <div style="font-size: 0.9rem; font-weight: 700; margin-bottom: 12px; color: var(--accent-indigo);" data-i18n="changePassTitle">🔑 تغییر گذرواژه ورود</div>
         <div class="form-group">
-          <label class="form-label" data-i18n="oldPassLabel">رمز عبور فعلی</label>
-          <input type="password" id="oldPassInput" class="input-field" placeholder="رمز عبور فعلی حساب شما" data-i18n-placeholder="oldPassPlaceholder">
+          <label class="form-label" data-i18n="oldPassLabel">گذرواژه فعلی</label>
+          <input type="password" id="oldPassInput" class="input-field" placeholder="گذرواژه فعلی حساب کاربری شما" data-i18n-placeholder="oldPassPlaceholder">
         </div>
         <div class="form-group">
-          <label class="form-label" data-i18n="newPassLabel">رمز عبور جدید (حداقل ۸ کاراکتر)</label>
-          <input type="password" id="newPassInput" class="input-field" placeholder="رمز عبور جدید و امن (حداقل ۸ کاراکتر)" data-i18n-placeholder="newPassPlaceholder">
+          <label class="form-label" data-i18n="newPassLabel">گذرواژه جدید (حداقل ۸ کاراکتر)</label>
+          <input type="password" id="newPassInput" class="input-field" placeholder="گذرواژه جدید و امن (حداقل ۸ کاراکتر)" data-i18n-placeholder="newPassPlaceholder">
         </div>
-        <button class="btn btn-secondary" onclick="doChangePassword()" data-i18n="savePassBtn">ثبت رمز عبور جدید</button>
+        <button class="btn btn-secondary" onclick="doChangePassword()" data-i18n="savePassBtn">ذخیره گذرواژه جدید</button>
       </div>
 
       <hr style="border: 0; border-top: 1px solid var(--border-subtle); margin-bottom: 20px;">
@@ -5059,10 +5370,46 @@ export function panelHTML(env, options = {}) {
       <!-- عملیات حساس -->
       <div style="display: flex; flex-direction: column; gap: 10px;">
         <button class="btn btn-secondary" onclick="doDisconnectTelegram()" style="color:var(--accent-amber);">
-          <span data-i18n="disconnectTgBtn">🔌 قطع اتصال حساب تلگرام</span>
+          <span data-i18n="disconnectTgBtn">🔌 قطع ارتباط با حساب تلگرام</span>
         </button>
         <button class="btn btn-danger" onclick="doDeleteAccount()">
-          <span data-i18n="deleteAccountBtn">🗑️ حذف کامل حساب کاربری و تمام داده‌ها</span>
+          <span data-i18n="deleteAccountBtn">🗑️ حذف کامل حساب کاربری و اطلاعات</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🎟️ مودال اختصاصی تمدید و ارتقای اشتراک (License Renewal Modal) -->
+  <div id="licenseRenewalModal" class="modal-backdrop hidden" onclick="if(event.target === this) closeLicenseModal();">
+    <div class="modal-container" onclick="event.stopPropagation();" style="max-width: 490px;">
+      <div class="modal-head">
+        <div class="modal-heading" style="display:flex; align-items:center; gap:8px;">
+          <span>🎟️</span>
+          <span data-i18n="licenseModalTitle">تمدید و ارتقای اشتراک حساب کاربری</span>
+        </div>
+        <button class="btn-close" onclick="closeLicenseModal()">&times;</button>
+      </div>
+
+      <div style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(168, 85, 247, 0.12) 100%); border: 1px solid var(--accent-indigo-border); border-radius: var(--radius-md); padding: 16px; margin-bottom: 20px;">
+        <div style="font-size: 0.88rem; font-weight: 700; color: var(--text-main); margin-bottom: 6px;" data-i18n="licenseModalDescTitle">
+          فعال‌سازی کد اشتراک جدید
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.6;" data-i18n="licenseModalDesc">
+          کد لایسنس دریافتی از پشتیبانی را در کادر زیر وارد فرمایید. پس از ثبت، مدت زمان اعتبار و امکانات مربوطه بلافاصله به حساب شما اعمال خواهد شد.
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 18px;">
+        <label class="form-label" data-i18n="licenseModalInputLabel">کد لایسنس اشتراک (کد فعال‌سازی)</label>
+        <input type="text" id="modalRenewCodeInput" class="input-field mono" placeholder="ARIZO-XXXX-XXXX-XXXX" style="text-transform: uppercase; font-weight: 700; letter-spacing: 1px;" data-i18n-placeholder="licenseModalInputPlaceholder">
+      </div>
+
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button type="button" class="btn btn-secondary" onclick="closeLicenseModal()" data-i18n="licenseModalCancel">
+          انصراف
+        </button>
+        <button type="button" class="btn btn-primary" id="btnModalRedeem" onclick="doModalRedeemLicense()">
+          <span data-i18n="licenseModalSubmit">ثبت و افزایش اعتبار</span>
         </button>
       </div>
     </div>
@@ -5477,23 +5824,62 @@ export function panelHTML(env, options = {}) {
       '✏️ تنظیم شناسه': '✏️ Set ID',
       'پس از اتصال، یک‌بار وارد ربات تلگرام خود شده و دستور': 'After connecting, open your Telegram bot once and send the',
       'را بفرستید تا ربات منحصراً به اکانت شما قفل شده و پنل گرافیکی داخل تلگرام فعال شود.': 'command to lock the bot to your account and activate the inline graphical panel.',
-      'سطل زباله و ضد حذف پیام‌های پیوی (Anti-Delete)': 'Private Chat Trash & Anti-Delete Messages (Anti-Delete)',
-      '🗑️ سطل زباله و ضد حذف پیام‌های پیوی (Anti-Delete)': '🗑️ Private Chat Trash & Anti-Delete Messages (Anti-Delete)',
-      'اگر شخصی در پیوی پیامی را پاک کند، متن یا رسانه ذخیره شده فوراً به ربات اختصاصی شما ارسال می‌شود': 'If someone deletes a private message, the saved text or media is immediately forwarded to your dedicated bot',
-      'مانیتور و ضد ویرایش پیام‌های پیوی (Anti-Edit)': 'Private Chat Anti-Edit & Edit Monitoring (Anti-Edit)',
-      '✏️ مانیتور و ضد ویرایش پیام‌های پیوی (Anti-Edit)': '✏️ Private Chat Anti-Edit & Edit Monitoring (Anti-Edit)',
-      'اگر شخصی پیامی را تغییر دهد، متن قبل از ویرایش و متن جدید در ربات تلگرام به شما نمایش داده می‌شود': 'If someone edits a message, both original and modified versions appear in your Telegram bot',
-      'نجات و ارسال رسانه‌های زمان‌دار به ربات (Anti-TTL)': 'Save & Forward View-Once Media to Bot (Anti-TTL)',
-      '📸 نجات و ارسال رسانه‌های زمان‌دار به ربات (Anti-TTL)': '📸 Save & Forward View-Once Media to Bot (Anti-TTL)',
-      'تصاویر، فیلم‌ها و ویس‌های محوشونده (View-Once) مستقیماً به پیوی ربات اختصاصی شما ارسال می‌شوند': 'Expiring photos, videos, and voice notes (View-Once) are sent directly to your bot before deletion',
+      'بایگانی خودکار پیام‌های حذف‌شده (Anti-Delete)': 'Automatic Archive of Deleted Messages (Anti-Delete)',
+      '🗑️ بایگانی خودکار پیام‌های حذف‌شده (Anti-Delete)': '🗑️ Automatic Archive of Deleted Messages (Anti-Delete)',
+      'اگر شخصی در پیوی پیامی را پاک کند، متن یا رسانه ذخیره شده فوراً به ربات اختصاصی شما ارسال می‌شود': 'If a contact deletes a private message, the saved text or media is immediately forwarded to your dedicated assistant bot',
+      'ثبت تاریخچه ویرایش پیام‌ها (Anti-Edit)': 'Message Edit History & Tracker (Anti-Edit)',
+      '✏️ ثبت تاریخچه ویرایش پیام‌ها (Anti-Edit)': '✏️ Message Edit History & Tracker (Anti-Edit)',
+      'اگر شخصی پیامی را تغییر دهد، متن قبل از ویرایش و متن جدید در ربات تلگرام به شما نمایش داده می‌شود': 'If someone edits a message, both original and modified versions appear in your Telegram bot with precise timestamp',
+      'ذخیره‌سازی هوشمند رسانه‌های زمان‌دار (Anti-TTL)': 'Secure Storage for View-Once Media (Anti-TTL)',
+      '📸 ذخیره‌سازی هوشمند رسانه‌های زمان‌دار (Anti-TTL)': '📸 Secure Storage for View-Once Media (Anti-TTL)',
+      'تصاویر، فیلم‌ها و ویس‌های محوشونده (View-Once) مستقیماً به پیوی ربات اختصاصی شما ارسال می‌شوند': 'Expiring photos, videos, and voice notes (View-Once) are archived directly to your bot before disappearing',
       'ربات و لاگر': 'Bot & Logger',
 
       // 🔐 Security & 2FA (Tab 9)
-      'سپر امنیتی پیشرفته Arizo Self & Zero-Trust': 'Arizo Self & Zero-Trust Advanced Security Shield',
-      'حساب کاربری شما تحت حفاظت لایه‌های دفاعی چندگانه شامل رمزنگاری کوانتوم‌امن، تله‌های دفاعی Honeypot، سنسورهای تشخیص نفوذ و احراز هویت دوعاملی (TOTP) قرار دارد.': 'Your account is protected by multi-layered defenses including quantum-safe encryption, honeypot traps, intrusion detection sensors, and two-factor authentication (TOTP).',
+      'امنیت حساب کاربری و تنظیمات ورود دو مرحله‌ای': 'Account Security & Two-Factor Authentication (2FA)',
+      'حساب کاربری شما مجهز به سیستم‌های حفاظتی چندلایه شامل رمزنگاری اطلاعات، پایش نشست‌های فعال و احراز هویت دومرحله‌ای (TOTP) جهت جلوگیری از دسترسی‌های غیرمجاز می‌باشد.': 'Your account is fortified with multi-layered defenses including credential encryption, session auditing, and Two-Factor Authentication (TOTP) to prevent unauthorized access.',
       'احراز هویت دو مرحله‌ای (Google Authenticator / 2FA)': 'Two-Factor Authentication (Google Authenticator / 2FA)',
       'محافظت از حساب در برابر نفوذ با کدهای ۶ رقمی زمان‌محور': 'Protect account from intrusion using time-based 6-digit verification codes',
       'امنیت و ۲FA': 'Security & 2FA',
+      'پایش امنیتی و مهار دسترسی‌های مشکوک': 'Security Auditing & Threat Mitigation',
+      'فایروال و مسدودسازی خودکار': 'Firewall & Auto-Mitigation',
+      'شناسایی خودکار درخواست‌های نامعتبر، مسدودسازی سریع آی‌پی‌های مشکوک و ارسال اعلان‌های امنیتی به حساب کاربری.': 'Automatic detection of invalid requests, instant suspension of suspicious IPs, and security incident alerts.',
+
+      // 💎 وضعیت اشتراک و تمدید لایسنس در بالای سایت (Top Subscription & Validity)
+      'حساب کاربری:': 'Account:',
+      'تمدید یا ارتقای اشتراک': 'Renew or Upgrade Plan',
+      'تمدید و ارتقای اشتراک': 'Renew & Upgrade Plan',
+      'تمدید و ارتقای اشتراک حساب کاربری': 'Renew & Upgrade Account Subscription',
+      'فعال‌سازی کد اشتراک جدید': 'Activate New License Code',
+      'کد لایسنس دریافتی از پشتیبانی را در کادر زیر وارد فرمایید. پس از ثبت، مدت زمان اعتبار و امکانات مربوطه بلافاصله به حساب شما اعمال خواهد شد.': 'Enter your license activation key received from support. Upon submission, the validity duration and tier privileges will be applied immediately to your account.',
+      'کد لایسنس اشتراک (کد فعال‌سازی)': 'Subscription License Code (Activation Key)',
+      'ثبت و افزایش اعتبار': 'Redeem & Extend Validity',
+      'مشاهده وضعیت اشتراک و تمدید لایسنس': 'View Subscription Status & Renew License',
+      'درحال بررسی اعتبار...': 'Verifying validity...',
+      'تاریخ پایان:': 'Expiration Date:',
+      'روز اعتبار باقی‌مانده': 'days remaining',
+      'روز تا پایان اعتبار اشتراک': 'days remaining until expiration',
+      'اشتراک دائمی و نامحدود ♾️': 'Unlimited Lifetime Access ♾️',
+      'اعتبار اشتراک به اتمام رسیده است': 'Subscription validity has ended',
+      'اعتبار اشتراک به پایان رسیده است': 'Subscription validity has ended',
+      'کاربر رسمی': 'Official Member',
+      'مدیر سیستم': 'System Administrator',
+      'طرح استاندارد': 'Standard Plan',
+      'فعال و معتبر 🟢': 'Active & Valid 🟢',
+      'منقضی شده 🔴': 'Expired 🔴',
+      'انصراف': 'Cancel',
+      'تمدید اعتبار اشتراک با کد لایسنس': 'Extend Validity with License Code',
+      'کد لایسنس جدید (مثال: ARIZO-XXXX-XXXX-XXXX)': 'New License Code (e.g. ARIZO-XXXX-XXXX-XXXX)',
+      'تمدید و افزایش اعتبار': 'Extend & Renew Validity',
+      'تغییر گذرواژه ورود': 'Change Account Password',
+      'گذرواژه فعلی': 'Current Password',
+      'گذرواژه فعلی حساب کاربری شما': 'Your current account password',
+      'گذرواژه جدید (حداقل ۸ کاراکتر)': 'New Password (Min 8 Characters)',
+      'گذرواژه جدید و امن (حداقل ۸ کاراکتر)': 'New strong password (Min 8 characters)',
+      'ذخیره گذرواژه جدید': 'Save New Password',
+      'قطع ارتباط با حساب تلگرام': 'Disconnect Telegram Account',
+      'حذف کامل حساب کاربری و اطلاعات': 'Permanently Delete Account & Data',
+      'تنظیمات و امنیت حساب کاربری': 'Account Settings & Security',
 
       // 🕒 AFK & General Studio Controls
       'منشی خودکار پیوی (AFK Auto-Secretary)': 'Private Chat Auto-Secretary (AFK Auto-Secretary)',
@@ -5709,8 +6095,8 @@ export function panelHTML(env, options = {}) {
       document.documentElement.setAttribute('dir', lang === 'en' ? 'ltr' : 'rtl');
 
       document.title = lang === 'en'
-        ? '⚡ Arizo Self | Intelligent Telegram Selfbot Studio & Cloud Management'
-        : '⚡ Arizo Self | پلتفرم استودیوی سلف‌بات هوشمند تلگرام و پنل مدیریت';
+        ? '⚡ Arizo Self | Telegram Cloud Automation & Management Platform'
+        : '⚡ Arizo Self | سامانه مدیریت ابری و اتوماسیون تلگرام';
 
       window.translateDOM(document.body, lang);
 
@@ -5751,6 +6137,9 @@ export function panelHTML(env, options = {}) {
       }
       if (typeof window.syncAiIgnoredHiddenInput === 'function') {
         window.syncAiIgnoredHiddenInput();
+      }
+      if (typeof window.updateSubscriptionUI === 'function' && window.lastUserData) {
+        window.updateSubscriptionUI(window.lastUserData);
       }
       
 
@@ -5908,7 +6297,7 @@ export function panelHTML(env, options = {}) {
 
     window.closeAdminPortal = function(preventHistory) {
       window.START_IN_ADMIN = false;
-      document.title = (window.currentLang === 'en' ? '⚡ Arizo Self | Intelligent Telegram Selfbot Studio & Cloud Management' : '⚡ Arizo Self | پلتفرم استودیوی سلف‌بات هوشمند تلگرام و پنل مدیریت');
+      document.title = (window.currentLang === 'en' ? '⚡ Arizo Self | Telegram Cloud Automation & Management Platform' : '⚡ Arizo Self | سامانه مدیریت ابری و اتوماسیون تلگرام');
       if (!preventHistory && window.location.pathname.startsWith('/admin')) {
         try { window.history.pushState({}, document.title, '/'); } catch (_) {}
       }
@@ -6827,6 +7216,247 @@ export function panelHTML(env, options = {}) {
         }
       } catch (e) {
         showToast('خطای شبکه', 'error');
+      }
+    };
+
+    // =========================================================================
+    // 💎 مدیریت شاخص اشتراک و مودال اختصاصی تمدید لایسنس (Subscription & License Modals)
+    // =========================================================================
+    window.openLicenseModal = function() {
+      var modal = document.getElementById('licenseRenewalModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        if (typeof window.translateDOM === 'function') {
+          window.translateDOM(modal, window.currentLang || 'fa');
+        }
+        var input = document.getElementById('modalRenewCodeInput');
+        if (input) {
+          input.value = '';
+          setTimeout(function() { input.focus(); }, 120);
+        }
+      }
+    };
+
+    window.closeLicenseModal = function() {
+      var modal = document.getElementById('licenseRenewalModal');
+      if (modal) modal.classList.add('hidden');
+    };
+
+    window.doModalRedeemLicense = async function() {
+      var input = document.getElementById('modalRenewCodeInput');
+      var code = input ? input.value.trim().toUpperCase() : '';
+      var isEn = window.currentLang === 'en';
+      if (!code) {
+        showToast(isEn ? 'Please enter the license code' : 'لطفاً کد لایسنس را وارد نمایید', 'error');
+        return;
+      }
+      var btn = document.getElementById('btnModalRedeem');
+      var origContent = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳ ' + (isEn ? 'Verifying & Activating...' : 'درحال بررسی و فعال‌سازی...') + '</span>';
+      }
+      try {
+        var res = await fetch('/api/user/redeem', {
+          method: 'POST',
+          headers: authHeaders(),
+          body: JSON.stringify({ licenseCode: code })
+        });
+        var data = await res.json();
+        if (data.ok) {
+          showToast(isEn ? 'Subscription successfully renewed! 🎉' : 'اشتراک کاربری شما با موفقیت تمدید و فعال گردید 🎉', 'success');
+          closeLicenseModal();
+          await loadUserDashboard();
+        } else {
+          showToast(data.error || (isEn ? 'Invalid or expired license code' : 'کد لایسنس نامعتبر یا منقضی شده است'), 'error');
+        }
+      } catch (e) {
+        showToast(isEn ? 'Network connection error' : 'خطای ارتباط با سرور، لطفاً مجدداً تلاش فرمایید', 'error');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = origContent;
+        }
+      }
+    };
+
+    window.updateSubscriptionUI = function(data) {
+      if (!data) return;
+      window.lastUserData = data;
+      var isEn = window.currentLang === 'en';
+
+      var isSuspended = !!(data.isSuspended || data.isExpired);
+      var isLifetime = !!data.isLifetime;
+      var rawDays = data.remainingDays;
+      var days = isLifetime ? Infinity : (typeof rawDays === 'number' ? rawDays : (parseInt(rawDays, 10) || 0));
+
+      var planName = data.planName || data.plan || (isEn ? 'Standard' : 'استاندارد');
+      var isVip = /vip|ویژه|پرمیوم|پریمیوم|الماس/i.test(planName);
+      var planIcon = isLifetime ? '♾️' : (isVip ? '💎' : '⭐');
+
+      // ۱. به‌روزرسانی چیپ بالای سایت در ناوبار (#navUserPlanChip)
+      var navChip = document.getElementById('navUserPlanChip');
+      var navIcon = document.getElementById('navPlanIcon');
+      var navName = document.getElementById('navPlanName');
+      var navVal = document.getElementById('navPlanValidity');
+
+      if (navChip) {
+        navChip.classList.remove('hidden');
+        if (navIcon) navIcon.textContent = planIcon;
+        if (navName) navName.textContent = planName;
+        if (navVal) {
+          if (isSuspended) {
+            navVal.textContent = isEn ? 'Expired 🔴' : 'منقضی شده 🔴';
+            navVal.style.background = 'rgba(244, 63, 94, 0.15)';
+            navVal.style.color = 'var(--accent-rose)';
+            navVal.style.borderColor = 'var(--accent-rose-border)';
+          } else if (isLifetime) {
+            navVal.textContent = isEn ? 'Lifetime ♾️' : 'دائمی ♾️';
+            navVal.style.background = 'rgba(16, 185, 129, 0.15)';
+            navVal.style.color = 'var(--accent-green)';
+            navVal.style.borderColor = 'var(--accent-green-border)';
+          } else {
+            navVal.textContent = isEn ? ('⏳ ' + days + 'd') : ('⏳ ' + days + ' روز');
+            if (days <= 5) {
+              navVal.style.background = 'rgba(245, 158, 11, 0.15)';
+              navVal.style.color = 'var(--accent-amber)';
+              navVal.style.borderColor = 'var(--accent-amber-border)';
+            } else {
+              navVal.style.background = 'rgba(16, 185, 129, 0.15)';
+              navVal.style.color = 'var(--accent-green)';
+              navVal.style.borderColor = 'var(--accent-green-border)';
+            }
+          }
+        }
+      }
+
+      // ۲. به‌روزرسانی کارت شاخص اشتراک و اعتبار بالای داشبورد (#userTopSubscriptionBanner)
+      var heroBanner = document.getElementById('userTopSubscriptionBanner');
+      if (heroBanner) {
+        heroBanner.classList.remove('hidden');
+
+        var avatarEl = document.getElementById('subBannerAvatar');
+        if (avatarEl) {
+          var initial = (data.username || 'U').charAt(0).toUpperCase();
+          avatarEl.textContent = initial;
+        }
+
+        var dotEl = document.getElementById('subBannerStatusDot');
+        if (dotEl) {
+          if (isSuspended) {
+            dotEl.style.background = 'var(--accent-rose)';
+            dotEl.style.boxShadow = '0 0 8px var(--accent-rose)';
+          } else if (days <= 5) {
+            dotEl.style.background = 'var(--accent-amber)';
+            dotEl.style.boxShadow = '0 0 8px var(--accent-amber)';
+          } else {
+            dotEl.style.background = 'var(--accent-green)';
+            dotEl.style.boxShadow = '0 0 8px var(--accent-green)';
+          }
+        }
+
+        var unameEl = document.getElementById('subBannerUsername');
+        if (unameEl) unameEl.textContent = data.username || (isEn ? 'User' : 'کاربر');
+
+        var roleEl = document.getElementById('subBannerRoleBadge');
+        if (roleEl) {
+          if (data.isAdmin) {
+            roleEl.textContent = isEn ? '👑 System Admin' : '👑 مدیر سیستم';
+            roleEl.style.color = 'var(--accent-amber)';
+            roleEl.style.background = 'rgba(245, 158, 11, 0.15)';
+            roleEl.style.borderColor = 'var(--accent-amber-border)';
+          } else {
+            roleEl.textContent = isEn ? 'Official Member' : 'کاربر رسمی';
+            roleEl.style.color = 'var(--text-dim)';
+            roleEl.style.background = 'var(--bg-surface-hover)';
+            roleEl.style.borderColor = 'var(--border-subtle)';
+          }
+        }
+
+        var planIconEl = document.getElementById('subBannerPlanIcon');
+        if (planIconEl) planIconEl.textContent = planIcon;
+
+        var planNameEl = document.getElementById('subBannerPlanName');
+        if (planNameEl) planNameEl.textContent = planName;
+
+        var planStatusEl = document.getElementById('subBannerPlanStatus');
+        if (planStatusEl) {
+          if (isSuspended) {
+            planStatusEl.textContent = isEn ? 'Expired 🔴' : 'منقضی شده 🔴';
+            planStatusEl.style.color = 'var(--accent-rose)';
+            planStatusEl.style.fontWeight = '700';
+          } else {
+            planStatusEl.textContent = isEn ? 'Active & Valid 🟢' : 'فعال و معتبر 🟢';
+            planStatusEl.style.color = 'var(--accent-green)';
+            planStatusEl.style.fontWeight = '700';
+          }
+        }
+
+        var remTitleEl = document.getElementById('subBannerRemainingDaysText');
+        if (remTitleEl) {
+          if (isSuspended) {
+            remTitleEl.textContent = isEn ? 'Subscription validity has ended' : 'اعتبار اشتراک به اتمام رسیده است';
+          } else if (isLifetime) {
+            remTitleEl.textContent = isEn ? 'Unlimited Lifetime Access ♾️' : 'اشتراک دائمی و نامحدود ♾️';
+          } else {
+            remTitleEl.textContent = isEn ? (days + ' days remaining until expiration') : (days + ' روز تا پایان اعتبار اشتراک');
+          }
+        }
+
+        var expDateEl = document.getElementById('subBannerExpiryDateText');
+        if (expDateEl) {
+          if (isLifetime) {
+            expDateEl.textContent = (isEn ? 'Expiration Date: ' : 'تاریخ پایان: ') + (isEn ? 'Never (Lifetime)' : 'نامحدود (دائمی)');
+          } else if (data.subscriptionUntil) {
+            var expDate = new Date(data.subscriptionUntil);
+            var dateStr = '';
+            if (!isNaN(expDate.getTime())) {
+              try {
+                if (isEn) {
+                  dateStr = expDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                } else {
+                  dateStr = expDate.toLocaleDateString('fa-IR', { year: 'numeric', month: 'long', day: 'numeric' });
+                }
+              } catch (_) {
+                dateStr = expDate.toISOString().slice(0, 10);
+              }
+            } else {
+              dateStr = '-';
+            }
+            expDateEl.textContent = (isEn ? 'Expiration Date: ' : 'تاریخ پایان: ') + dateStr;
+          } else {
+            expDateEl.textContent = (isEn ? 'Expiration Date: ' : 'تاریخ پایان: ') + '-';
+          }
+        }
+
+        var progBar = document.getElementById('subBannerProgressBar');
+        if (progBar) {
+          var pct = 0;
+          var barGrad = 'linear-gradient(90deg, #10b981 0%, #3b82f6 100%)';
+          if (isSuspended) {
+            pct = 0;
+            barGrad = 'var(--accent-rose)';
+            progBar.style.boxShadow = '0 0 10px rgba(244, 63, 94, 0.4)';
+          } else if (isLifetime) {
+            pct = 100;
+            barGrad = 'linear-gradient(90deg, #10b981 0%, #06b6d4 100%)';
+            progBar.style.boxShadow = '0 0 12px rgba(16, 185, 129, 0.5)';
+          } else {
+            pct = Math.min(100, Math.max(5, Math.round((days / 30) * 100)));
+            if (days <= 3) {
+              barGrad = 'linear-gradient(90deg, #ef4444 0%, #f43f5e 100%)';
+              progBar.style.boxShadow = '0 0 10px rgba(239, 68, 68, 0.4)';
+            } else if (days <= 7) {
+              barGrad = 'linear-gradient(90deg, #f59e0b 0%, #ef4444 100%)';
+              progBar.style.boxShadow = '0 0 10px rgba(245, 158, 11, 0.4)';
+            } else {
+              barGrad = 'linear-gradient(90deg, #10b981 0%, #6366f1 100%)';
+              progBar.style.boxShadow = '0 0 10px rgba(16, 185, 129, 0.4)';
+            }
+          }
+          progBar.style.width = pct + '%';
+          progBar.style.background = barGrad;
+        }
       }
     };
 
@@ -8323,7 +8953,12 @@ export function panelHTML(env, options = {}) {
       var adminNav = document.getElementById('adminPortalNavBtn');
       if (!token) {
         window.currentUserIsAdmin = false;
+        window.lastUserData = null;
         if (adminNav) adminNav.classList.add('hidden');
+        var navChipEl = document.getElementById('navUserPlanChip');
+        if (navChipEl) navChipEl.classList.add('hidden');
+        var topBannerEl = document.getElementById('userTopSubscriptionBanner');
+        if (topBannerEl) topBannerEl.classList.add('hidden');
         document.getElementById('userHeaderBadge').classList.add('hidden');
         document.getElementById('userAuthSection').classList.remove('hidden');
         document.getElementById('clockHeroCard').classList.add('hidden');
@@ -8343,6 +8978,7 @@ export function panelHTML(env, options = {}) {
 
         if (!data.ok) {
           window.currentUserIsAdmin = false;
+          window.lastUserData = null;
           setAuthToken('');
           loadUserDashboard();
           return;
@@ -8350,6 +8986,13 @@ export function panelHTML(env, options = {}) {
 
         window.currentUserIsAdmin = !!data.isAdmin;
         window.lastKnownHasTelegram = !!data.hasTelegram;
+        window.lastUserData = data;
+
+        // 💎 به‌روزرسانی آنی المان‌های شاخص بالای سایت (چیپ ناوبار و بنر وضعیت اعتبار کاربر)
+        if (typeof window.updateSubscriptionUI === 'function') {
+          window.updateSubscriptionUI(data);
+        }
+
         if (adminNav) {
           if (data.isAdmin) {
             adminNav.classList.remove('hidden');
@@ -8382,42 +9025,56 @@ export function panelHTML(env, options = {}) {
 
         var suspBox = document.getElementById('suspensionAlertBox');
         var planBadge = document.getElementById('userPlanBadge');
+        var isEn = window.currentLang === 'en';
 
         // هوشمندسازی بررسی تعلیق خودکار
         if (data.isSuspended || data.isExpired) {
           if (suspBox) suspBox.classList.remove('hidden');
-          planBadge.textContent = 'اشتراک: معلق و منقضی 🔴';
-          planBadge.style.color = 'var(--accent-rose)';
-          planBadge.style.borderColor = 'var(--accent-rose-border)';
+          if (planBadge) {
+            planBadge.textContent = isEn ? 'Subscription: Suspended & Expired 🔴' : 'اشتراک: معلق و منقضی 🔴';
+            planBadge.style.color = 'var(--accent-rose)';
+            planBadge.style.borderColor = 'var(--accent-rose-border)';
+          }
 
           // مخفی‌سازی یا غیرفعال‌سازی گزینه‌های اجرایی هنگام تعلیق
           document.getElementById('telegramConnectSection').classList.add('hidden');
           document.getElementById('dashboardSection').classList.remove('hidden');
 
           var badge = document.getElementById('botStatusBadge');
-          badge.textContent = '⏸️ به حالت تعلیق درآمده (منقضی)';
-          badge.style.color = 'var(--accent-rose)';
+          if (badge) {
+            badge.textContent = isEn ? '⏸️ Suspended (Expired)' : '⏸️ به حالت تعلیق درآمده (منقضی)';
+            badge.style.color = 'var(--accent-rose)';
+          }
 
           var toggleText = document.getElementById('toggleBotText');
-          toggleText.textContent = '🔒 سلف‌بات معلق است';
-          document.getElementById('toggleBotBtn').disabled = true;
-          document.getElementById('syncBtn').disabled = true;
+          if (toggleText) {
+            toggleText.textContent = isEn ? '🔒 Subscription Suspended' : '🔒 اشتراک معلق است';
+          }
+          var toggleBotBtn = document.getElementById('toggleBotBtn');
+          if (toggleBotBtn) toggleBotBtn.disabled = true;
+          var syncBtn = document.getElementById('syncBtn');
+          if (syncBtn) syncBtn.disabled = true;
 
           var lastUpEl = document.getElementById('lastUpdateTime');
-          lastUpEl.textContent = 'تعلیق به علت پایان مدت زمان اشتراک';
-          lastUpEl.style.color = 'var(--accent-rose)';
+          if (lastUpEl) {
+            lastUpEl.textContent = isEn ? 'Suspended due to expiration of subscription validity' : 'تعلیق به علت پایان مدت زمان اعتبار اشتراک';
+            lastUpEl.style.color = 'var(--accent-rose)';
+          }
           updateLiveClock();
           return;
         } else {
           if (suspBox) suspBox.classList.add('hidden');
-          document.getElementById('toggleBotBtn').disabled = false;
-          document.getElementById('syncBtn').disabled = false;
+          var toggleBtnActive = document.getElementById('toggleBotBtn');
+          if (toggleBtnActive) toggleBtnActive.disabled = false;
+          var syncBtnActive = document.getElementById('syncBtn');
+          if (syncBtnActive) syncBtnActive.disabled = false;
 
-          var isEn = window.currentLang === 'en';
           var remText = data.isLifetime ? (isEn ? 'Lifetime ♾️' : 'دائمی ♾️') : (data.remainingDays + (isEn ? ' days remaining' : ' روز اعتبار باقی‌مانده'));
-          planBadge.textContent = (isEn ? 'Subscription: ' : 'اشتراک: ') + (data.planName || (isEn ? 'Standard' : 'استاندارد')) + ' (' + remText + ')';
-          planBadge.style.color = 'var(--accent-green)';
-          planBadge.style.borderColor = 'var(--accent-green-border)';
+          if (planBadge) {
+            planBadge.textContent = (isEn ? 'Subscription: ' : 'اشتراک: ') + (data.planName || (isEn ? 'Standard' : 'استاندارد')) + ' (' + remText + ')';
+            planBadge.style.color = 'var(--accent-green)';
+            planBadge.style.borderColor = 'var(--accent-green-border)';
+          }
         }
 
         if (data.hasTelegram) {
