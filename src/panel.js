@@ -5559,9 +5559,6 @@ export function panelHTML(env, options = {}) {
           <span>عدم نمایش خودکار در دفعات بعدی</span>
         </label>
         <div class="features-action-buttons">
-          <a href="/setup" target="_blank" style="color: var(--accent-blue); font-weight: 700; font-size: 0.8rem; padding: 7px 14px; border: 1px solid var(--accent-blue-border); border-radius: var(--radius-sm); background: var(--accent-blue-bg); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;">
-            <span>🚀</span> <span>ویزارد راه‌اندازی (/setup)</span>
-          </a>
           <button class="btn-feature-dismiss" onclick="closeFeaturesModal()">
             <span>بستن</span>
           </button>
