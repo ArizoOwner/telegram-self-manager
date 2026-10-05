@@ -516,6 +516,31 @@ async function sendAfkReply(entry, message, afkText, username, senderIdStr) {
     }
   }
 
+  // تلاش پشتیبان جهت بازیابی انتیتی از کش نشست
+  if (!targetPeer && senderIdStr && entry.peerCache?.has(senderIdStr)) {
+    const cached = entry.peerCache.get(senderIdStr);
+    if (cached?.accessHash) {
+      try {
+        targetPeer = new Api.InputPeerUser({
+          userId: BigInt(senderIdStr),
+          accessHash: BigInt(cached.accessHash)
+        });
+      } catch (_) {}
+    }
+  }
+
+  if (!targetPeer && senderIdStr && entry.peerCache?.has(senderIdStr)) {
+    const cached = entry.peerCache.get(senderIdStr);
+    if (cached?.accessHash) {
+      try {
+        targetPeer = new Api.InputPeerUser({
+          userId: BigInt(senderIdStr),
+          accessHash: BigInt(cached.accessHash)
+        });
+      } catch (_) {}
+    }
+  }
+
   // تلاش ۱: ارسال با replyTo به پیام فرستنده
   if (targetPeer) {
     try {
@@ -695,68 +720,27 @@ async function callAIApi(provider, apiKey, systemPrompt, context, userMessage) {
   }
 }
 
-const ONLINE_GRACE_PERIOD_MS = 5 * 60 * 1000; // ۵ دقیقه فرجه هوشمند برای جلوگیری از پاسخ ناخواسته هنگام آنلاین بودن
-
 /**
- * بررسی دقیق، هوشمند و چندلایه‌ای آنلاین بودن اکانت در تلگرام
- * شامل سنجش اتصال بلادرنگ گوشی، تلگرام دسکتاپ و نشست‌های فعال (Authorizations)
+ * بررسی دقیق وضعیت آنلاین بودن اکانت در تلگرام
  */
 async function checkIsSelfOnline(entry, username) {
   const now = Date.now();
 
-  // ۱. بررسی فلگ فعال آنلاین بودن
+  // ۱. بررسی فلگ وضعیت آنلاین
   if (entry.isSelfOnline && entry.selfOnlineExpires > now) {
     return true;
   }
 
-  // ۲. بررسی فرجه زمانی از آخرین آنلاین بودن یا آخرین فعالیت ثبت شده (پیام، خواندن چت، پیش‌نویس)
-  const lastActivity = Math.max(
-    entry.lastSelfOnlineTime || 0,
-    entry.lastGlobalOutTime || 0,
-    entry.lastGlobalReadTime || 0,
-    entry.lastDraftTime || 0
-  );
-  if (lastActivity > 0 && (now - lastActivity < ONLINE_GRACE_PERIOD_MS)) {
-    return true;
-  }
-
-  // ۳. کش هوشمند استعلام RPC برای جلوگیری از فلود استعلام به سرور تلگرام (حداکثر ۱ بار در هر ۲۵ ثانیه)
-  if (now - (entry.lastSelfStatusCheck || 0) < 25000) {
-    return Boolean(
-      (entry.isSelfOnline && entry.selfOnlineExpires > now) ||
-      (lastActivity > 0 && (now - lastActivity < ONLINE_GRACE_PERIOD_MS))
-    );
+  // ۲. استعلام با کش ۳۰ ثانیه‌ای جهت جلوگیری از فلود استعلام به سرور تلگرام
+  if (now - (entry.lastSelfStatusCheck || 0) < 30000) {
+    return Boolean(entry.isSelfOnline && entry.selfOnlineExpires > now);
   }
   entry.lastSelfStatusCheck = now;
 
   try {
     if (!isClientConnected(entry)) return false;
 
-    // الف) 📱 بررسی نشست‌های فعال اکانت (Api.account.GetAuthorizations)
-    // این روش مستقیم سرور تلگرام است و حتی اگر وضعیت آنلاین در تنظیمات حریم خصوصی (Privacy)
-    // روی Nobody یا Contacts باشد، فعالیت زنده گوشی و دسکتاپ را دقیقاً نشان می‌دهد.
-    try {
-      const auths = await entry.client.invoke(new Api.account.GetAuthorizations());
-      const nowSec = Math.floor(now / 1000);
-      if (auths?.authorizations && Array.isArray(auths.authorizations)) {
-        for (const a of auths.authorizations) {
-          if (a.current) continue; // رانر خودکار فعلی را فیلتر می‌کنیم تا فقط دستگاه‌های واقعی سنجیده شوند
-          const dateActive = a.dateActive || 0;
-          // اگر در ۴ دقیقه گذشته (۲۴۰ ثانیه) ارتباطی از گوشی یا دسکتاپ کاربر ثبت شده باشد، کاربر قطعاً آنلاین است
-          if (dateActive > 0 && (nowSec - dateActive < 240)) {
-            entry.isSelfOnline = true;
-            entry.selfOnlineExpires = now + 180000;
-            entry.lastSelfOnlineTime = now;
-            console.log(`📱 [${username}] Active Telegram device detected (${nowSec - dateActive}s ago: ${a.deviceModel || a.platform || 'Device'}). User is ONLINE.`);
-            return true;
-          }
-        }
-      }
-    } catch (authErr) {
-      // در صورت بروز خطا به روش بعدی مراجعه می‌شود
-    }
-
-    // ب) 🌐 استعلام وضعیت کاربر از سرور تلگرام (Api.users.GetUsers)
+    // استعلام وضعیت مستقیم خود اکانت از سرور تلگرام
     const users = await entry.client.invoke(new Api.users.GetUsers({
       id: [new Api.InputUserSelf()]
     }));
@@ -766,42 +750,24 @@ async function checkIsSelfOnline(entry, username) {
       const isOnline = st instanceof Api.UserStatusOnline || st?.className === 'UserStatusOnline';
       if (isOnline) {
         entry.isSelfOnline = true;
-        entry.selfOnlineExpires = st.expires ? (st.expires * 1000) : (now + 180000);
+        entry.selfOnlineExpires = st.expires ? (st.expires * 1000) : (now + 60000);
         entry.lastSelfOnlineTime = now;
         return true;
-      } else if (st instanceof Api.UserStatusOffline || st?.className === 'UserStatusOffline') {
-        const wasSec = st.wasOnline || 0;
-        const wasMs = wasSec ? (wasSec * 1000) : 0;
-        if (wasMs > 0) {
-          entry.lastSelfOnlineTime = Math.max(entry.lastSelfOnlineTime || 0, wasMs);
-          if (now - wasMs < ONLINE_GRACE_PERIOD_MS) {
-            entry.isSelfOnline = true;
-            entry.selfOnlineExpires = wasMs + ONLINE_GRACE_PERIOD_MS;
-            return true;
-          }
-        }
+      } else {
+        entry.isSelfOnline = false;
+        entry.selfOnlineExpires = 0;
+        return false;
       }
-      // نکته بسیار مهم: اگر وضعیت UserStatusRecently یا UserStatusLastWeek باشد،
-      // نباید isSelfOnline را اجباراً false کنیم، چون تنظیمات حریم خصوصی (Privacy) آن را مخفی کرده است.
     }
   } catch (err) {
-    // در صورت بروز خطا به کش متکی می‌مانیم
+    // در صورت بروز خطا به وضعیت فعلی استناد می‌شود
   }
 
-  const latestAct = Math.max(
-    entry.lastSelfOnlineTime || 0,
-    entry.lastGlobalOutTime || 0,
-    entry.lastGlobalReadTime || 0,
-    entry.lastDraftTime || 0
-  );
-  return Boolean(
-    (entry.isSelfOnline && entry.selfOnlineExpires > now) ||
-    (latestAct > 0 && (now - latestAct < ONLINE_GRACE_PERIOD_MS))
-  );
+  return Boolean(entry.isSelfOnline && entry.selfOnlineExpires > now);
 }
 
 /**
- * تشخیص هوشمند چندلایه‌ای برای جلوگیری قطعی از ارسال منشی خودکار یا هوش مصنوعی در حین آنلاین بودن یا چت فعال کاربر
+ * تشخیص هوشمند چندلایه‌ای برای جلوگیری از ارسال منشی هنگام چت فعال کاربر در پیوی
  */
 async function isUserActiveOrOnline(entry, username, senderIdStr, message) {
   const now = Date.now();
@@ -809,70 +775,59 @@ async function isUserActiveOrOnline(entry, username, senderIdStr, message) {
   const isZeroCooldown = aiCooldown === 0;
 
   // ۱. بررسی چت دوطرفه فعال کاربر با این مخاطب خاص
-  // فرجه گفتگوی فعال: ۱۰ دقیقه کامل (یا حداقل ۳ دقیقه در حالت تست بدون کول‌داون)
-  // تا اگر کاربر در حال گفتگو با فرد است و چند دقیقه پیام نداده، منشی هرگز نپرد وسط مکالمه!
-  const activeChatWindow = isZeroCooldown ? 3 * 60 * 1000 : 10 * 60 * 1000;
+  // اگر کاربر اخیراً به این شخص پیام دستی داده باشد، منشی به هیچ‌وجه نباید در مکالمه دخالت کند
+  const activeChatWindow = isZeroCooldown ? 30 * 1000 : 90 * 1000;
   const lastChatOut = entry.lastChatOutMap?.get(senderIdStr) || 0;
   const diffChat = now - lastChatOut;
   if (lastChatOut > 0 && diffChat < activeChatWindow) {
-    const passedMin = Math.round(diffChat / 60000);
-    const remainMin = Math.round((activeChatWindow - diffChat) / 60000);
+    const passedSec = Math.round(diffChat / 1000);
     return {
       isBusyOrOnline: true,
-      reason: `شما در حال گفتگو با این مخاطب هستید (${passedMin} دقیقه پیش پیام دستی فرستاده‌اید — فرجه گفتگوی فعال: ${remainMin} دقیقه)`
+      reason: `شما در حال گفتگو با این مخاطب هستید (${passedSec} ثانیه پیش پیام دستی فرستاده‌اید)`
     };
   }
 
   // ۲. بررسی پیش‌نویس (Draft) یا در حال تایپ بودن کاربر در چت با این مخاطب
   const lastDraft = entry.lastChatDraftMap?.get(senderIdStr) || 0;
-  if (lastDraft > 0 && (now - lastDraft < 5 * 60 * 1000)) {
+  if (lastDraft > 0 && (now - lastDraft < 30 * 1000)) {
     return {
       isBusyOrOnline: true,
-      reason: 'شما در حال نوشتن پیام یا ذخیره پیش‌نویس (Draft) برای این مخاطب هستید'
+      reason: 'شما در حال نوشتن پیام یا پیش‌نویس برای این مخاطب هستید'
     };
   }
 
-  // ۳. بررسی خواندن پیام‌های این چت در تلگرام (باز بودن صفحه چت توسط کاربر در هر دستگاه)
-  const readWindow = isZeroCooldown ? 60 * 1000 : 5 * 60 * 1000;
+  // ۳. بررسی خواندن پیام‌های این چت در تلگرام (صفحه چت باز بوده و پیام خوانده شده)
+  const readWindow = isZeroCooldown ? 10 * 1000 : 20 * 1000;
   const lastChatRead = entry.lastChatReadTimeMap?.get(senderIdStr) || 0;
   const diffRead = now - lastChatRead;
   if (lastChatRead > 0 && diffRead < readWindow) {
     const passedSec = Math.round(diffRead / 1000);
     return {
       isBusyOrOnline: true,
-      reason: `صفحه چت با این مخاطب در تلگرام شما باز شده و ${passedSec} ثانیه پیش پیام‌ها خوانده شده‌اند`
+      reason: `صفحه چت با این مخاطب در تلگرام شما باز بوده و ${passedSec} ثانیه پیش پیام‌ها خوانده شده‌اند`
     };
   }
 
-  // ۴. بررسی فعالیت عمومی اخیر در تلگرام (ارسال پیام دستی در سایر چت‌ها، گروه‌ها، کانال‌ها)
-  const globalWindow = isZeroCooldown ? 60 * 1000 : 5 * 60 * 1000;
+  // ۴. بررسی فعالیت عمومی اخیر در تلگرام (ارسال پیام دستی به دیگران در ۲۰ ثانیه گذشته)
+  const globalWindow = isZeroCooldown ? 15 * 1000 : 25 * 1000;
   const lastGlobalOut = entry.lastGlobalOutTime || 0;
   const diffGlobal = now - lastGlobalOut;
   if (lastGlobalOut > 0 && diffGlobal < globalWindow) {
     const passedSec = Math.round(diffGlobal / 1000);
-    const remainSec = Math.round((globalWindow - diffGlobal) / 1000);
     return {
       isBusyOrOnline: true,
-      reason: `شما در تلگرام به دیگران پیام ارسال کرده‌اید و آنلاین هستید (${passedSec} ثانیه پیش — فرجه: ${remainSec} ثانیه)`
+      reason: `شما در تلگرام به صورت فعال در حال ارسال پیام هستید (${passedSec} ثانیه پیش)`
     };
   }
 
-  // ۵. بررسی خواندن پیام‌ها یا کانال‌ها به صورت عمومی در تلگرام
-  const lastGlobalRead = entry.lastGlobalReadTime || 0;
-  if (lastGlobalRead > 0 && (now - lastGlobalRead < 3 * 60 * 1000)) {
-    return {
-      isBusyOrOnline: true,
-      reason: 'شما اخیراً در تلگرام در حال مشاهده پیام‌ها یا کانال‌ها بوده‌اید'
-    };
-  }
-
-  // ۶. بررسی دقیق و قطعی وضعیت آنلاین بودن اکانت در سرورهای تلگرام و نشست‌های فعال گوشی/دسکتاپ
-  if (entry.settings?.aiReplyEnabled || entry.settings?.afkEnabled) {
+  // ۵. بررسی وضعیت آنلاین بودن اکانت در سرورهای تلگرام
+  // در حالت کول‌داون صفر (تست/پاسخ سریع)، اگر کاربر در حال چت با این مخاطب نباشد اجازه پاسخ داده می‌شود
+  if (!isZeroCooldown && (entry.settings?.aiReplyEnabled || entry.settings?.afkEnabled)) {
     const isOnline = await checkIsSelfOnline(entry, username);
     if (isOnline) {
       return {
         isBusyOrOnline: true,
-        reason: 'اکانت تلگرام شما آنلاین (Online) است یا نشست فعال روی گوشی/سیستم دارید'
+        reason: 'اکانت تلگرام شما در حال حاضر آنلاین (Online) است'
       };
     }
   }
@@ -2036,7 +1991,8 @@ class TelegramConnectionPool {
                 return;
               }
 
-              console.log(`⏳ [${username}] Scheduling AI Smart Reply for ${senderIdStr} with 12s grace period...`);
+              const gracePeriodMs = (aiCooldownMin === 0) ? 3500 : 7000;
+              console.log(`⏳ [${username}] Scheduling AI Smart Reply for ${senderIdStr} with ${gracePeriodMs / 1000}s grace period...`);
 
               const pendingItem = {
                 messages: [messageText],
@@ -2047,7 +2003,7 @@ class TelegramConnectionPool {
               pendingItem.timeoutId = setTimeout(async () => {
                 entry.pendingAiReplies?.delete(senderIdStr);
 
-                // بازبینی نهایی وضعیت آنلاین بودن کاربر پس از پایان فرجه ۱۲ ثانیه‌ای
+                // بازبینی نهایی وضعیت آنلاین بودن کاربر پس از پایان فرجه هوشمند
                 const finalActiveCheck = await isUserActiveOrOnline(entry, username, senderIdStr, pendingItem.lastMessage);
                 if (finalActiveCheck.isBusyOrOnline) {
                   console.log(`🛑 [${username}] AI reply cancelled after grace period for ${senderIdStr}: ${finalActiveCheck.reason}`);
@@ -2112,7 +2068,7 @@ class TelegramConnectionPool {
                     if (sent) setBoundedMap(entry.afkCooldownMap, senderIdStr, Date.now(), 500);
                   }
                 }
-              }, 12000);
+              }, gracePeriodMs);
 
               entry.pendingAiReplies.set(senderIdStr, pendingItem);
             }
@@ -2177,7 +2133,7 @@ class TelegramConnectionPool {
     for (const u of list) {
       if (!u) continue;
 
-      // ۱. بررسی آنلاین بودن اکانت (UpdateUserStatus) با فیلتر پرش لحظه‌ای (Hysteresis)
+      // ۱. بررسی آنلاین بودن اکانت (UpdateUserStatus)
       if (u instanceof Api.UpdateUserStatus || u.className === 'UpdateUserStatus') {
         const uid = u.userId ? u.userId.toString() : null;
         if (uid && myIdStr && uid === myIdStr) {
@@ -2186,64 +2142,55 @@ class TelegramConnectionPool {
           const now = Date.now();
           if (isOnline) {
             entry.isSelfOnline = true;
-            entry.selfOnlineExpires = st.expires ? (st.expires * 1000) : (now + 180000);
+            entry.selfOnlineExpires = st.expires ? (st.expires * 1000) : (now + 60000);
             entry.lastSelfOnlineTime = now;
-            console.log(`🟢 [${username}] Telegram status updated: ONLINE (expires in ${Math.round((entry.selfOnlineExpires - now) / 1000)}s)`);
+            console.log(`🟢 [${username}] Telegram status updated: ONLINE`);
           } else {
-            const wasSec = (st instanceof Api.UserStatusOffline || st?.className === 'UserStatusOffline') ? st.wasOnline : 0;
-            const wasMs = wasSec ? (wasSec * 1000) : 0;
-            if (wasMs > 0) {
-              entry.lastSelfOnlineTime = Math.max(entry.lastSelfOnlineTime || 0, wasMs);
-            }
-            // فیلتر پرش لحظه‌ای: اگر کمتر از ۵ دقیقه پیش آنلاین بوده، فوری آفلاین نکن
-            if (wasMs > 0 && (now - wasMs < 5 * 60 * 1000)) {
-              entry.isSelfOnline = true;
-              entry.selfOnlineExpires = wasMs + 5 * 60 * 1000;
-              console.log(`🟡 [${username}] Telegram status: recently online (${Math.round((now - wasMs) / 1000)}s ago), grace period active`);
-            } else {
-              entry.isSelfOnline = false;
-              entry.selfOnlineExpires = 0;
-              console.log(`⚪ [${username}] Telegram status updated: OFFLINE`);
-            }
+            entry.isSelfOnline = false;
+            entry.selfOnlineExpires = 0;
+            console.log(`⚪ [${username}] Telegram status updated: OFFLINE`);
           }
         }
       }
 
-      // ۲. بررسی ارسال پیام در چت خصوصی از کلاینت‌های دیگر (UpdateShortMessage)
-      if (u instanceof Api.UpdateShortMessage || u.className === 'UpdateShortMessage') {
+      // ۲. بررسی ارسال پیام دستی در چت خصوصی (UpdateShortMessage فقط با u.out === true)
+      if ((u instanceof Api.UpdateShortMessage || u.className === 'UpdateShortMessage') && u.out && u.userId) {
         const now = Date.now();
-        entry.lastGlobalOutTime = now;
-        entry.lastSelfOnlineTime = now;
-        entry.isSelfOnline = true;
-        entry.selfOnlineExpires = now + 5 * 60 * 1000;
-        if (u.out && u.userId) {
-          const partnerStr = u.userId.toString();
-          if (partnerStr !== myIdStr) {
-            entry.lastChatOutMap = entry.lastChatOutMap || new Map();
-            setBoundedMap(entry.lastChatOutMap, partnerStr, now, 500);
-            if (entry.aiReplyCountMap) entry.aiReplyCountMap.delete(partnerStr);
-            if (entry.afkCooldownMap) entry.afkCooldownMap.delete(partnerStr);
-            if (entry.pendingAiReplies?.has(partnerStr)) {
-              clearTimeout(entry.pendingAiReplies.get(partnerStr).timeoutId);
-              entry.pendingAiReplies.delete(partnerStr);
-              console.log(`🚫 [${username}] Cancelled pending AI reply for ${partnerStr}: UpdateShortMessage out`);
-            }
-            console.log(`💬 [${username}] UpdateShortMessage: user sent message to ${partnerStr}`);
+        const partnerStr = u.userId.toString();
+        const msgText = (u.message || '').trim();
+        const isBotMsg = (entry.botSentTexts && entry.botSentTexts.has(msgText)) ||
+                         msgText.startsWith('🤖 ') ||
+                         (now - (entry.lastBotReplyMap?.get(partnerStr) || 0) < 6000);
+
+        if (!isBotMsg && partnerStr !== myIdStr) {
+          entry.lastGlobalOutTime = now;
+          entry.lastChatOutMap = entry.lastChatOutMap || new Map();
+          setBoundedMap(entry.lastChatOutMap, partnerStr, now, 500);
+          if (entry.aiReplyCountMap) entry.aiReplyCountMap.delete(partnerStr);
+          if (entry.afkCooldownMap) entry.afkCooldownMap.delete(partnerStr);
+          if (entry.pendingAiReplies?.has(partnerStr)) {
+            clearTimeout(entry.pendingAiReplies.get(partnerStr).timeoutId);
+            entry.pendingAiReplies.delete(partnerStr);
+            console.log(`🚫 [${username}] Cancelled pending AI reply for ${partnerStr}: manual message sent`);
           }
+          console.log(`💬 [${username}] Manual message sent to ${partnerStr}`);
         }
       }
 
-      // ۳. بررسی ارسال پیام خروجی کامل در پیوی، گروه‌ها و کانال‌ها (UpdateNewMessage / UpdateNewChannelMessage)
-      if ((u instanceof Api.UpdateNewMessage || u.className === 'UpdateNewMessage' ||
-           u instanceof Api.UpdateNewChannelMessage || u.className === 'UpdateNewChannelMessage') && u.message?.out) {
+      // ۳. بررسی ارسال پیام خروجی کامل در پیوی یا گروه‌ها (UpdateNewMessage فقط با u.message?.out === true)
+      if ((u instanceof Api.UpdateNewMessage || u.className === 'UpdateNewMessage') && u.message?.out) {
+        const msg = u.message;
+        const msgText = (msg.text || msg.message || '').trim();
         const now = Date.now();
-        entry.lastGlobalOutTime = now;
-        entry.lastSelfOnlineTime = now;
-        entry.isSelfOnline = true;
-        entry.selfOnlineExpires = now + 5 * 60 * 1000;
-        const rawPeer = u.message.peerId?.userId || (u.message.peerId instanceof Api.PeerUser ? u.message.peerId.userId : null) || u.message.peerId?.chatId;
+        const rawPeer = msg.peerId?.userId || (msg.peerId instanceof Api.PeerUser ? msg.peerId.userId : null) || msg.peerId?.chatId;
         const peerStr = rawPeer ? rawPeer.toString() : null;
-        if (peerStr && peerStr !== myIdStr) {
+        const isBotMsg = (entry.botSentMessageIds && entry.botSentMessageIds.has(msg.id)) ||
+                         (entry.botSentTexts && entry.botSentTexts.has(msgText)) ||
+                         msgText.startsWith('🤖 ') ||
+                         (peerStr && (now - (entry.lastBotReplyMap?.get(peerStr) || 0) < 6000));
+
+        if (!isBotMsg && peerStr && peerStr !== myIdStr) {
+          entry.lastGlobalOutTime = now;
           entry.lastChatOutMap = entry.lastChatOutMap || new Map();
           setBoundedMap(entry.lastChatOutMap, peerStr, now, 500);
           if (entry.aiReplyCountMap) entry.aiReplyCountMap.delete(peerStr);
@@ -2251,9 +2198,9 @@ class TelegramConnectionPool {
           if (entry.pendingAiReplies?.has(peerStr)) {
             clearTimeout(entry.pendingAiReplies.get(peerStr).timeoutId);
             entry.pendingAiReplies.delete(peerStr);
-            console.log(`🚫 [${username}] Cancelled pending AI reply for ${peerStr}: user sent message (UpdateNewMessage)`);
+            console.log(`🚫 [${username}] Cancelled pending AI reply for ${peerStr}: user sent message`);
           }
-          console.log(`💬 [${username}] UpdateNewMessage out: user sent message to ${peerStr}`);
+          console.log(`💬 [${username}] Manual message sent to ${peerStr}`);
         }
       }
 
@@ -2262,14 +2209,7 @@ class TelegramConnectionPool {
         const rawPeer = u.peer?.userId || (u.peer instanceof Api.PeerUser ? u.peer.userId : null) || u.peer?.chatId;
         const peerStr = rawPeer ? rawPeer.toString() : null;
         const now = Date.now();
-        entry.lastGlobalOutTime = now;
-        entry.lastGlobalReadTime = now;
-        entry.lastSelfOnlineTime = now;
-        entry.isSelfOnline = true;
-        entry.selfOnlineExpires = now + 5 * 60 * 1000;
         if (peerStr && peerStr !== myIdStr) {
-          entry.lastChatOutMap = entry.lastChatOutMap || new Map();
-          setBoundedMap(entry.lastChatOutMap, peerStr, now, 500);
           entry.lastChatReadTimeMap = entry.lastChatReadTimeMap || new Map();
           setBoundedMap(entry.lastChatReadTimeMap, peerStr, now, 500);
           if (entry.pendingAiReplies?.has(peerStr)) {
@@ -2277,55 +2217,20 @@ class TelegramConnectionPool {
             entry.pendingAiReplies.delete(peerStr);
             console.log(`🚫 [${username}] Cancelled pending AI reply for ${peerStr}: user read chat.`);
           }
-          console.log(`👁️ [${username}] User read chat ${peerStr} on active device.`);
         }
       }
 
-      // ۵. بررسی خواندن پیام‌های کانال‌ها در دستگاه دیگر (UpdateReadChannelInbox)
-      if (u instanceof Api.UpdateReadChannelInbox || u.className === 'UpdateReadChannelInbox') {
-        const now = Date.now();
-        entry.lastGlobalReadTime = now;
-        entry.lastSelfOnlineTime = now;
-        entry.isSelfOnline = true;
-        entry.selfOnlineExpires = now + 5 * 60 * 1000;
-      }
-
-      // ۶. بررسی ارسال پیام گروهی از کلاینت‌های دیگر (UpdateShortChatMessage)
+      // ۵. بررسی ارسال پیام گروهی از کلاینت‌های دیگر (UpdateShortChatMessage)
       if (u instanceof Api.UpdateShortChatMessage || u.className === 'UpdateShortChatMessage') {
         const fromStr = u.fromId ? u.fromId.toString() : null;
         if (fromStr && myIdStr && fromStr === myIdStr) {
           const now = Date.now();
           entry.lastGlobalOutTime = now;
-          entry.lastSelfOnlineTime = now;
-          entry.isSelfOnline = true;
-          entry.selfOnlineExpires = now + 5 * 60 * 1000;
           console.log(`💬 [${username}] UpdateShortChatMessage: user sent group message`);
         }
       }
 
-      // ۷. بررسی تاییدیه ارسال پیام (UpdateShortSentMessage)
-      if (u instanceof Api.UpdateShortSentMessage || u.className === 'UpdateShortSentMessage') {
-        const now = Date.now();
-        entry.lastGlobalOutTime = now;
-        entry.lastSelfOnlineTime = now;
-        entry.isSelfOnline = true;
-        entry.selfOnlineExpires = now + 5 * 60 * 1000;
-      }
-
-      // ۸. بررسی تایپ کردن کاربر (UpdateUserTyping / UpdateChatUserTyping)
-      if (u instanceof Api.UpdateUserTyping || u.className === 'UpdateUserTyping' ||
-          u instanceof Api.UpdateChatUserTyping || u.className === 'UpdateChatUserTyping') {
-        const uid = u.userId ? u.userId.toString() : (u.fromId ? u.fromId.toString() : null);
-        if (uid && myIdStr && uid === myIdStr) {
-          const now = Date.now();
-          entry.lastGlobalOutTime = now;
-          entry.lastSelfOnlineTime = now;
-          entry.isSelfOnline = true;
-          entry.selfOnlineExpires = now + 5 * 60 * 1000;
-        }
-      }
-
-      // ۹. بررسی ویرایش یا ذخیره پیش‌نویس (UpdateDraftMessage)
+      // ۶. بررسی ویرایش یا ذخیره پیش‌نویس (UpdateDraftMessage)
       if (u instanceof Api.UpdateDraftMessage || u.className === 'UpdateDraftMessage') {
         const now = Date.now();
         entry.lastGlobalOutTime = now;
