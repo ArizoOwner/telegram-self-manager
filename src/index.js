@@ -410,7 +410,7 @@ let activeUsersETag = null;
 let cachedPanelHtml = null;
 let cachedAdminHtml = null;
 let cachedWizardHtml = null;
-const STATIC_ASSET_ETAG = '"arizo-v4.5.4-custom-days-plan-i18n"';
+const STATIC_ASSET_ETAG = '"arizo-v4.5.5-admin-renew-button-fonts"';
 let cachedFaviconResponse = null;
 
 export default {
