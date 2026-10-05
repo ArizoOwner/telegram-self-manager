@@ -410,7 +410,7 @@ let activeUsersETag = null;
 let cachedPanelHtml = null;
 let cachedAdminHtml = null;
 let cachedWizardHtml = null;
-const STATIC_ASSET_ETAG = '"arizo-v4.5.1-ai-side-by-side-and-ignore-box"';
+const STATIC_ASSET_ETAG = '"arizo-v4.5.2-bidirectional-i18n-clean-navbar"';
 let cachedFaviconResponse = null;
 
 export default {
