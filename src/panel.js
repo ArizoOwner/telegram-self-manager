@@ -2317,41 +2317,48 @@ export function panelHTML(env, options = {}) {
     }
 
     /* ==========================================================================
-       💎 Arizo Self — Executive Feature Introduction Modal (SaaS Grade)
+       💎 Arizo Self — Executive Feature Introduction Modal (SaaS Grade Studio)
        ========================================================================== */
     .features-modal-container {
       width: 95%;
-      max-width: 860px;
-      padding: clamp(16px, 2.5vw, 26px);
+      max-width: 940px;
+      padding: 0;
       background: var(--modal-bg);
       border: 1px solid var(--border-subtle);
       border-top: 1px solid var(--border-specular);
       border-radius: 24px;
-      box-shadow: var(--card-shadow);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55), 0 0 1px 1px rgba(255, 255, 255, 0.08);
       position: relative;
-      max-height: 90vh;
+      max-height: 88vh;
       display: flex;
       flex-direction: column;
       color: var(--text-main);
       box-sizing: border-box;
       overflow: hidden;
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
     }
     .features-modal-header {
       flex-shrink: 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      padding-bottom: 14px;
-      margin-bottom: 14px;
+      padding: 20px 24px 14px 24px;
+      background: var(--bg-surface);
       border-bottom: 1px solid var(--border-subtle);
       position: relative;
+      display: flex;
+      flex-direction: column;
       gap: 12px;
     }
-    .features-header-content {
+    .features-header-main-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .features-header-info {
       flex: 1;
       min-width: 0;
     }
-    .features-header-top-row {
+    .features-header-brand-wrap {
       display: flex;
       align-items: center;
       gap: 8px;
@@ -2361,28 +2368,57 @@ export function panelHTML(env, options = {}) {
     .features-header-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       font-size: 0.74rem;
       font-weight: 800;
       color: var(--accent-purple);
       background: var(--accent-purple-bg);
       border: 1px solid var(--accent-purple-border);
-      padding: 3px 10px;
-      border-radius: 20px;
+      padding: 3px 12px;
+      border-radius: 999px;
+      box-shadow: 0 2px 8px var(--accent-purple-bg);
+    }
+    .features-header-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-purple);
+      box-shadow: 0 0 8px var(--accent-purple);
     }
     .features-header-title {
-      font-size: clamp(1.1rem, 3vw, 1.35rem);
+      font-size: clamp(1.15rem, 2.2vw, 1.4rem);
       font-weight: 900;
       letter-spacing: -0.4px;
       color: var(--text-main);
-      line-height: 1.3;
-      margin-bottom: 6px;
+      line-height: 1.35;
+      margin-bottom: 4px;
     }
     .features-header-desc {
       font-size: 0.82rem;
       color: var(--text-muted);
       line-height: 1.6;
-      margin-bottom: 10px;
+    }
+    .features-close-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: var(--btn-secondary-bg);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      line-height: 1;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .features-close-btn:hover {
+      background: var(--btn-secondary-hover);
+      color: var(--text-main);
+      transform: scale(1.06);
+      border-color: var(--border-specular);
     }
     .features-chips-row {
       display: flex;
@@ -2393,7 +2429,7 @@ export function panelHTML(env, options = {}) {
     .features-chip {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       font-size: 0.72rem;
       font-weight: 700;
       color: var(--text-muted);
@@ -2406,19 +2442,71 @@ export function panelHTML(env, options = {}) {
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: var(--accent-green);
-      box-shadow: 0 0 6px var(--accent-green);
+      flex-shrink: 0;
+    }
+    .features-category-bar {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      overflow-x: auto;
+      padding: 2px 0;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .features-category-bar::-webkit-scrollbar {
+      display: none;
+    }
+    .feature-cat-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--btn-secondary-bg);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all 0.2s var(--smooth-physics);
+      user-select: none;
+    }
+    .feature-cat-btn:hover {
+      background: var(--btn-secondary-hover);
+      color: var(--text-main);
+      border-color: rgba(168, 85, 247, 0.3);
+    }
+    .feature-cat-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 3px 12px var(--accent-purple-bg);
+    }
+    .feature-cat-btn .cat-count {
+      font-size: 0.68rem;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.2);
+      color: inherit;
+      font-weight: 800;
+    }
+    .feature-cat-btn:not(.active) .cat-count {
+      background: var(--bg-surface-elevated);
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
     }
     .features-modal-body {
       flex: 1;
       overflow-y: auto;
       overscroll-behavior: contain;
-      padding: 4px 4px 12px 2px;
+      padding: 16px 24px;
       scrollbar-width: thin;
       scrollbar-color: var(--border-subtle) transparent;
     }
     .features-modal-body::-webkit-scrollbar {
-      width: 5px;
+      width: 6px;
     }
     .features-modal-body::-webkit-scrollbar-thumb {
       background: var(--border-subtle);
@@ -2433,32 +2521,88 @@ export function panelHTML(env, options = {}) {
       background: var(--bg-surface-elevated);
       border: 1px solid var(--border-subtle);
       border-radius: 16px;
-      padding: 14px 15px;
+      padding: 14px 16px;
       display: flex;
-      gap: 12px;
+      gap: 13px;
       align-items: flex-start;
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.22s ease,
+                  border-color 0.2s ease,
+                  background-color 0.2s ease;
       min-width: 0;
+      position: relative;
     }
     .feature-card-item:hover {
       background: var(--bg-surface-hover);
-      border-color: rgba(168, 85, 247, 0.4);
       transform: translateY(-2px);
-      box-shadow: 0 10px 28px -6px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.2);
+      border-color: rgba(168, 85, 247, 0.4);
+    }
+    .feature-card-item[data-cat="ai"] {
+      border-right: 3px solid var(--accent-purple);
+    }
+    html[dir="ltr"] .feature-card-item[data-cat="ai"],
+    html[lang="en"] .feature-card-item[data-cat="ai"] {
+      border-right: 1px solid var(--border-subtle);
+      border-left: 3px solid var(--accent-purple);
+    }
+    .feature-card-item[data-cat="security"] {
+      border-right: 3px solid var(--accent-green);
+    }
+    html[dir="ltr"] .feature-card-item[data-cat="security"],
+    html[lang="en"] .feature-card-item[data-cat="security"] {
+      border-right: 1px solid var(--border-subtle);
+      border-left: 3px solid var(--accent-green);
+    }
+    .feature-card-item[data-cat="profile"] {
+      border-right: 3px solid var(--accent-blue);
+    }
+    html[dir="ltr"] .feature-card-item[data-cat="profile"],
+    html[lang="en"] .feature-card-item[data-cat="profile"] {
+      border-right: 1px solid var(--border-subtle);
+      border-left: 3px solid var(--accent-blue);
+    }
+    .feature-card-item[data-cat="cloud"] {
+      border-right: 3px solid var(--accent-amber);
+    }
+    html[dir="ltr"] .feature-card-item[data-cat="cloud"],
+    html[lang="en"] .feature-card-item[data-cat="cloud"] {
+      border-right: 1px solid var(--border-subtle);
+      border-left: 3px solid var(--accent-amber);
     }
     .feature-item-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 11px;
-      background: var(--accent-purple-bg);
-      border: 1px solid var(--accent-purple-border);
-      color: var(--accent-purple);
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      margin-top: 2px;
-      box-shadow: 0 4px 12px var(--accent-purple-bg);
+      margin-top: 1px;
+      transition: transform 0.2s ease;
+    }
+    .feature-card-item:hover .feature-item-icon {
+      transform: scale(1.08);
+    }
+    .feature-card-item[data-cat="ai"] .feature-item-icon {
+      background: var(--accent-purple-bg);
+      border: 1px solid var(--accent-purple-border);
+      color: var(--accent-purple);
+    }
+    .feature-card-item[data-cat="security"] .feature-item-icon {
+      background: var(--accent-green-bg);
+      border: 1px solid var(--accent-green-border);
+      color: var(--accent-green);
+    }
+    .feature-card-item[data-cat="profile"] .feature-item-icon {
+      background: var(--accent-blue-bg);
+      border: 1px solid var(--accent-blue-border);
+      color: var(--accent-blue);
+    }
+    .feature-card-item[data-cat="cloud"] .feature-item-icon {
+      background: var(--accent-amber-bg);
+      border: 1px solid var(--accent-amber-border);
+      color: var(--accent-amber);
     }
     .feature-item-body {
       flex: 1;
@@ -2481,20 +2625,37 @@ export function panelHTML(env, options = {}) {
       word-break: normal;
     }
     .feature-item-badge {
-      font-size: 0.68rem;
+      font-size: 0.69rem;
       font-weight: 800;
       padding: 2px 8px;
       border-radius: 6px;
-      background: var(--accent-purple-bg);
-      border: 1px solid var(--accent-purple-border);
-      color: var(--accent-purple);
       white-space: nowrap;
       flex-shrink: 0;
     }
+    .feature-card-item[data-cat="ai"] .feature-item-badge {
+      background: var(--accent-purple-bg);
+      border: 1px solid var(--accent-purple-border);
+      color: var(--accent-purple);
+    }
+    .feature-card-item[data-cat="security"] .feature-item-badge {
+      background: var(--accent-green-bg);
+      border: 1px solid var(--accent-green-border);
+      color: var(--accent-green);
+    }
+    .feature-card-item[data-cat="profile"] .feature-item-badge {
+      background: var(--accent-blue-bg);
+      border: 1px solid var(--accent-blue-border);
+      color: var(--accent-blue);
+    }
+    .feature-card-item[data-cat="cloud"] .feature-item-badge {
+      background: var(--accent-amber-bg);
+      border: 1px solid var(--accent-amber-border);
+      color: var(--accent-amber);
+    }
     .feature-item-desc {
-      font-size: 0.78rem;
+      font-size: 0.79rem;
       color: var(--text-muted);
-      line-height: 1.6;
+      line-height: 1.62;
       overflow-wrap: break-word;
       word-break: normal;
     }
@@ -2503,8 +2664,8 @@ export function panelHTML(env, options = {}) {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-top: 14px;
-      margin-top: 14px;
+      padding: 14px 24px;
+      background: var(--bg-surface);
       border-top: 1px solid var(--border-subtle);
       gap: 14px;
       flex-wrap: wrap;
@@ -2540,66 +2701,108 @@ export function panelHTML(env, options = {}) {
       border-radius: 12px;
       font-size: 0.82rem;
       font-weight: 700;
-      font-family: inherit;
       cursor: pointer;
       transition: all 0.2s ease;
     }
     .btn-feature-dismiss:hover {
       background: var(--btn-secondary-hover);
       color: var(--text-main);
-      border-color: var(--border-focus);
+      border-color: var(--border-specular);
     }
     .btn-feature-start {
-      background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
       color: #ffffff;
-      padding: 9px 24px;
+      border: none;
+      padding: 9px 22px;
       border-radius: 12px;
-      font-size: 0.86rem;
+      font-size: 0.84rem;
       font-weight: 800;
-      font-family: inherit;
       cursor: pointer;
-      box-shadow: 0 4px 18px rgba(124, 58, 237, 0.35);
-      transition: all 0.22s ease;
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35);
+      transition: all 0.22s var(--smooth-physics);
     }
     .btn-feature-start:hover {
-      background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
       box-shadow: 0 6px 24px rgba(124, 58, 237, 0.5);
       transform: translateY(-1px);
     }
 
     @media (max-width: 720px) {
       .features-modal-container {
-        padding: 16px 14px;
+        width: 95%;
+        padding: 0;
         border-radius: 20px;
-        max-height: 92vh;
+        max-height: 94vh;
+      }
+      .features-modal-header {
+        padding: 14px 16px 10px 16px;
+        gap: 10px;
       }
       .features-header-title {
-        font-size: 1.14rem;
+        font-size: 1.15rem;
+      }
+      .features-header-desc {
+        font-size: 0.77rem;
+        line-height: 1.5;
+      }
+      .features-chips-row {
+        display: none;
+      }
+      .features-modal-body {
+        padding: 10px 14px;
       }
       .features-cards-grid {
         grid-template-columns: 1fr;
         gap: 9px;
       }
+      .feature-card-item {
+        padding: 12px 14px;
+        gap: 11px;
+      }
+      .feature-item-icon {
+        width: 36px;
+        height: 36px;
+      }
+      .feature-item-title {
+        font-size: 0.86rem;
+      }
+      .feature-item-badge {
+        font-size: 0.65rem;
+        padding: 2px 7px;
+      }
+      .feature-item-desc {
+        font-size: 0.76rem;
+        line-height: 1.55;
+      }
       .features-modal-action-bar {
+        padding: 12px 16px;
         flex-direction: column;
         align-items: stretch;
-        gap: 12px;
+        gap: 10px;
       }
-      .features-action-buttons {
-        flex-direction: column;
-        width: 100%;
-        gap: 8px;
-      }
-      .features-action-buttons button {
-        width: 100%;
+      .features-pref-toggle {
         justify-content: center;
       }
+      .features-action-buttons {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+      }
+      .btn-feature-dismiss {
+        flex: 1;
+        text-align: center;
+        justify-content: center;
+        padding: 11px 14px;
+      }
+      .btn-feature-start {
+        flex: 1.5;
+        text-align: center;
+        justify-content: center;
+        padding: 11px 14px;
+      }
     }
-
     /* ==========================================================================
        🔍 Arizo Self — User Inspector & Live Telemetry Modal (Admin Suite)
        ========================================================================== */
@@ -5219,333 +5422,365 @@ export function panelHTML(env, options = {}) {
 
   </div>
 
-  <!-- 💎 مودال رسمی و حرفه‌ای راهنما و معرفی امکانات سامانه Arizo Self -->
+  <!-- 💎 مودال رسمی و حرفه‌ای راهنما و معرفی امکانات سامانه Arizo Self Studio -->
   <div id="featuresIntroModal" class="modal-backdrop hidden" onclick="if(event.target === this) closeFeaturesModal();">
     <div class="features-modal-container" onclick="event.stopPropagation();">
-      
-      <!-- سربرگ رسمی (ثابت در بالا) -->
+
+      <!-- سربرگ رسمی و مدرن (ثابت در بالا) -->
       <div class="features-modal-header">
-        <div class="features-header-content">
-          <div class="features-header-top-row">
-            <span class="features-header-badge">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-              <span>معرفی امکانات و سرویس‌های پیشرفته | Arizo Self v3.6.2 PRO</span>
-            </span>
+        <div class="features-header-main-row">
+          <div class="features-header-info">
+            <div class="features-header-brand-wrap">
+              <span class="features-header-badge">
+                <span class="features-header-badge-dot"></span>
+                <span data-i18n="featModalBadge">معرفی امکانات و سرویس‌های پیشرفته | Arizo Self PRO Studio</span>
+              </span>
+            </div>
+            <div class="features-header-title" data-i18n="featModalTitle">استودیوی ابری سلف‌بات هوشمند تلگرام</div>
+            <div class="features-header-desc" data-i18n="featModalDesc">
+              پلتفرم متمرکز ابری جهت خودکارسازی و مدیریت نمایه تلگرام بر بستر سرورلس ۲۴ ساعته بدون نیاز به آنلاین بودن دستگاه یا سرور اختصاصی.
+            </div>
           </div>
-          <div class="features-header-title">استودیوی ابری سلف‌بات هوشمند تلگرام</div>
-          <div class="features-header-desc">
-            پلتفرم متمرکز ابری جهت خودکارسازی و مدیریت نمایه تلگرام بر بستر سرورلس ۲۴ ساعته بدون نیاز به آنلاین بودن دستگاه یا سرور اختصاصی.
-          </div>
-          <!-- تراشه‌های زیرساخت ابری (مینی‌مال و فوق‌العاده شکیل) -->
-          <div class="features-chips-row">
-            <span class="features-chip">
-              <span class="features-chip-dot"></span>
-              <span>واکنش زیر ۴۰ms</span>
-            </span>
-            <span class="features-chip">
-              <span class="features-chip-dot" style="background:var(--accent-blue); box-shadow:0 0 6px var(--accent-blue);"></span>
-              <span>۱۰۰٪ ابری ۲۴/۷</span>
-            </span>
-            <span class="features-chip">
-              <span class="features-chip-dot" style="background:var(--accent-green); box-shadow:0 0 6px var(--accent-green);"></span>
-              <span>دیتابیس هیبرید D1 + KV</span>
-            </span>
-            <span class="features-chip">
-              <span class="features-chip-dot" style="background:var(--accent-purple); box-shadow:0 0 6px var(--accent-purple);"></span>
-              <span>امنیت ۲FA و هانی‌پات</span>
-            </span>
-          </div>
+          <button class="btn-close features-close-btn" onclick="closeFeaturesModal()" title="بستن پنجره" aria-label="Close">&times;</button>
         </div>
-        <button class="btn-close" onclick="closeFeaturesModal()" title="بستن پنجره">&times;</button>
+
+        <!-- تراشه‌های زیرساخت ابری (مینی‌مال و فوق‌العاده شکیل) -->
+        <div class="features-chips-row">
+          <span class="features-chip">
+            <span class="features-chip-dot" style="background:var(--accent-green); box-shadow:0 0 6px var(--accent-green);"></span>
+            <span data-i18n="featChip1">واکنش زیر ۴۰ms</span>
+          </span>
+          <span class="features-chip">
+            <span class="features-chip-dot" style="background:var(--accent-blue); box-shadow:0 0 6px var(--accent-blue);"></span>
+            <span data-i18n="featChip2">۱۰۰٪ ابری ۲۴/۷</span>
+          </span>
+          <span class="features-chip">
+            <span class="features-chip-dot" style="background:var(--accent-purple); box-shadow:0 0 6px var(--accent-purple);"></span>
+            <span data-i18n="featChip3">دیتابیس هیبرید D1 + KV</span>
+          </span>
+          <span class="features-chip">
+            <span class="features-chip-dot" style="background:var(--accent-rose); box-shadow:0 0 6px var(--accent-rose);"></span>
+            <span data-i18n="featChip4">امنیت ۲FA و ایزولاسیون</span>
+          </span>
+        </div>
+
+        <!-- نوار دسته‌بندی و فیلتر تب‌های هوشمند (Scrollable Pill Filters) -->
+        <div class="features-category-bar">
+          <button type="button" class="feature-cat-btn active" onclick="filterFeatureCards('all', this)" data-cat="all">
+            <span>🌟</span>
+            <span data-i18n="featCatAll">همه امکانات</span>
+            <span class="cat-count">۱۸</span>
+          </button>
+          <button type="button" class="feature-cat-btn" onclick="filterFeatureCards('ai', this)" data-cat="ai">
+            <span>🤖</span>
+            <span data-i18n="featCatAi">هوش مصنوعی و منشی</span>
+            <span class="cat-count">۴</span>
+          </button>
+          <button type="button" class="feature-cat-btn" onclick="filterFeatureCards('security', this)" data-cat="security">
+            <span>🛡️</span>
+            <span data-i18n="featCatSecurity">امنیت و پایش</span>
+            <span class="cat-count">۵</span>
+          </button>
+          <button type="button" class="feature-cat-btn" onclick="filterFeatureCards('profile', this)" data-cat="profile">
+            <span>⚡</span>
+            <span data-i18n="featCatProfile">ساعت و نمایه</span>
+            <span class="cat-count">۴</span>
+          </button>
+          <button type="button" class="feature-cat-btn" onclick="filterFeatureCards('cloud', this)" data-cat="cloud">
+            <span>👑</span>
+            <span data-i18n="featCatCloud">ابری و مدیریت</span>
+            <span class="cat-count">۵</span>
+          </button>
+        </div>
       </div>
 
-      <!-- بدنه کارت‌های امکانات (اسکرول نرم و روان در صورت نیاز) -->
+      <!-- بدنه کارت‌های امکانات (اسکرول نرم و روان با چیدمان مدرن) -->
       <div class="features-modal-body">
         <div class="features-cards-grid">
-          <!-- ۱. ساعت زنده اتمی نام کاربری -->
-          <div class="feature-card-item">
+          <!-- ۱. ساعت زنده نام کاربری -->
+          <div class="feature-card-item" data-cat="profile">
             <div class="feature-item-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
             </div>
             <div class="feature-item-body">
               <div class="feature-item-top">
-                <span class="feature-item-title">ساعت زنده نام کاربری</span>
-                <span class="feature-item-badge">۳۲ قلم نوشتاری</span>
+                <span class="feature-item-title" data-i18n="featClockTitle">ساعت زنده نام کاربری</span>
+                <span class="feature-item-badge" data-i18n="featClockBadge">۳۲ قلم نوشتاری</span>
               </div>
-              <div class="feature-item-desc">
-                به‌روزرسانی خودکار و بلادرنگ زمان تهران در نام کاربری تلگرام با ۳۲ استایل قلم فارسی و لاتین، ارقام محلی و نمایش ۱۲/۲۴ ساعته رأس ثانیه ۰۰.
+              <div class="feature-item-desc" data-i18n="featClockDesc">
+                به‌روزرسانی خودکار و بلادرنگ زمان در نام کاربری تلگرام با بیش از ۳۲ استایل قلم فارسی، فانتزی و لاتین، ارقام محلی و نمایش ۱۲/۲۴ ساعته رأس ثانیه ۰۰.
               </div>
             </div>
           </div>
 
-          <!-- ۲. بیوگرافی پویا و تقویم -->
-          <div class="feature-card-item">
+          <!-- ۲. بیوگرافی زنده و تقویم -->
+          <div class="feature-card-item" data-cat="profile">
             <div class="feature-item-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             </div>
             <div class="feature-item-body">
               <div class="feature-item-top">
-                <span class="feature-item-title">بیوگرافی زنده و تقویم</span>
-                <span class="feature-item-badge">متغیرهای هوشمند</span>
+                <span class="feature-item-title" data-i18n="featBioTitle">بیوگرافی زنده و تقویم پویا</span>
+                <span class="feature-item-badge" data-i18n="featBioBadge">متغیرهای هوشمند</span>
               </div>
-              <div class="feature-item-desc">
-                نمایش تقویم زنده هجری شمسی، روز هفته و ساعت در بخش Bio تلگرام با الگوهای مدرن و متغیرهای داینامیک.
+              <div class="feature-item-desc" data-i18n="featBioDesc">
+                درج خودکار تاریخ زنده خورشیدی، روز هفته، ساعت، وضعیت و متغیرهای داینامیک در بایو تلگرام بدون تاخیر.
               </div>
             </div>
           </div>
 
-          <!-- ۳. منشی و پاسخگوی هوشمند پیوی -->
-          <div class="feature-card-item">
+          <!-- ۳. دستیار هوشمند هوش مصنوعی -->
+          <div class="feature-card-item" data-cat="ai">
             <div class="feature-item-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
             </div>
             <div class="feature-item-body">
               <div class="feature-item-top">
-                <span class="feature-item-title">منشی خودکار پیوی (AFK)</span>
-                <span class="feature-item-badge">سیستم ضد اسپم</span>
+                <span class="feature-item-title" data-i18n="featAiTitle">دستیار هوشمند هوش مصنوعی</span>
+                <span class="feature-item-badge" data-i18n="featAiBadge">موتورهای نسل جدید</span>
               </div>
-              <div class="feature-item-desc">
-                پاسخگویی هوشمند به پیام‌های شخصی هنگام آفلاین بودن، با قابلیت تعریف متن سفارشی، فاصله زمانی و استثناسازی ربات‌ها و کاربران.
+              <div class="feature-item-desc" data-i18n="featAiDesc">
+                پاسخگویی خودکار و هوشمند به پیام‌ها با مدل‌های پیشرفته AI (Claude, GPT, Gemini)، تشخیص هوشمند وضعیت آنلاین/آفلاین و مکالمه کاملاً طبیعی.
               </div>
             </div>
           </div>
 
-          <!-- ۴. دستیار و پاسخگوی هوش مصنوعی -->
-          <div class="feature-card-item">
+          <!-- ۴. لیست نادیده‌گیری هوش مصنوعی -->
+          <div class="feature-card-item" data-cat="ai">
             <div class="feature-item-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
             </div>
             <div class="feature-item-body">
               <div class="feature-item-top">
-                <span class="feature-item-title">دستیار هوش مصنوعی (AI)</span>
-                <span class="feature-item-badge">پاسخگوی چت لبه‌ای</span>
+                <span class="feature-item-title" data-i18n="featAiIgnoreTitle">لیست نادیده‌گیری هوش مصنوعی</span>
+                <span class="feature-item-badge" data-i18n="featAiIgnoreBadge">کنترل سفارشی چت</span>
               </div>
-              <div class="feature-item-desc">
-                تعامل زبانی و پاسخ‌دهی خودکار به چت‌ها با استفاده از مدل‌های پیشرفته هوش مصنوعی متصل به سامانه سرورلس ابری.
+              <div class="feature-item-desc" data-i18n="featAiIgnoreDesc">
+                تعیین لیست سیاه کاربران و چت‌های مستثنی‌شده از پاسخ خودکار با شناسه عددی یا یوزرنیم، همراه با تست زنده سلامت API Key.
               </div>
             </div>
           </div>
 
-          <!-- ۵. پایشگر ضد حذف تلگرام -->
-          <div class="feature-card-item">
+          <!-- ۵. پاسخگویی دوزبانه هوش مصنوعی -->
+          <div class="feature-card-item" data-cat="ai">
             <div class="feature-item-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
             </div>
             <div class="feature-item-body">
               <div class="feature-item-top">
-                <span class="feature-item-title">پایشگر ضد حذف (Anti-Delete)</span>
-                <span class="feature-item-badge">متن، عکس، ویس و فایل</span>
+                <span class="feature-item-title" data-i18n="featAiBilingualTitle">پاسخگویی دوزبانه هوش مصنوعی</span>
+                <span class="feature-item-badge" data-i18n="featAiBilingualBadge">تشخیص خودکار زبان</span>
               </div>
-              <div class="feature-item-desc">
-                ضبط و فوروارد بلادرنگ پیام‌ها، فایل‌ها، تصاویر، ویس‌ها و استیکرهای پاک‌شده توسط مخاطبان در پیوی به ربات دستیار شخصی.
+              <div class="feature-item-desc" data-i18n="featAiBilingualDesc">
+                تشخیص خودکار زبان مخاطب در پیوی و پاسخگویی به زبان انگلیسی به پیام‌های انگلیسی و به زبان فارسی به پیام‌های فارسی به صورت روان و اداری.
               </div>
             </div>
           </div>
 
-          <!-- ۶. مانیتور و ضد ویرایش پیام -->
-          <div class="feature-card-item">
+          <!-- ۶. منشی خودکار پیوی (AFK) -->
+          <div class="feature-card-item" data-cat="ai">
             <div class="feature-item-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
             </div>
             <div class="feature-item-body">
               <div class="feature-item-top">
-                <span class="feature-item-title">مانیتور ضد ویرایش (Anti-Edit)</span>
-                <span class="feature-item-badge">متن قبل و بعد ادیت</span>
+                <span class="feature-item-title" data-i18n="featAfkTitle">منشی خودکار پیوی (AFK)</span>
+                <span class="feature-item-badge" data-i18n="featAfkBadge">سیستم ضد اسپم</span>
               </div>
-              <div class="feature-item-desc">
-                آشکارسازی و ارسال متن اولیه پیام‌ها قبل از ویرایش به همراه نسخه اصلاح‌شده و زمان دقیق به ربات دستیار برای ثبت تاریخچه.
+              <div class="feature-item-desc" data-i18n="featAfkDesc">
+                اعلام غیبت هوشمند در زمان آفلاین بودن، با قابلیت تعریف متن دلخواه، وقفه ضد اسپم و تفکیک خودکار ربات‌ها و مخاطبان.
               </div>
             </div>
           </div>
 
-          <!-- ۷. نجات رسانه‌های خودتخریبی Anti-TTL -->
-          <div class="feature-card-item">
+          <!-- ۷. پایشگر ضد حذف تلگرام -->
+          <div class="feature-card-item" data-cat="security">
             <div class="feature-item-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
             </div>
             <div class="feature-item-body">
               <div class="feature-item-top">
-                <span class="feature-item-title">آرشیو رسانه‌ها (Anti-TTL)</span>
-                <span class="feature-item-badge">رسانه‌های View-Once</span>
+                <span class="feature-item-title" data-i18n="featAntiDeleteTitle">پایشگر ضد حذف پیشرفته (Anti-Delete)</span>
+                <span class="feature-item-badge" data-i18n="featAntiDeleteBadge">متن، عکس، ویس و مدیا</span>
               </div>
-              <div class="feature-item-desc">
-                ذخیره و فوروارد فوری عکس‌ها و ویدیوهای محوشونده و تایمردار تلگرام پیش از سوختن یا ناپدید شدن با حداکثر کیفیت اصلی.
+              <div class="feature-item-desc" data-i18n="featAntiDeleteDesc">
+                رصد و فوروارد آنی پیام‌های متنی، تصاویر، صداها، ویدیوها و فایل‌های حذف‌شده توسط طرف مقابل در پیوی به چت اختصاصی کاربر.
               </div>
             </div>
           </div>
 
-          <!-- ۸. حالت نامرئی و روح -->
-          <div class="feature-card-item">
+          <!-- ۸. مانیتور و ضد ویرایش پیام -->
+          <div class="feature-card-item" data-cat="security">
             <div class="feature-item-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
             </div>
             <div class="feature-item-body">
               <div class="feature-item-top">
-                <span class="feature-item-title">حالت روح و نامرئی (Ghost Mode)</span>
-                <span class="feature-item-badge">مشاهده بدون تیک دوم</span>
+                <span class="feature-item-title" data-i18n="featAntiEditTitle">پایشگر ضد ویرایش پیام (Anti-Edit)</span>
+                <span class="feature-item-badge" data-i18n="featAntiEditBadge">ثبت قبل و بعد ویرایش</span>
               </div>
-              <div class="feature-item-desc">
-                مشاهده و مرور پیام‌های دریافتی بدون سین خوردن با امکان فعال‌سازی از پنل یا دستور تلگرامی <code>.ghost on</code> و <code>.read</code>.
+              <div class="feature-item-desc" data-i18n="featAntiEditDesc">
+                ثبت نسخه اصلی پیام‌ها قبل از هرگونه تغییر یا ویرایش و ارسال همزمان متن اولیه و ثانویه با زمان دقیق به چت دستیار.
               </div>
             </div>
           </div>
 
-          <!-- ۹. مدیریت سکوت و فیلتر پیام‌ها -->
-          <div class="feature-card-item">
+          <!-- ۹. نجات رسانه‌های خودتخریبی Anti-TTL -->
+          <div class="feature-card-item" data-cat="security">
             <div class="feature-item-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
             </div>
             <div class="feature-item-body">
               <div class="feature-item-top">
-                <span class="feature-item-title">مدیریت سکوت و فیلتر (Mute)</span>
-                <span class="feature-item-badge">پاکسازی دوطرفه چت</span>
+                <span class="feature-item-title" data-i18n="featAntiTtlTitle">آرشیو رسانه‌های خودتخریبی (Anti-TTL)</span>
+                <span class="feature-item-badge" data-i18n="featAntiTtlBadge">رسانه‌های تایمردار</span>
               </div>
-              <div class="feature-item-desc">
-                مسدودسازی و حذف خودکار و آنی پیام‌های کاربران مزاحم با دستور تلگرامی <code>.mute</code> و مدیریت یکپارچه از طریق پنل.
+              <div class="feature-item-desc" data-i18n="featAntiTtlDesc">
+                ذخیره‌سازی و فوروارد فوری عکس‌ها و ویدیوهای تایمردار و یک‌بار مصرف تلگرام پیش از سوختن یا ناپدید شدن با کیفیت اصلی.
               </div>
             </div>
           </div>
 
-          <!-- ۱۰. حالت خواب و استراحت شبانه -->
-          <div class="feature-card-item">
+          <!-- ۱۰. حالت نامرئی و روح -->
+          <div class="feature-card-item" data-cat="security">
             <div class="feature-item-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
             </div>
             <div class="feature-item-body">
               <div class="feature-item-top">
-                <span class="feature-item-title">حالت خواب شبانه (Sleep Mode)</span>
-                <span class="feature-item-badge">اتوماسیون استراحت</span>
+                <span class="feature-item-title" data-i18n="featGhostTitle">حالت روح و نامرئی (Ghost Mode)</span>
+                <span class="feature-item-badge" data-i18n="featGhostBadge">مشاهده مخفیانه پیام</span>
               </div>
-              <div class="feature-item-desc">
-                تغییر خودکار نام خانوادگی به حالت استراحت و به تعویق انداختن پیام‌ها در ساعات مشخص شبانه به صورت اتوماتیک.
+              <div class="feature-item-desc" data-i18n="featGhostDesc">
+                مطالعه پیام‌های دریافتی بدون تیک دوم (Seen) با امکان فعال‌سازی از پنل یا دستورات درون‌برنامه‌ای تلگرام (.ghost و .read).
               </div>
             </div>
           </div>
 
-          <!-- ۱۱. تایید دو مرحله‌ای سخت‌گیرانه -->
-          <div class="feature-card-item">
+          <!-- ۱۱. مدیریت سکوت و فیلتر پیام‌ها -->
+          <div class="feature-card-item" data-cat="security">
             <div class="feature-item-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
             </div>
             <div class="feature-item-body">
               <div class="feature-item-top">
-                <span class="feature-item-title">تایید دومرحله‌ای (Google 2FA)</span>
-                <span class="feature-item-badge">استاندارد TOTP RFC 6238</span>
+                <span class="feature-item-title" data-i18n="featMuteTitle">مدیریت سکوت و بلک‌لیست چت (Mute)</span>
+                <span class="feature-item-badge" data-i18n="featMuteBadge">پاکسازی دوطرفه چت</span>
               </div>
-              <div class="feature-item-desc">
-                محافظت نفوذناپذیر از حساب پنل کاربری با Google Authenticator، رمز موقت ۶ رقمی و ۸ کد بازیابی اضطراری.
+              <div class="feature-item-desc" data-i18n="featMuteDesc">
+                مهار و حذف اتوماتیک پیام‌های کاربران مزاحم به صورت دوطرفه با دستور تلگرامی .mute و پنل مدیریت متمرکز.
               </div>
             </div>
           </div>
 
-          <!-- ۱۲. سیستم پایش و مهار دسترسی‌های غیرمجاز -->
-          <div class="feature-card-item">
+          <!-- ۱۲. حالت خواب و استراحت شبانه -->
+          <div class="feature-card-item" data-cat="profile">
             <div class="feature-item-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
             </div>
             <div class="feature-item-body">
               <div class="feature-item-top">
-                <span class="feature-item-title">پایش امنیتی و مهار دسترسی‌های مشکوک</span>
-                <span class="feature-item-badge">فایروال و مسدودسازی خودکار</span>
+                <span class="feature-item-title" data-i18n="featSleepTitle">حالت خواب شبانه هوشمند (Sleep Mode)</span>
+                <span class="feature-item-badge" data-i18n="featSleepBadge">اتوماسیون استراحت</span>
               </div>
-              <div class="feature-item-desc">
-                شناسایی خودکار درخواست‌های نامعتبر، مسدودسازی سریع آی‌پی‌های مشکوک و ارسال اعلان‌های امنیتی به حساب کاربری.
+              <div class="feature-item-desc" data-i18n="featSleepDesc">
+                زمان‌بندی خودکار ساعات استراحت شبانه، تعویق پاسخ‌دهی‌ها و تغییر وضعیت اکانت در بازه زمانی تعیین‌شده.
               </div>
             </div>
           </div>
 
-          <!-- ۱۳. ویزارد گرافیکی راه‌اندازی (/setup) -->
-          <div class="feature-card-item" style="border: 1px solid var(--accent-blue-border); background: var(--accent-blue-bg);">
-            <div class="feature-item-icon" style="color: var(--accent-blue);">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
-            </div>
-            <div class="feature-item-body">
-              <div class="feature-item-top">
-                <span class="feature-item-title" style="color: var(--accent-blue);">ویزارد راه‌اندازی تحت وب (/setup)</span>
-                <span class="feature-item-badge" style="background:var(--accent-blue); color:#fff;">بدون کدنویسی</span>
-              </div>
-              <div class="feature-item-desc">
-                راهنمای جامع تعاملی ۵ مرحله‌ای برای دریافت API کلیدها، ایجاد سشن تلگرام و راه‌اندازی آسان و بدون ترمینال.
-              </div>
-            </div>
-          </div>
-
-          <!-- ۱۴. سیستم ارتقا به مدیر و مدیریت سطوح دسترسی -->
-          <div class="feature-card-item" style="border: 1px solid var(--accent-amber-border); background: var(--accent-amber-bg);">
-            <div class="feature-item-icon" style="color: var(--accent-amber);">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-            </div>
-            <div class="feature-item-body">
-              <div class="feature-item-top">
-                <span class="feature-item-title" style="color: var(--accent-amber);">سیستم ارتقا به مدیر (Role System)</span>
-                <span class="feature-item-badge" style="background:var(--accent-amber); color:#000;">ارتقا / تنزل آنی</span>
-              </div>
-              <div class="feature-item-desc">
-                امکان ارتقای مستقیم کاربران به مدیر سیستم یا تنزل به کاربر عادی در جدول کاربران و پنل بازرس با تایید امنیتی.
-              </div>
-            </div>
-          </div>
-
-          <!-- ۱۵. تله‌متری و مانیتورینگ ۳۶۰ درجه (/admin) -->
-          <div class="feature-card-item">
+          <!-- ۱۳. معماری چندکاربره و ایزولاسیون ابری -->
+          <div class="feature-card-item" data-cat="cloud">
             <div class="feature-item-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
             </div>
             <div class="feature-item-body">
               <div class="feature-item-top">
-                <span class="feature-item-title">داشبورد مانیتورینگ (/admin)</span>
-                <span class="feature-item-badge">روت مستقل و امن</span>
+                <span class="feature-item-title" data-i18n="featTenantTitle">معماری چندکاربره و ایزولاسیون ابری</span>
+                <span class="feature-item-badge" data-i18n="featTenantBadge">ایزولاسیون کامل داده‌ها</span>
               </div>
-              <div class="feature-item-desc">
-                مشاهده آمارهای زنده دیتابیس، نرخ رایت‌ها، سشن‌های فعال، خطاهای ثبت‌شده و وضعیت ربات‌های کمکی در صفحه مجزا.
+              <div class="feature-item-desc" data-i18n="featTenantDesc">
+                تفکیک قطعی دیتابیس، سشن‌ها، تنظیمات و کلیدهای هر کاربر در بستر توزیع‌شده Cloudflare، بدون تداخل داده‌ها.
               </div>
             </div>
           </div>
 
-          <!-- ۱۶. موتور هیبریدی ذخیره‌سازی Zero-Write -->
-          <div class="feature-card-item">
+          <!-- ۱۴. تایید دومرحله‌ای سخت‌گیرانه -->
+          <div class="feature-card-item" data-cat="security">
             <div class="feature-item-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
             </div>
             <div class="feature-item-body">
               <div class="feature-item-top">
-                <span class="feature-item-title">موتور ذخیره‌سازی هیبرید D1 + KV</span>
-                <span class="feature-item-badge">۱۰۰,۰۰۰ رایت D1 روزانه</span>
+                <span class="feature-item-title" data-i18n="feat2faTitle">تایید دومرحله‌ای سخت‌گیرانه (Google 2FA)</span>
+                <span class="feature-item-badge" data-i18n="feat2faBadge">استاندارد TOTP RFC 6238</span>
               </div>
-              <div class="feature-item-desc">
-                بهره‌گیری همزمان از Cloudflare D1 و KV همراه با کش رم هوشمند جهت به صفر رساندن استهلاک دیتابیس بدون مصرف اضافه.
+              <div class="feature-item-desc" data-i18n="feat2faDesc">
+                حفاظت از پنل وب با استاندارد رمز پویا (Google Authenticator TOTP)، کدهای بازیابی اضطراری و دیواره امنیتی در برابر نفوذ.
               </div>
             </div>
           </div>
 
-          <!-- ۱۷. انبار لایسنس و ردیم‌کدها -->
-          <div class="feature-card-item">
+          <!-- ۱۵. سیستم مدیریت اشتراک و لایسنس پویا -->
+          <div class="feature-card-item" data-cat="cloud">
             <div class="feature-item-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M13 5v2"></path><path d="M13 17v2"></path><path d="M13 11v2"></path></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M13 5v2"></path><path d="M13 17v2"></path><path d="M13 11v2"></path></svg>
             </div>
             <div class="feature-item-body">
               <div class="feature-item-top">
-                <span class="feature-item-title">انبار لایسنس و ردیم‌کد (License Vault)</span>
-                <span class="feature-item-badge">مدیریت اعتبار و تاریخ انقضا</span>
+                <span class="feature-item-title" data-i18n="featSubTitle">سیستم لایسنس و اشتراک کاربری</span>
+                <span class="feature-item-badge" data-i18n="featSubBadge">تمدید و ارتقای آنی</span>
               </div>
-              <div class="feature-item-desc">
-                تولید، ابطال و رصد کدهای اشتراک مدت‌دار با فرمت استاندارد ARIZO-XXXX، تخصیص مستقیم به کاربران و مدیریت مالی اشتراک‌ها.
+              <div class="feature-item-desc" data-i18n="featSubDesc">
+                نمایش لحظه‌ای روزهای باقی‌مانده، نوع اشتراک، نوار پیشرفت اعتبار و قابلیت تمدید یا ارتقای آنی با کدهای لایسنس.
+              </div>
+            </div>
+          </div>
+
+          <!-- ۱۶. پنل مدیریت ارشد و تله‌متری -->
+          <div class="feature-card-item" data-cat="cloud">
+            <div class="feature-item-icon">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            </div>
+            <div class="feature-item-body">
+              <div class="feature-item-top">
+                <span class="feature-item-title" data-i18n="featAdminTitle">پنل مدیریت ارشد و تله‌متری (/admin)</span>
+                <span class="feature-item-badge" data-i18n="featAdminBadge">مانیتورینگ زنده سیستم</span>
+              </div>
+              <div class="feature-item-desc" data-i18n="featAdminDesc">
+                نظارت ۳۶۰ درجه بر کاربران، بررسی سلامت دیتابیس هیبرید D1 + KV، لاگ‌های عملکردی و تخصیص نقش‌ها در مسیر امن /admin.
+              </div>
+            </div>
+          </div>
+
+          <!-- ۱۷. موتور هیبریدی ذخیره‌سازی Zero-Write -->
+          <div class="feature-card-item" data-cat="cloud">
+            <div class="feature-item-icon">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            </div>
+            <div class="feature-item-body">
+              <div class="feature-item-top">
+                <span class="feature-item-title" data-i18n="featStorageTitle">موتور ذخیره‌سازی بهینه هیبرید</span>
+                <span class="feature-item-badge" data-i18n="featStorageBadge">۱۰۰,۰۰۰ رایت D1 روزانه</span>
+              </div>
+              <div class="feature-item-desc" data-i18n="featStorageDesc">
+                ترکیب بهینه پایگاه داده ارتباطی D1 و فضای پرسرعت KV همراه با کش هوشمند حافظه برای بالاترین سرعت و صفر اتلاف منابع.
               </div>
             </div>
           </div>
 
           <!-- ۱۸. مینی اپلیکیشن تلگرام -->
-          <div class="feature-card-item">
+          <div class="feature-card-item" data-cat="cloud">
             <div class="feature-item-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
             </div>
             <div class="feature-item-body">
               <div class="feature-item-top">
-                <span class="feature-item-title">مینی اپلیکیشن تلگرام (Telegram WebApp)</span>
-                <span class="feature-item-badge">ورود مستقیم SSO</span>
+                <span class="feature-item-title" data-i18n="featWebappTitle">دسترسی سریع تلگرام وب‌اپ (Telegram WebApp)</span>
+                <span class="feature-item-badge" data-i18n="featWebappBadge">ورود مستقیم بدون لاگین</span>
               </div>
-              <div class="feature-item-desc">
-                دسترسی تمام‌عیار و مدیریت سلف‌بات مستقیماً از درون محیط تلگرام با ورود خودکار امن و هماهنگی کامل با تم تلگرام.
+              <div class="feature-item-desc" data-i18n="featWebappDesc">
+                مدیریت کامل استودیوی سلف‌بات مستقیماً از داخل کلاینت رسمی تلگرام با احراز هویت امن و هماهنگی با تم تلگرام.
               </div>
             </div>
           </div>
@@ -5556,14 +5791,14 @@ export function panelHTML(env, options = {}) {
       <div class="features-modal-action-bar">
         <label class="features-pref-toggle">
           <input type="checkbox" id="dontShowFeaturesAgain">
-          <span>عدم نمایش خودکار در دفعات بعدی</span>
+          <span data-i18n="featDontShow">عدم نمایش خودکار در دفعات بعدی</span>
         </label>
         <div class="features-action-buttons">
-          <button class="btn-feature-dismiss" onclick="closeFeaturesModal()">
-            <span>بستن</span>
+          <button type="button" class="btn-feature-dismiss" onclick="closeFeaturesModal()">
+            <span data-i18n="featClose">بستن</span>
           </button>
-          <button class="btn-feature-start" onclick="closeFeaturesModal()">
-            <span>ورود به استودیو</span>
+          <button type="button" class="btn-feature-start" onclick="closeFeaturesModal()">
+            <span data-i18n="featStart">ورود به استودیو</span>
             <span style="font-size: 1rem; line-height: 1;">✨</span>
           </button>
         </div>
@@ -6318,6 +6553,76 @@ export function panelHTML(env, options = {}) {
       "نوع اشتراک و اعتبار": "Subscription Plan & Validity",
       "تعداد روزهای اعتبار": "Validity Duration (Days)",
       "مثال: ۱۵ (تعداد روز اعتبار لایسنس)": "Example: 15 (License validity days)",
+      // 💎 Features Modal Translations
+      'معرفی امکانات و سرویس‌های پیشرفته | Arizo Self PRO Studio': 'Arizo Self PRO Studio | Executive Features Guide',
+      'استودیوی ابری سلف‌بات هوشمند تلگرام': 'Intelligent Telegram Cloud Selfbot Studio',
+      'پلتفرم متمرکز ابری جهت خودکارسازی و مدیریت نمایه تلگرام بر بستر سرورلس ۲۴ ساعته بدون نیاز به آنلاین بودن دستگاه یا سرور اختصاصی.': 'Centralized 24/7 serverless cloud platform for automated Telegram profile management without local devices or servers.',
+      'واکنش زیر ۴۰ms': '<40ms Latency',
+      '۱۰۰٪ ابری ۲۴/۷': '100% Cloud 24/7',
+      'دیتابیس هیبرید D1 + KV': 'Hybrid D1 + KV Database',
+      'امنیت ۲FA و ایزولاسیون': '2FA & Multi-Tenant Security',
+      'همه امکانات': 'All Features',
+      'هوش مصنوعی و منشی': 'AI & Assistant',
+      'امنیت و پایش': 'Security & Stealth',
+      'ساعت و نمایه': 'Clock & Profile',
+      'ابری و مدیریت': 'Cloud & Admin',
+      'عدم نمایش خودکار در دفعات بعدی': 'Do not show automatically again',
+      'بستن': 'Close',
+      'ورود به استودیو': 'Enter Studio',
+      'ساعت زنده نام کاربری': 'Live Profile Clock',
+      '۳۲ قلم نوشتاری': '32 Font Styles',
+      'به‌روزرسانی خودکار و بلادرنگ زمان در نام کاربری تلگرام با بیش از ۳۲ استایل قلم فارسی، فانتزی و لاتین، ارقام محلی و نمایش ۱۲/۲۴ ساعته رأس ثانیه ۰۰.': 'Real-time time synchronization in Telegram name with 32+ Persian, Latin and decorative fonts, local digits, and 12/24h formats.',
+      'بیوگرافی زنده و تقویم پویا': 'Dynamic Bio & Calendar',
+      'متغیرهای هوشمند': 'Smart Dynamic Tags',
+      'درج خودکار تاریخ زنده خورشیدی، روز هفته، ساعت، وضعیت و متغیرهای داینامیک در بایو تلگرام بدون تاخیر.': 'Automatic insertion of live Solar calendar date, weekday, time, and dynamic variables into Telegram bio.',
+      'دستیار هوشمند هوش مصنوعی': 'Smart AI Auto-Reply',
+      'موتورهای نسل جدید': 'Next-Gen AI Models',
+      'پاسخگویی خودکار و هوشمند به پیام‌ها با مدل‌های پیشرفته AI (Claude, GPT, Gemini)، تشخیص هوشمند وضعیت آنلاین/آفلاین و مکالمه کاملاً طبیعی.': 'Automated conversational responses powered by modern AI engines (Claude, GPT, Gemini) with smart online/offline detection.',
+      'لیست نادیده‌گیری هوش مصنوعی': 'AI Ignored Users List',
+      'کنترل سفارشی چت': 'Custom Chat Control',
+      'تعیین لیست سیاه کاربران و چت‌های مستثنی‌شده از پاسخ خودکار با شناسه عددی یا یوزرنیم، همراه با تست زنده سلامت API Key.': 'Configure blacklists of users and chats excluded from AI responses by ID or username, with live API health testing.',
+      'پاسخگویی دوزبانه هوش مصنوعی': 'Bilingual AI Intelligence',
+      'تشخیص خودکار زبان': 'Auto Language Detection',
+      'تشخیص خودکار زبان مخاطب در پیوی و پاسخگویی به زبان انگلیسی به پیام‌های انگلیسی و به زبان فارسی به پیام‌های فارسی به صورت روان و اداری.': 'Automatic detection of chat language, responding in English to English messages and Persian to Persian in a natural tone.',
+      'منشی خودکار پیوی (AFK)': 'Automated AFK Assistant',
+      'سیستم ضد اسپم': 'Anti-Spam Throttling',
+      'اعلام غیبت هوشمند در زمان آفلاین بودن، با قابلیت تعریف متن دلخواه، وقفه ضد اسپم و تفکیک خودکار ربات‌ها و مخاطبان.': 'Smart away-from-keyboard messaging when offline, with customizable templates, rate-limiting, and bot filtering.',
+      'پایشگر ضد حذف پیشرفته (Anti-Delete)': 'Advanced Anti-Delete Monitor',
+      'متن، عکس، ویس و مدیا': 'Text, Photos & Audio',
+      'رصد و فوروارد آنی پیام‌های متنی، تصاویر، صداها، ویدیوها و فایل‌های حذف‌شده توسط طرف مقابل در پیوی به چت اختصاصی کاربر.': 'Real-time capture and forwarding of deleted messages, photos, voice notes, and media directly to your saved messages.',
+      'پایشگر ضد ویرایش پیام (Anti-Edit)': 'Anti-Edit Message Tracker',
+      'ثبت قبل و بعد ویرایش': 'Original & Edited History',
+      'ثبت نسخه اصلی پیام‌ها قبل از هرگونه تغییر یا ویرایش و ارسال همزمان متن اولیه و ثانویه با زمان دقیق به چت دستیار.': 'Instant recording of original messages before modification, forwarding both versions with accurate timestamps.',
+      'آرشیو رسانه‌های خودتخریبی (Anti-TTL)': 'Self-Destructing Media Archive',
+      'رسانه‌های تایمردار': 'View-Once Media',
+      'ذخیره‌سازی و فوروارد فوری عکس‌ها و ویدیوهای تایمردار و یک‌بار مصرف تلگرام پیش از سوختن یا ناپدید شدن با کیفیت اصلی.': 'Automatic saving and forwarding of expiring View-Once photos and videos before deletion in full original quality.',
+      'حالت روح و نامرئی (Ghost Mode)': 'Stealth & Ghost Mode',
+      'مشاهده مخفیانه پیام': 'No Read Receipts',
+      'مطالعه پیام‌های دریافتی بدون تیک دوم (Seen) با امکان فعال‌سازی از پنل یا دستورات درون‌برنامه‌ای تلگرام (.ghost و .read).': 'Read incoming messages without triggering seen status, controllable via web panel or in-chat commands (.ghost and .read).',
+      'مدیریت سکوت و بلک‌لیست چت (Mute)': 'Smart Mute & Chat Cleanup',
+      'پاکسازی دوطرفه چت': 'Two-Way Deletion',
+      'مهار و حذف اتوماتیک پیام‌های کاربران مزاحم به صورت دوطرفه با دستور تلگرامی .mute و پنل مدیریت متمرکز.': 'Automatic two-way deletion and suppression of unwanted messages using .mute command and centralized controls.',
+      'حالت خواب شبانه هوشمند (Sleep Mode)': 'Automated Sleep Mode',
+      'اتوماسیون استراحت': 'Nightly Automation',
+      'زمان‌بندی خودکار ساعات استراحت شبانه، تعویق پاسخ‌دهی‌ها و تغییر وضعیت اکانت در بازه زمانی تعیین‌شده.': 'Automated scheduling of nighttime rest hours, deferring auto-replies, and adjusting profile status during sleep.',
+      'معماری چندکاربره و ایزولاسیون ابری': 'Multi-Tenant Cloud Isolation',
+      'ایزولاسیون کامل داده‌ها': 'Complete Data Privacy',
+      'تفکیک قطعی دیتابیس، سشن‌ها، تنظیمات و کلیدهای هر کاربر در بستر توزیع‌شده Cloudflare، بدون تداخل داده‌ها.': 'Strict separation of databases, user sessions, settings, and credentials on Cloudflare distributed infrastructure.',
+      'تایید دومرحله‌ای سخت‌گیرانه (Google 2FA)': 'Strict Two-Factor Auth (2FA)',
+      'استاندارد TOTP RFC 6238': 'TOTP RFC 6238 Standard',
+      'حفاظت از پنل وب با استاندارد رمز پویا (Google Authenticator TOTP)، کدهای بازیابی اضطراری و دیواره امنیتی در برابر نفوذ.': 'Unbreakable panel security with Google Authenticator TOTP 6-digit codes, 8 emergency recovery keys, and honeypot protection.',
+      'سیستم لایسنس و اشتراک کاربری': 'Dynamic Subscription & Renewal',
+      'تمدید و ارتقای آنی': 'Instant Plan Upgrades',
+      'نمایش لحظه‌ای روزهای باقی‌مانده، نوع اشتراک، نوار پیشرفت اعتبار و قابلیت تمدید یا ارتقای آنی با کدهای لایسنس.': 'Real-time display of remaining validity, plan type, usage meter, and instant renewal using license keys.',
+      'پنل مدیریت ارشد و تله‌متری (/admin)': 'Executive Admin Suite & Telemetry',
+      'مانیتورینگ زنده سیستم': 'Live System Monitoring',
+      'نظارت ۳۶۰ درجه بر کاربران، بررسی سلامت دیتابیس هیبرید D1 + KV، لاگ‌های عملکردی و تخصیص نقش‌ها در مسیر امن /admin.': '360-degree oversight of users, D1 + KV database health checks, runtime logs, and role management on /admin.',
+      'موتور ذخیره‌سازی بهینه هیبرید': 'Optimized Hybrid Storage Engine',
+      '۱۰۰,۰۰۰ رایت D1 روزانه': '100K Daily D1 Writes',
+      'ترکیب بهینه پایگاه داده ارتباطی D1 و فضای پرسرعت KV همراه با کش هوشمند حافظه برای بالاترین سرعت و صفر اتلاف منابع.': 'Smart pairing of Cloudflare D1 relational database with fast KV key-value store and in-memory caching to eliminate overhead.',
+      'دسترسی سریع تلگرام وب‌اپ (Telegram WebApp)': 'Telegram WebApp Integration',
+      'ورود مستقیم بدون لاگین': 'Direct SSO Access',
+      'مدیریت کامل استودیوی سلف‌بات مستقیماً از داخل کلاینت رسمی تلگرام با احراز هویت امن و هماهنگی با تم تلگرام.': 'Manage your entire selfbot studio directly within Telegram via official Mini App with automatic SSO authentication.',
       "پلن اشتراک فعلی:": "Current Subscription Plan:",
     };
 
@@ -7790,10 +8095,34 @@ export function panelHTML(env, options = {}) {
       window.translateDOM(document.getElementById('settingsModal'), window.currentLang); };
     window.closeSettingsModal = function() { document.getElementById('settingsModal').classList.add('hidden'); };
 
+    window.filterFeatureCards = function(category, btn) {
+      var modal = document.getElementById('featuresIntroModal');
+      if (!modal) return;
+      var buttons = modal.querySelectorAll('.feature-cat-btn');
+      buttons.forEach(function(b) { b.classList.remove('active'); });
+      if (btn) btn.classList.add('active');
+      var cards = modal.querySelectorAll('.feature-card-item');
+      cards.forEach(function(card) {
+        var cardCat = card.getAttribute('data-cat') || 'all';
+        if (category === 'all' || cardCat === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    };
+
     window.openFeaturesModal = function() {
       var modal = document.getElementById('featuresIntroModal');
       if (modal) {
         modal.classList.remove('hidden');
+        if (typeof window.translateDOM === 'function') {
+          window.translateDOM(modal, window.currentLang || 'fa');
+        }
+        var allBtn = modal.querySelector('.feature-cat-btn[data-cat="all"]');
+        if (typeof window.filterFeatureCards === 'function') {
+          window.filterFeatureCards('all', allBtn);
+        }
         var noShowCheckbox = document.getElementById('dontShowFeaturesAgain');
         if (noShowCheckbox) {
           noShowCheckbox.checked = localStorage.getItem('arizo_features_intro_dismissed') === 'true';
