@@ -51,6 +51,36 @@ console.log(`⏱️ Duration: ${MAX_RUN_MINUTES} minutes (~${(MAX_RUN_MINUTES / 
 console.log(`📱 Client App ID: ${API_ID} (Official Telegram Desktop)`);
 console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
+// مدیریت خطاهای سراسری جهت پایداری ۱۰۰٪ دیمن بدون کرش در افت موقت سوکت
+process.on('unhandledRejection', (reason) => {
+  console.warn('⚠️ [Process] Unhandled Rejection intercepted (non-fatal):', reason?.message || reason);
+});
+
+process.on('uncaughtException', (err) => {
+  console.error('⚠️ [Process] Uncaught Exception intercepted (non-fatal):', err?.message || err);
+});
+
+/**
+ * مدیریت حافظه رم در پردازش‌های مداوم ۲۴ ساعته (FIFO Bounding)
+ */
+function setBoundedMap(map, key, val, maxSize = 1000) {
+  if (!map) return;
+  map.set(key, val);
+  if (map.size > maxSize) {
+    const oldest = map.keys().next().value;
+    if (oldest !== undefined) map.delete(oldest);
+  }
+}
+
+function addToBoundedSet(set, item, maxSize = 1000) {
+  if (!set) return;
+  set.add(item);
+  if (set.size > maxSize) {
+    const oldest = set.values().next().value;
+    if (oldest !== undefined) set.delete(oldest);
+  }
+}
+
 /**
  * نرمال‌سازی و پاکسازی ورودی‌های لیست سکوت (حذف @، لینک‌های t.me، فاصله‌ها و تبدیل اعداد فارسی/عربی)
  */
@@ -464,12 +494,12 @@ async function sendAfkReply(entry, message, afkText, username, senderIdStr) {
 
   // ثبت پیش‌دستانه مشخصات پیام ربات در حافظه برای جلوگیری قطعی از خودسرکوب‌گری (Self-Suppression)
   entry.botSentTexts = entry.botSentTexts || new Set();
-  entry.botSentTexts.add(afkText.trim());
+  addToBoundedSet(entry.botSentTexts, afkText.trim(), 500);
   entry.lastBotReplyMap = entry.lastBotReplyMap || new Map();
   const nowStamp = Date.now();
-  if (senderIdStr) entry.lastBotReplyMap.set(senderIdStr, nowStamp);
+  if (senderIdStr) setBoundedMap(entry.lastBotReplyMap, senderIdStr, nowStamp, 500);
   const partnerId = getChatPartnerId(message, entry.myId);
-  if (partnerId) entry.lastBotReplyMap.set(partnerId, nowStamp);
+  if (partnerId) setBoundedMap(entry.lastBotReplyMap, partnerId, nowStamp, 500);
 
   // دریافت تارگت معتبر با استفاده از sender یا getInputEntity
   let targetPeer = null;
@@ -494,7 +524,7 @@ async function sendAfkReply(entry, message, afkText, username, senderIdStr) {
         replyTo: message.id
       });
       if (res?.id && entry.botSentMessageIds) {
-        entry.botSentMessageIds.add(res.id);
+        addToBoundedSet(entry.botSentMessageIds, res.id, 1000);
       }
       sent = true;
       console.log(`✅ [${username}] AFK reply sent to ${senderIdStr} (with replyTo)`);
@@ -510,7 +540,7 @@ async function sendAfkReply(entry, message, afkText, username, senderIdStr) {
         message: afkText
       });
       if (res?.id && entry.botSentMessageIds) {
-        entry.botSentMessageIds.add(res.id);
+        addToBoundedSet(entry.botSentMessageIds, res.id, 1000);
       }
       sent = true;
       console.log(`✅ [${username}] AFK reply sent to ${senderIdStr} (direct)`);
@@ -524,7 +554,7 @@ async function sendAfkReply(entry, message, afkText, username, senderIdStr) {
     try {
       const res = await message.reply({ message: afkText });
       if (res?.id && entry.botSentMessageIds) {
-        entry.botSentMessageIds.add(res.id);
+        addToBoundedSet(entry.botSentMessageIds, res.id, 1000);
       }
       sent = true;
       console.log(`✅ [${username}] AFK reply sent via message.reply`);
@@ -575,11 +605,11 @@ async function callAIApi(provider, apiKey, systemPrompt, context, userMessage) {
   try {
     if (provider === 'gemini') {
       const geminiModels = [
+        'gemini-2.0-flash',
+        'gemini-1.5-flash',
+        'gemini-2.0-flash-lite',
+        'gemini-1.5-pro',
         'gemini-flash-lite-latest',
-        'gemini-3.5-flash-lite',
-        'gemini-3.5-flash',
-        'gemini-3.7-flash',
-        'gemini-3-flash-preview',
         'gemini-flash-latest'
       ];
 
@@ -1201,7 +1231,7 @@ class TelegramConnectionPool {
         entry.selfOnlineExpires = now + 5 * 60 * 1000;
         if (partnerIdStr) {
           entry.lastChatOutMap = entry.lastChatOutMap || new Map();
-          entry.lastChatOutMap.set(partnerIdStr, now);
+          setBoundedMap(entry.lastChatOutMap, partnerIdStr, now, 500);
           // ریست شدن سقف پاسخ‌های هوش مصنوعی وقتی کاربر خودش به مخاطب پیام دستی می‌دهد
           if (entry.aiReplyCountMap) entry.aiReplyCountMap.delete(partnerIdStr);
           if (entry.afkCooldownMap) entry.afkCooldownMap.delete(partnerIdStr);
@@ -1302,13 +1332,13 @@ class TelegramConnectionPool {
         const senderAccessHash = sender?.accessHash ? sender.accessHash.toString() : null;
         if (peerIdStr && senderAccessHash) {
           entry.peerCache = entry.peerCache || new Map();
-          entry.peerCache.set(peerIdStr, {
+          setBoundedMap(entry.peerCache, peerIdStr, {
             userId: peerIdStr,
             accessHash: senderAccessHash,
             firstName: sender?.firstName,
             lastName: sender?.lastName,
             username: sender?.username
-          });
+          }, 2000);
         }
 
         const cacheObj = {
@@ -1581,13 +1611,13 @@ class TelegramConnectionPool {
 
             if (rawSenderId && senderAccessHash) {
               entry.peerCache = entry.peerCache || new Map();
-              entry.peerCache.set(rawSenderId.toString(), {
+              setBoundedMap(entry.peerCache, rawSenderId.toString(), {
                 userId: rawSenderId,
                 accessHash: senderAccessHash,
                 firstName: sender?.firstName,
                 lastName: sender?.lastName,
                 username: sender?.username
-              });
+              }, 2000);
             }
 
             const senderFullName = sender ? (
@@ -1844,7 +1874,7 @@ class TelegramConnectionPool {
         const senderDisplay = sender?.username ? `@${sender.username}` : (Array.from(senderIds)[0] || 'ناشناس');
         console.log(`🔇 [${username}] Mute triggered for ${senderDisplay} (target: "${matchedTarget}"). Deleting message #${message.id}...`);
 
-        if (entry.selfbotDeletedIds) entry.selfbotDeletedIds.add(message.id);
+        if (entry.selfbotDeletedIds) addToBoundedSet(entry.selfbotDeletedIds, message.id, 1000);
         await deleteTelegramMessage(entry.client, message, username);
         return; // از ادامه اجرای سایر بخش‌ها (از جمله منشی خودکار) جلوگیری می‌شود
       }
@@ -1874,13 +1904,13 @@ class TelegramConnectionPool {
 
         if (senderIdStr && senderAccessHash) {
           entry.peerCache = entry.peerCache || new Map();
-          entry.peerCache.set(senderIdStr, {
+          setBoundedMap(entry.peerCache, senderIdStr, {
             userId: senderIdStr,
             accessHash: senderAccessHash,
             firstName: sender?.firstName,
             lastName: sender?.lastName,
             username: sender?.username
-          });
+          }, 2000);
         }
 
         // ——— ۴.A 👻 Ghost Mode: فوروارد پیام به ربات بدون زدن تیک آبی ———
@@ -2034,8 +2064,8 @@ class TelegramConnectionPool {
                   const sent = await sendAfkReply(entry, pendingItem.lastMessage, aiText, username, senderIdStr);
                   if (sent) {
                     const sendNow = Date.now();
-                    entry.aiCooldownMap.set(senderIdStr, sendNow);
-                    entry.aiReplyCountMap.set(senderIdStr, currentCount + 1);
+                    setBoundedMap(entry.aiCooldownMap, senderIdStr, sendNow, 500);
+                    setBoundedMap(entry.aiReplyCountMap, senderIdStr, currentCount + 1, 500);
                     console.log(`✅ [${username}] AI replied to ${senderIdStr} (${currentCount + 1}/${maxReplies})`);
 
                     // ارسال گزارش پاسخ هوش مصنوعی به ربات اختصاصی کاربر
@@ -2073,7 +2103,7 @@ class TelegramConnectionPool {
                   if (entry.settings.afkEnabled) {
                     const afkText = (entry.settings.afkMessage && entry.settings.afkMessage.trim()) || 'درود! در حال حاضر آفلاین هستم. به محض آنلاین شدن پاسخ خواهم داد ⏳';
                     const sent = await sendAfkReply(entry, pendingItem.lastMessage, afkText, username, senderIdStr);
-                    if (sent) entry.afkCooldownMap.set(senderIdStr, Date.now());
+                    if (sent) setBoundedMap(entry.afkCooldownMap, senderIdStr, Date.now(), 500);
                   }
                 }
               }, 12000);
@@ -2092,21 +2122,12 @@ class TelegramConnectionPool {
           const now = Date.now();
 
           if (now - lastReply >= cooldownMs) {
-            // جلوگیری از انباشت حافظه در اجرای طولانی‌مدت
-            if (entry.afkCooldownMap.size > 1000) {
-              const cutoff = now - (24 * 60 * 60 * 1000);
-              for (const [k, v] of entry.afkCooldownMap.entries()) {
-                if (v < cutoff) entry.afkCooldownMap.delete(k);
-              }
-              if (entry.afkCooldownMap.size > 2000) entry.afkCooldownMap.clear();
-            }
-
             const afkText = (entry.settings.afkMessage && entry.settings.afkMessage.trim()) || 'درود! در حال حاضر آفلاین هستم یا امکان پاسخگویی ندارم. به محض آنلاین شدن پاسخ شما را خواهم داد ⏳';
             console.log(`🤖 [${username}] AFK auto-replying to ${senderIdStr}`);
-            
+
             const sent = await sendAfkReply(entry, message, afkText, username, senderIdStr);
             if (sent) {
-              entry.afkCooldownMap.set(senderIdStr, now);
+              setBoundedMap(entry.afkCooldownMap, senderIdStr, now, 500);
             }
           } else {
             const remainingSec = Math.round((cooldownMs - (now - lastReply)) / 1000);
@@ -2193,7 +2214,7 @@ class TelegramConnectionPool {
           const partnerStr = u.userId.toString();
           if (partnerStr !== myIdStr) {
             entry.lastChatOutMap = entry.lastChatOutMap || new Map();
-            entry.lastChatOutMap.set(partnerStr, now);
+            setBoundedMap(entry.lastChatOutMap, partnerStr, now, 500);
             if (entry.aiReplyCountMap) entry.aiReplyCountMap.delete(partnerStr);
             if (entry.afkCooldownMap) entry.afkCooldownMap.delete(partnerStr);
             if (entry.pendingAiReplies?.has(partnerStr)) {
@@ -2218,7 +2239,7 @@ class TelegramConnectionPool {
         const peerStr = rawPeer ? rawPeer.toString() : null;
         if (peerStr && peerStr !== myIdStr) {
           entry.lastChatOutMap = entry.lastChatOutMap || new Map();
-          entry.lastChatOutMap.set(peerStr, now);
+          setBoundedMap(entry.lastChatOutMap, peerStr, now, 500);
           if (entry.aiReplyCountMap) entry.aiReplyCountMap.delete(peerStr);
           if (entry.afkCooldownMap) entry.afkCooldownMap.delete(peerStr);
           if (entry.pendingAiReplies?.has(peerStr)) {
@@ -2242,9 +2263,9 @@ class TelegramConnectionPool {
         entry.selfOnlineExpires = now + 5 * 60 * 1000;
         if (peerStr && peerStr !== myIdStr) {
           entry.lastChatOutMap = entry.lastChatOutMap || new Map();
-          entry.lastChatOutMap.set(peerStr, now);
+          setBoundedMap(entry.lastChatOutMap, peerStr, now, 500);
           entry.lastChatReadTimeMap = entry.lastChatReadTimeMap || new Map();
-          entry.lastChatReadTimeMap.set(peerStr, now);
+          setBoundedMap(entry.lastChatReadTimeMap, peerStr, now, 500);
           if (entry.pendingAiReplies?.has(peerStr)) {
             clearTimeout(entry.pendingAiReplies.get(peerStr).timeoutId);
             entry.pendingAiReplies.delete(peerStr);
@@ -2310,7 +2331,7 @@ class TelegramConnectionPool {
         const peerStr = rawPeer ? rawPeer.toString() : null;
         if (peerStr && peerStr !== myIdStr) {
           entry.lastChatDraftMap = entry.lastChatDraftMap || new Map();
-          entry.lastChatDraftMap.set(peerStr, now);
+          setBoundedMap(entry.lastChatDraftMap, peerStr, now, 500);
           if (entry.pendingAiReplies?.has(peerStr)) {
             clearTimeout(entry.pendingAiReplies.get(peerStr).timeoutId);
             entry.pendingAiReplies.delete(peerStr);
@@ -2464,6 +2485,17 @@ class TelegramConnectionPool {
       const client = await this.getOrCreateClient(username, sessionEncrypted, userSettings);
       const entry = this.clients.get(username);
 
+      // استراحت هوشمند در صورت محدودیت موقت FLOOD_WAIT تلگرام جهت جلوگیری از مسدودیت اکانت
+      if (entry && entry.floodWaitUntil && Date.now() < entry.floodWaitUntil) {
+        const remainingSec = Math.ceil((entry.floodWaitUntil - Date.now()) / 1000);
+        return {
+          ok: false,
+          username,
+          error: `FLOOD_WAIT فعال است (${remainingSec} ثانیه استراحت)`,
+          elapsedMs: 0
+        };
+      }
+
       // اگر زمان و بیو بدون تغییر مانده باشد (مثلاً حالت خواب)، نیازی به ارسال مکرر RPC به تلگرام نیست
       if (entry && entry.lastTime === exactTimeStr && entry.lastBio === exactBioStr) {
         return {
@@ -2484,6 +2516,7 @@ class TelegramConnectionPool {
       if (entry) {
         entry.lastTime = exactTimeStr;
         entry.lastBio = exactBioStr;
+        entry.floodWaitUntil = 0; // پاکسازی فلودویت پس از موفقیت
       }
 
       return {
@@ -2495,6 +2528,18 @@ class TelegramConnectionPool {
       };
     } catch (err) {
       const elapsed = Math.round(performance.now() - startMs);
+      const entry = this.clients.get(username);
+
+      // ثبت و اعمال هوشمند فرجه FLOOD_WAIT دریافتی از تلگرام
+      const errCode = String(err.errorMessage || err.message || '');
+      if (errCode.startsWith('FLOOD_WAIT_') || err.seconds) {
+        const waitSec = Number(err.seconds) || parseInt(errCode.replace('FLOOD_WAIT_', '')) || 60;
+        if (entry) {
+          entry.floodWaitUntil = Date.now() + (waitSec * 1000);
+          console.warn(`⏳ [${username}] Telegram FLOOD_WAIT detected: cooling down for ${waitSec}s`);
+        }
+      }
+
       const isFatal = err.errorMessage === 'AUTH_KEY_UNREGISTERED' ||
         err.errorMessage === 'USER_DEACTIVATED' ||
         err.errorMessage === 'SESSION_REVOKED';
@@ -2805,7 +2850,7 @@ async function resolveInputPeerSafely(client, peerId, entry = null, accessHash =
       if (entry) {
         entry.peerCache = entry.peerCache || new Map();
         const existing = entry.peerCache.get(peerStr) || {};
-        entry.peerCache.set(peerStr, { ...existing, userId: peerStr, accessHash });
+        setBoundedMap(entry.peerCache, peerStr, { ...existing, userId: peerStr, accessHash }, 2000);
       }
       return inputPeer;
     } catch (_) {}
@@ -2855,13 +2900,13 @@ async function resolveInputPeerSafely(client, peerId, entry = null, accessHash =
       for (const u of res.users) {
         if (entry) {
           entry.peerCache = entry.peerCache || new Map();
-          entry.peerCache.set(u.id.toString(), {
+          setBoundedMap(entry.peerCache, u.id.toString(), {
             userId: u.id,
             accessHash: u.accessHash,
             firstName: u.firstName,
             lastName: u.lastName,
             username: u.username
-          });
+          }, 2000);
         }
         try {
           client._entityCache.add(u);
@@ -2937,13 +2982,13 @@ async function fetchUserPrivateDialogs(client, entry = null) {
           });
           if (entry) {
             entry.peerCache = entry.peerCache || new Map();
-            entry.peerCache.set(peerUserId, {
+            setBoundedMap(entry.peerCache, peerUserId, {
               userId: u.id,
               accessHash: u.accessHash,
               firstName: u.firstName,
               lastName: u.lastName,
               username: u.username
-            });
+            }, 2000);
           }
         }
       }
@@ -3269,7 +3314,7 @@ async function pollAndProcessBotActions(pool) {
           entry.lastGlobalOutTime = nowAct;
           if (action.peerId) {
             entry.lastChatOutMap = entry.lastChatOutMap || new Map();
-            entry.lastChatOutMap.set(action.peerId.toString(), nowAct);
+            setBoundedMap(entry.lastChatOutMap, action.peerId.toString(), nowAct, 500);
           }
 
           if (botToken && action.chatId) {
@@ -3310,7 +3355,7 @@ async function pollAndProcessBotActions(pool) {
           entry.lastGlobalOutTime = nowRead;
           if (action.peerId) {
             entry.lastChatOutMap = entry.lastChatOutMap || new Map();
-            entry.lastChatOutMap.set(action.peerId.toString(), nowRead);
+            setBoundedMap(entry.lastChatOutMap, action.peerId.toString(), nowRead, 500);
           }
 
           if (botToken && action.chatId) {
@@ -3514,6 +3559,21 @@ async function main() {
     reportStatusErrors(updates).catch(() => {});
   }
 }
+
+let isShuttingDown = false;
+async function gracefulShutdown(sig) {
+  if (isShuttingDown) return;
+  isShuttingDown = true;
+  console.log(`\n🛑 [Process] ${sig} signal received. Gracefully disconnecting all Telegram sessions...`);
+  try {
+    await pool.disconnectAll();
+    console.log('🔌 [Process] All MTProto sockets disconnected cleanly.');
+  } catch (_) {}
+  process.exit(0);
+}
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
 main().catch(async err => {
   console.error('Fatal Runner Error:', err);
