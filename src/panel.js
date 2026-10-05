@@ -2759,6 +2759,260 @@ export function panelHTML(env, options = {}) {
         padding: 14px 12px;
       }
     }
+
+    /* ==========================================================================
+       🚀 Arizo Self — v4 Aurora Design Layer (vibrant, alive, fully responsive)
+       ========================================================================== */
+    :root, [data-theme="dark"] {
+      --bg-dark: #05060f;
+      --bg-surface: rgba(16, 18, 40, 0.62);
+      --bg-surface-elevated: rgba(30, 28, 66, 0.82);
+      --gradient-brand: linear-gradient(120deg, #ec4899 0%, #8b5cf6 45%, #22d3ee 100%);
+      --gradient-brand-hover: linear-gradient(120deg, #f472b6 0%, #a78bfa 45%, #67e8f9 100%);
+      --gradient-btn: linear-gradient(120deg, #ec4899 0%, #8b5cf6 55%, #6366f1 100%);
+      --gradient-accent: linear-gradient(120deg, #22d3ee 0%, #a78bfa 50%, #f472b6 100%);
+      --border-glow: rgba(139, 92, 246, 0.5);
+      --edge-gradient: linear-gradient(140deg, rgba(236, 72, 153, 0.55), rgba(139, 92, 246, 0.18) 40%, rgba(34, 211, 238, 0.5));
+      --card-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.8), 0 0 60px -30px rgba(139, 92, 246, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      --card-shadow-hover: 0 40px 80px -20px rgba(0, 0, 0, 0.85), 0 0 80px -25px rgba(236, 72, 153, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      --orb-opacity: 0.5;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    [data-theme="light"] {
+      --bg-dark: #f4f1ff;
+      --bg-surface: rgba(255, 255, 255, 0.78);
+      --gradient-brand: linear-gradient(120deg, #db2777 0%, #7c3aed 50%, #0891b2 100%);
+      --gradient-btn: linear-gradient(120deg, #db2777 0%, #7c3aed 60%, #4f46e5 100%);
+      --edge-gradient: linear-gradient(140deg, rgba(219, 39, 119, 0.35), rgba(124, 58, 237, 0.1) 40%, rgba(8, 145, 178, 0.35));
+      --card-shadow: 0 20px 50px -18px rgba(76, 29, 149, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.7), inset 0 1px 0 #fff;
+      --card-shadow-hover: 0 28px 60px -18px rgba(76, 29, 149, 0.32), inset 0 1px 0 #fff;
+      --orb-opacity: 0.28;
+    }
+
+    /* پس‌زمینهٔ مش گرادیانی + شبکهٔ ظریف */
+    body {
+      background-image:
+        radial-gradient(60% 50% at 12% 0%, rgba(236, 72, 153, 0.16) 0%, transparent 60%),
+        radial-gradient(55% 45% at 92% 8%, rgba(34, 211, 238, 0.14) 0%, transparent 60%),
+        radial-gradient(60% 50% at 50% 100%, rgba(139, 92, 246, 0.18) 0%, transparent 65%);
+      background-attachment: fixed;
+      padding-top: calc(clamp(14px, 2.5vw, 24px) + var(--safe-top));
+      padding-bottom: calc(65px + var(--safe-bottom));
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 44px 44px;
+      -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 75%);
+      mask-image: radial-gradient(ellipse at 50% 30%, #000 20%, transparent 75%);
+    }
+    [data-theme="light"] body::before {
+      background-image:
+        linear-gradient(rgba(76, 29, 149, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(76, 29, 149, 0.05) 1px, transparent 1px);
+    }
+
+    /* کارت‌ها: حاشیهٔ گرادیانی نورانی + ورود پلکانی */
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: var(--edge-gradient);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+      opacity: 0.75;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    .glass-card:hover::before { opacity: 1; }
+    .glass-card:hover { transform: translateY(-2px); }
+    .container > .glass-card {
+      animation: cardRise 0.65s var(--smooth-physics) both;
+    }
+    .container > .glass-card:nth-child(2) { animation-delay: 0.06s; }
+    .container > .glass-card:nth-child(3) { animation-delay: 0.12s; }
+    .container > .glass-card:nth-child(4) { animation-delay: 0.18s; }
+    .container > .glass-card:nth-child(n+5) { animation-delay: 0.24s; }
+    @keyframes cardRise {
+      from { opacity: 0; transform: translateY(28px) scale(0.97); filter: blur(6px); }
+      to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+
+    /* نوبار شناور چسبان */
+    .navbar {
+      position: sticky;
+      top: calc(8px + var(--safe-top));
+      z-index: 50;
+      border-radius: 22px;
+    }
+    .brand-gem {
+      background: var(--gradient-brand);
+      background-size: 200% 200%;
+      animation: gemShift 6s ease-in-out infinite alternate;
+      box-shadow: 0 8px 30px -4px rgba(236, 72, 153, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+    }
+    @keyframes gemShift {
+      from { background-position: 0% 50%; }
+      to { background-position: 100% 50%; }
+    }
+    .brand-title-gradient {
+      background: var(--gradient-accent);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: textFlow 7s linear infinite;
+    }
+    @keyframes textFlow { to { background-position: 200% center; } }
+    .badge-pro {
+      background: var(--gradient-brand);
+      color: #fff;
+      border: none;
+      box-shadow: 0 4px 14px rgba(236, 72, 153, 0.4);
+    }
+
+    /* تیتر بخش‌ها با نوار رنگی */
+    .section-title::before {
+      content: '';
+      width: 4px;
+      height: 1.2em;
+      border-radius: 4px;
+      background: var(--gradient-brand);
+      box-shadow: 0 0 14px rgba(236, 72, 153, 0.6);
+      flex-shrink: 0;
+    }
+    .section-tag {
+      background: linear-gradient(120deg, rgba(236, 72, 153, 0.14), rgba(34, 211, 238, 0.12));
+      border-color: rgba(167, 139, 250, 0.35);
+    }
+
+    /* دکمه‌های اصلی با گرادیان متحرک */
+    .btn-primary {
+      background: var(--gradient-btn);
+      background-size: 220% 100%;
+      background-position: 0% 50%;
+      box-shadow: 0 12px 30px -8px rgba(236, 72, 153, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      transition: transform 0.22s var(--spring-physics), box-shadow 0.22s ease, background-position 0.6s ease;
+    }
+    .btn-primary:hover:not(:disabled) {
+      background-position: 100% 50%;
+      box-shadow: 0 18px 40px -8px rgba(139, 92, 246, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    }
+    .btn { min-height: 46px; }
+
+    /* ورودی‌ها */
+    .input-field:focus {
+      border-color: #a78bfa;
+      box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.22), 0 8px 24px -10px rgba(139, 92, 246, 0.6);
+    }
+
+    /* تب‌ها */
+    .studio-tab-bar, .segmented-control, .admin-subtab-bar {
+      background: rgba(0, 0, 0, 0.28);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    [data-theme="light"] .studio-tab-bar,
+    [data-theme="light"] .segmented-control,
+    [data-theme="light"] .admin-subtab-bar { background: rgba(124, 58, 237, 0.07); }
+    .studio-tab-btn.active, .admin-subtab-btn.active {
+      background: var(--gradient-btn);
+      color: #fff !important;
+      box-shadow: 0 10px 26px -6px rgba(236, 72, 153, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+    .segmented-btn.active {
+      background: var(--gradient-btn);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 22px -6px rgba(139, 92, 246, 0.6);
+    }
+    .studio-tab-btn, .segmented-btn, .admin-subtab-btn { min-height: 44px; }
+
+    /* ساعت و ماکاپ تلگرام */
+    .tg-mockup-wrapper {
+      background:
+        radial-gradient(80% 120% at 100% 0%, rgba(34, 211, 238, 0.14), transparent 60%),
+        radial-gradient(80% 120% at 0% 100%, rgba(236, 72, 153, 0.14), transparent 60%),
+        var(--clock-box-bg);
+      border-radius: 24px;
+    }
+    .tg-mockup-avatar {
+      background: var(--gradient-brand);
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.06), 0 14px 34px -6px rgba(236, 72, 153, 0.6);
+    }
+    .tg-clock-digits {
+      font-size: clamp(2.8rem, 11vw, 4.6rem);
+      filter: drop-shadow(0 0 26px rgba(236, 72, 153, 0.5)) drop-shadow(0 0 50px rgba(34, 211, 238, 0.25));
+    }
+    .tg-mockup-body { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+
+    /* کارت‌های ریز: کیپی‌آی، پریست، تاگل */
+    .admin-kpi-card, .stat-card, .health-item, .preset-card, .toggle-row { position: relative; overflow: hidden; }
+    .admin-kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: var(--gradient-brand);
+      opacity: 0.85;
+    }
+    .admin-kpi-num { background: var(--gradient-accent); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .preset-card.active { border-color: #ec4899; box-shadow: 0 0 0 1px rgba(236, 72, 153, 0.5), 0 14px 36px -10px rgba(236, 72, 153, 0.5); }
+    .toggle-row::before {
+      content: '';
+      position: absolute;
+      top: 14%; bottom: 14%;
+      inset-inline-start: 0;
+      width: 3px;
+      border-radius: 3px;
+      background: var(--gradient-brand);
+      opacity: 0.55;
+    }
+    input:checked + .slider {
+      background: var(--gradient-brand);
+      border-color: transparent;
+      box-shadow: 0 0 20px rgba(236, 72, 153, 0.55);
+    }
+
+    /* مودال‌ها و توست */
+    .modal-container, .features-modal-container, .admin-inspector-container {
+      box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.85), 0 0 80px -30px rgba(139, 92, 246, 0.6);
+    }
+    .btn-feature-start { background: var(--gradient-btn); }
+
+    /* اسکرول‌بار */
+    * { scrollbar-width: thin; scrollbar-color: rgba(139, 92, 246, 0.45) transparent; }
+    ::selection { background: rgba(236, 72, 153, 0.4); color: #fff; }
+
+    /* ریسپانسیو دقیق */
+    @media (min-width: 1400px) {
+      .container { max-width: 1120px; }
+    }
+    @media (max-width: 680px) {
+      .navbar { top: calc(6px + var(--safe-top)); }
+      .glass-card:hover { transform: none; }
+      .tg-mockup-header { gap: 14px; }
+      .tg-mockup-avatar { width: 56px; height: 56px; }
+      .toggle-row { flex-wrap: wrap; }
+    }
+    @media (max-width: 400px) {
+      .navbar { position: static; }
+    }
+    @media (hover: none) {
+      .btn:hover:not(:disabled), .preset-card:hover, .admin-kpi-card:hover { transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
   </style>
 </head>
 <body>
