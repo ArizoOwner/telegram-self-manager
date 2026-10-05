@@ -7533,9 +7533,10 @@ export function panelHTML(env, options = {}) {
       }
 
       try {
+        var hdrs = (typeof adminHeaders === 'function') ? adminHeaders() : ((typeof authHeaders === 'function') ? authHeaders() : { 'Content-Type': 'application/json' });
         var res = await fetch('/api/user/test-ai', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: hdrs,
           body: JSON.stringify({ apiKey: key, provider: provider, model: model })
         });
         var data = await res.json().catch(function() { return {}; });
