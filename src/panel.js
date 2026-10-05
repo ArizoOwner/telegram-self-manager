@@ -3256,73 +3256,100 @@ export function panelHTML(env, options = {}) {
       background: var(--bg-surface-elevated);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
-      padding: 18px;
+      padding: 20px;
       margin-top: 16px;
-      box-shadow: var(--shadow-sm);
-      transition: border-color 0.2s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
     }
     .ai-ignore-manager-card:focus-within {
-      border-color: var(--accent-purple-border);
+      border-color: rgba(99, 102, 241, 0.45);
+      box-shadow: 0 6px 24px rgba(99, 102, 241, 0.12);
     }
     .ai-ignore-input-row {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      width: 100%;
+      display: flex !important;
+      flex-direction: row !important;
+      gap: 10px !important;
+      align-items: stretch !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      position: relative !important;
     }
     .ai-ignore-input-wrap {
-      position: relative;
-      flex: 1 1 auto;
-      width: 100%;
-      min-width: 0;
-      display: flex;
-      align-items: center;
+      position: relative !important;
+      flex: 1 1 auto !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      box-sizing: border-box !important;
     }
     .ai-ignore-input-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.15rem;
-      color: var(--text-muted);
-      pointer-events: none;
-      user-select: none;
-      z-index: 2;
+      position: absolute !important;
+      right: 15px !important;
+      left: auto !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      font-size: 1.15rem !important;
+      color: var(--text-muted) !important;
+      pointer-events: none !important;
+      user-select: none !important;
+      z-index: 3 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    html[dir="ltr"] .ai-ignore-input-icon {
+      left: 15px !important;
+      right: auto !important;
     }
     .ai-ignore-quick-input {
       width: 100% !important;
       height: 48px !important;
       min-height: 48px !important;
-      padding: 10px 16px 10px 44px !important;
+      padding: 10px 48px 10px 16px !important;
       background: var(--bg-input) !important;
       border: 1.5px solid var(--border-subtle) !important;
       border-radius: var(--radius-md) !important;
       color: var(--text-main) !important;
-      font-size: 0.95rem !important;
+      font-size: 0.92rem !important;
       font-family: inherit !important;
       line-height: normal !important;
       box-sizing: border-box !important;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.12) !important;
       transition: all 0.22s ease !important;
       outline: none !important;
+      direction: rtl !important;
+      text-align: right !important;
+    }
+    html[dir="ltr"] .ai-ignore-quick-input {
+      padding: 10px 16px 10px 48px !important;
+      direction: ltr !important;
+      text-align: left !important;
     }
     .ai-ignore-quick-input:focus {
-      border-color: var(--accent-indigo) !important;
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25), inset 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+      border-color: #6366f1 !important;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.22), inset 0 1px 3px rgba(0, 0, 0, 0.15) !important;
       background: var(--bg-surface-elevated) !important;
     }
     .ai-ignore-quick-input::placeholder {
       color: var(--text-muted) !important;
       opacity: 0.85 !important;
-      font-size: 0.86rem !important;
+      font-size: 0.85rem !important;
       font-family: 'Vazirmatn', sans-serif !important;
       direction: rtl !important;
       text-align: right !important;
     }
+    html[dir="ltr"] .ai-ignore-quick-input::placeholder {
+      direction: ltr !important;
+      text-align: left !important;
+    }
     .btn-add-ai-ignore {
+      width: auto !important;
+      min-width: 145px !important;
       height: 48px !important;
       min-height: 48px !important;
-      padding: 0 20px !important;
+      padding: 0 22px !important;
       font-size: 0.88rem !important;
       font-weight: 700 !important;
       border-radius: var(--radius-md) !important;
@@ -3331,29 +3358,44 @@ export function panelHTML(env, options = {}) {
       justify-content: center !important;
       gap: 8px !important;
       white-space: nowrap !important;
+      flex: 0 0 auto !important;
       flex-shrink: 0 !important;
       background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
       color: #ffffff !important;
-      border: none !important;
+      border: 1px solid rgba(255, 255, 255, 0.18) !important;
       cursor: pointer !important;
-      box-shadow: 0 3px 10px rgba(99, 102, 241, 0.3) !important;
-      transition: all 0.2s ease !important;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.32) !important;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
     .btn-add-ai-ignore:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 5px 14px rgba(99, 102, 241, 0.45) !important;
+      transform: translateY(-1.5px) !important;
+      box-shadow: 0 6px 18px rgba(99, 102, 241, 0.48) !important;
       background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%) !important;
     }
-    @media (max-width: 540px) {
+    .btn-add-ai-ignore:active {
+      transform: translateY(0) !important;
+      box-shadow: 0 2px 6px rgba(99, 102, 241, 0.25) !important;
+    }
+    @media (max-width: 580px) {
       .ai-ignore-input-row {
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
       }
       .ai-ignore-input-wrap {
-        width: 100%;
+        width: 100% !important;
+        flex: 1 1 100% !important;
       }
       .btn-add-ai-ignore {
         width: 100% !important;
+        min-width: 100% !important;
+        flex: 1 1 auto !important;
+        height: 48px !important;
+        min-height: 48px !important;
+      }
+      .ai-ignore-quick-input {
+        height: 48px !important;
+        min-height: 48px !important;
       }
     }
     .ai-ignore-chips-box {
@@ -3361,55 +3403,68 @@ export function panelHTML(env, options = {}) {
       flex-wrap: wrap;
       gap: 8px;
       min-height: 48px;
-      padding: 10px 12px;
+      padding: 12px 14px;
       background: var(--bg-surface);
       border: 1px dashed var(--border-subtle);
       border-radius: var(--radius-md);
       align-items: center;
-      margin-top: 10px;
+      margin-top: 12px;
       transition: all 0.2s ease;
     }
     .ai-ignore-chip {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 4px 10px 4px 8px;
+      gap: 7px;
+      padding: 5px 12px 5px 9px;
       background: var(--bg-surface-elevated);
       border: 1px solid var(--border-subtle);
       border-radius: 20px;
       font-family: var(--font-mono);
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       color: var(--text-main);
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-      transition: all 0.2s ease;
-      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: default;
       user-select: none;
     }
     .ai-ignore-chip:hover {
-      border-color: var(--accent-purple-border);
+      border-color: rgba(99, 102, 241, 0.5);
       background: var(--bg-surface);
       transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(99, 102, 241, 0.15);
     }
     .ai-ignore-chip.chip-numeric {
-      border-color: rgba(59, 130, 246, 0.35);
+      border-color: rgba(59, 130, 246, 0.4);
+      background: rgba(59, 130, 246, 0.06);
+    }
+    .ai-ignore-chip.chip-numeric:hover {
+      border-color: rgba(59, 130, 246, 0.7);
+      background: rgba(59, 130, 246, 0.12);
     }
     .ai-ignore-chip.chip-username {
-      border-color: rgba(16, 185, 129, 0.35);
+      border-color: rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.06);
+    }
+    .ai-ignore-chip.chip-username:hover {
+      border-color: rgba(16, 185, 129, 0.7);
+      background: rgba(16, 185, 129, 0.12);
     }
     .ai-chip-icon {
       font-size: 0.85rem;
       line-height: 1;
+      opacity: 0.9;
     }
     .ai-chip-text {
       direction: ltr;
       font-weight: 600;
+      letter-spacing: 0.3px;
     }
     .ai-chip-remove {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 18px;
-      height: 18px;
+      width: 19px;
+      height: 19px;
       border-radius: 50%;
       background: rgba(244, 63, 94, 0.12);
       color: var(--accent-rose);
@@ -3419,7 +3474,7 @@ export function panelHTML(env, options = {}) {
       font-weight: bold;
       line-height: 1;
       padding: 0;
-      transition: all 0.15s ease;
+      transition: all 0.18s ease;
       margin-right: -2px;
     }
     .ai-chip-remove:hover {
@@ -4655,9 +4710,16 @@ export function panelHTML(env, options = {}) {
               <input type="text" id="aiIgnoredQuickAddInput" class="ai-ignore-quick-input mono" placeholder="آیدی عددی (مثال: 123456789) یا یوزرنیم (@username)..." autocomplete="off" spellcheck="false" dir="auto">
             </div>
             <button type="button" id="btnAddAiIgnoredUser" class="btn btn-primary btn-add-ai-ignore">
-              <span>➕</span>
+              <span class="btn-icon">➕</span>
               <span data-i18n="addAiIgnoredBtn">افزودن به لیست</span>
             </button>
+          </div>
+          <div class="ai-ignore-input-hint" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; margin-top: 8px; font-size: 0.74rem; color: var(--text-dim);">
+            <span style="display: inline-flex; align-items: center; gap: 5px;">
+              <span>⌨️</span>
+              <span data-i18n="aiIgnoreEnterHint">کلید Enter یا ویرگول (,) برای ثبت سریع چندگانه پشتیبانی می‌شود</span>
+            </span>
+            <span style="font-family: var(--font-mono); font-size: 0.72rem; padding: 2px 7px; background: rgba(99, 102, 241, 0.1); color: var(--accent-indigo); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 6px;">Numeric ID / @username</span>
           </div>
 
           <!-- لیست چیپ‌ها / برچسب‌های تعاملی -->
@@ -4666,10 +4728,10 @@ export function panelHTML(env, options = {}) {
           </div>
 
           <!-- وضعیت خالی (Empty State) -->
-          <div id="aiIgnoredEmptyState" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px 12px; text-align: center; color: var(--text-muted); font-size: 0.8rem; line-height: 1.6;">
-            <span style="font-size: 1.6rem; margin-bottom: 6px; opacity: 0.85;">🛡️</span>
-            <span style="font-weight: 700; color: var(--text-main); margin-bottom: 2px;">تمام مخاطبان مجاز هستند</span>
-            <span style="font-size: 0.75rem;">در حال حاضر هیچ کاربری در لیست نادیده‌گیری نیست و هوش مصنوعی در پیوی به همه پاسخ می‌دهد.</span>
+          <div id="aiIgnoredEmptyState" style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 14px; text-align: center; color: var(--text-muted); font-size: 0.8rem; line-height: 1.6; background: rgba(255, 255, 255, 0.02); border-radius: var(--radius-md); border: 1px dashed var(--border-subtle); margin-top: 12px;">
+            <span style="font-size: 1.8rem; margin-bottom: 6px; opacity: 0.9;">🛡️</span>
+            <span style="font-weight: 700; color: var(--text-main); font-size: 0.86rem; margin-bottom: 3px;" data-i18n="aiIgnoreEmptyTitle">تمام مخاطبان مجاز هستند</span>
+            <span style="font-size: 0.76rem; max-width: 440px;" data-i18n="aiIgnoreEmptyDesc">در حال حاضر هیچ کاربری در لیست نادیده‌گیری نیست و هوش مصنوعی در پیام‌های خصوصی به همه مخاطبان پاسخ می‌دهد.</span>
           </div>
 
           <!-- فیلد مخفی همگام‌ساز برای حفظ ۱۰۰٪ سازگاری با پایگاه داده و فرم ذخیره -->
@@ -5807,6 +5869,8 @@ export function panelHTML(env, options = {}) {
       'تمام مخاطبان مجاز': 'All Contacts Allowed',
       'تمام مخاطبان مجاز هستند': 'All Contacts Allowed',
       'در حال حاضر هیچ کاربری در لیست نادیده‌گیری نیست و هوش مصنوعی در پیوی به همه پاسخ می‌دهد.': 'Currently no users are in the ignore list and AI responds to all private messages.',
+      'در حال حاضر هیچ کاربری در لیست نادیده‌گیری نیست و هوش مصنوعی در پیام‌های خصوصی به همه مخاطبان پاسخ می‌دهد.': 'Currently no users are in the ignore list, and AI responds to all private messages.',
+      'کلید Enter یا ویرگول (,) برای ثبت سریع چندگانه پشتیبانی می‌شود': 'Press Enter or comma (,) to add multiple users quickly',
       'هیچ کاربری در لیست نادیده‌گیری نیست': 'No users in ignore list',
       'افزودن به لیست': 'Add to List',
       'کپی همه': 'Copy All',
