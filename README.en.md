@@ -37,6 +37,10 @@
   <img src="./assets/preview.png" alt="Arizo Web Studio Preview" width="95%" />
 </p>
 
+<p align="center"><img src="./assets/demo.svg" alt="A live Telegram profile clock and the helper bot logging deleted, edited and view-once messages" width="100%"/></p>
+
+<p align="center"><img src="./assets/marquee.svg" alt="Feature ticker" width="100%"/></p>
+
 <br>
 
 <a href="https://workers.cloudflare.com/"><img src="https://img.shields.io/badge/Cloudflare_Workers-Edge_Serverless-f38020?style=flat-square&logo=cloudflare&logoColor=white" alt="Cloudflare"/></a>
@@ -54,7 +58,7 @@
 
 </div>
 
----
+<p align="center"><img src="./assets/divider.svg" alt="" width="100%"/></p>
 
 <div align="center">
 
@@ -281,13 +285,15 @@
 </tr>
 </table>
 
----
+<p align="center"><img src="./assets/divider.svg" alt="" width="100%"/></p>
 
 <div align="center">
 
 ### 「 ✦ Telegram In-Chat Commands Cheatsheet ✦ 」
 
 </div>
+
+<p align="center"><img src="./assets/terminal.svg" alt="Typing .ghost on, .read all and .mute in Telegram and watching the account state change" width="100%"/></p>
 
 > These commands can be typed directly into any Telegram chat without visiting the web panel:
 
@@ -304,13 +310,15 @@
 | `/test` | Helper Bot PM | Sends a test verification message confirming logger delivery |
 | `/status` | Helper Bot PM | Inquires live selfbot status, memory footprint, and engine health |
 
----
+<p align="center"><img src="./assets/divider.svg" alt="" width="100%"/></p>
 
 <div align="center">
 
 ### 「 ✦ System Architecture ✦ 」
 
 </div>
+
+<p align="center"><img src="./assets/flow.svg" alt="Cloudflare edge to engine to Telegram data flow" width="100%"/></p>
 
 ```mermaid
 %%{init: {"flowchart": {"nodeSpacing": 30, "rankSpacing": 50, "padding": 10, "htmlLabels": true}}}%%
@@ -359,7 +367,7 @@ flowchart LR
     class DC,BOT,USER tg
 ```
 
----
+<p align="center"><img src="./assets/divider.svg" alt="" width="100%"/></p>
 
 <div align="center">
 
@@ -377,13 +385,15 @@ flowchart LR
 </tr>
 </table>
 
----
+<p align="center"><img src="./assets/divider.svg" alt="" width="100%"/></p>
 
 <div align="center">
 
 ### 「 ✦ Security, Privacy & Military-Grade Standards ✦ 」
 
 </div>
+
+<p align="center"><img src="./assets/security.svg" alt="Rotating 2FA code and honeypot banning a scanner at the edge" width="100%"/></p>
 
 <table>
 <tr>
@@ -410,7 +420,7 @@ flowchart LR
 </tr>
 </table>
 
----
+<p align="center"><img src="./assets/divider.svg" alt="" width="100%"/></p>
 
 <div align="center">
 
@@ -471,7 +481,7 @@ pm2 start scripts/github-runner.js --name arizo-self-engine
 pm2 save && pm2 startup
 ```
 
----
+<p align="center"><img src="./assets/divider.svg" alt="" width="100%"/></p>
 
 <div align="center">
 
@@ -499,7 +509,7 @@ pm2 save && pm2 startup
 
 <br>
 
----
+<p align="center"><img src="./assets/divider.svg" alt="" width="100%"/></p>
 
 <br>
 

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 210" width="1200" height="210" role="img" aria-label="Data flows from the Cloudflare edge to the engine and on to Telegram">
+
+<defs><linearGradient id="fbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0d18"/><stop offset="1" stop-color="#151030"/></linearGradient></defs>
+<style>
+  text{font-family:'Segoe UI','Inter',system-ui,-apple-system,Arial,sans-serif}
+  .tw{animation:tw 4s ease-in-out infinite}
+  @keyframes tw{0%,100%{opacity:.12}50%{opacity:.95}}
+  .spark{transform-box:fill-box;transform-origin:center;animation:spark 3s ease-in-out infinite}
+  @keyframes spark{0%,100%{transform:scale(.2) rotate(0);opacity:0}50%{transform:scale(1) rotate(45deg);opacity:1}}
+  .bob{animation:bob 5s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  .pulse{transform-box:fill-box;transform-origin:center;animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+</style>
+<rect width="1200" height="210" rx="26" fill="url(#fbg)"/>
+<circle class="tw" style="animation-delay:3.86s" cx="1017" cy="29" r="1.9" fill="#fff"/><circle class="tw" style="animation-delay:3.40s" cx="970" cy="20" r="2.3" fill="#fff"/><circle class="tw" style="animation-delay:3.97s" cx="271" cy="85" r="1.1" fill="#fff"/><circle class="tw" style="animation-delay:2.61s" cx="161" cy="106" r="0.9" fill="#fff"/><circle class="tw" style="animation-delay:3.15s" cx="1070" cy="125" r="0.8" fill="#fff"/><circle class="tw" style="animation-delay:2.14s" cx="69" cy="2" r="2.3" fill="#fff"/><circle class="tw" style="animation-delay:0.61s" cx="169" cy="88" r="0.7" fill="#fff"/><circle class="tw" style="animation-delay:1.09s" cx="664" cy="32" r="1.0" fill="#fff"/><circle class="tw" style="animation-delay:2.56s" cx="399" cy="28" r="1.8" fill="#fff"/><circle class="tw" style="animation-delay:2.76s" cx="578" cy="37" r="1.2" fill="#fff"/><circle class="tw" style="animation-delay:2.61s" cx="1178" cy="151" r="1.0" fill="#fff"/><circle class="tw" style="animation-delay:0.11s" cx="994" cy="41" r="0.7" fill="#fff"/><circle class="tw" style="animation-delay:2.40s" cx="784" cy="121" r="1.5" fill="#fff"/><circle class="tw" style="animation-delay:1.54s" cx="917" cy="192" r="1.7" fill="#fff"/><circle class="tw" style="animation-delay:0.48s" cx="819" cy="162" r="1.8" fill="#fff"/><circle class="tw" style="animation-delay:0.91s" cx="612" cy="199" r="0.8" fill="#fff"/>
+
+  <path id="p296" d="M296 105 H504" stroke="#a855f7" stroke-opacity=".35" stroke-width="2.4" stroke-dasharray="7 9" fill="none">
+    <animate attributeName="stroke-dashoffset" from="32" to="0" dur="1.2s" repeatCount="indefinite"/></path>
+  <circle r="5.5" fill="#a855f7"><animateMotion dur="4s" begin="0s" repeatCount="indefinite" path="M296 105 H504"/></circle><circle r="5.5" fill="#a855f7"><animateMotion dur="4s" begin="1.3333333333333333s" repeatCount="indefinite" path="M296 105 H504"/></circle><circle r="5.5" fill="#a855f7"><animateMotion dur="4s" begin="2.6666666666666665s" repeatCount="indefinite" path="M296 105 H504"/></circle>
+  <text x="400" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#a855f7">sync · 10 s</text>
+
+  <path id="p696" d="M696 105 H904" stroke="#38bdf8" stroke-opacity=".35" stroke-width="2.4" stroke-dasharray="7 9" fill="none">
+    <animate attributeName="stroke-dashoffset" from="32" to="0" dur="1.2s" repeatCount="indefinite"/></path>
+  <circle r="5.5" fill="#38bdf8"><animateMotion dur="4s" begin="0.6s" repeatCount="indefinite" path="M696 105 H904"/></circle><circle r="5.5" fill="#38bdf8"><animateMotion dur="4s" begin="1.9333333333333331s" repeatCount="indefinite" path="M696 105 H904"/></circle><circle r="5.5" fill="#38bdf8"><animateMotion dur="4s" begin="3.2666666666666666s" repeatCount="indefinite" path="M696 105 H904"/></circle>
+  <text x="800" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#38bdf8">MTProto · under 40 ms</text>
+
+  <g transform="translate(200 105)">
+    <rect x="-96" y="-58" width="192" height="116" rx="26" fill="#0e1220" stroke="#f38020" stroke-opacity=".7" stroke-width="1.6"/>
+    <rect x="-96" y="-58" width="192" height="116" rx="26" fill="none" stroke="#f38020" stroke-width="2" class="pulse" opacity=".4"/>
+    <g transform="translate(0 -20) scale(1.3)"><path d="M-14 8 H12 a8 8 0 0 0 1-16 a11 11 0 0 0-21-3 a9 9 0 0 0 8 19Z" fill="#f38020"/></g>
+    <text y="22" text-anchor="middle" font-size="17" font-weight="800" fill="#fff">Cloudflare Edge</text>
+    <text y="42" text-anchor="middle" font-size="12" fill="#8b93ad">Workers · KV · Mini App</text>
+  </g>
+
+  <g transform="translate(600 105)">
+    <rect x="-96" y="-58" width="192" height="116" rx="26" fill="#0e1220" stroke="#22c55e" stroke-opacity=".7" stroke-width="1.6"/>
+    <rect x="-96" y="-58" width="192" height="116" rx="26" fill="none" stroke="#22c55e" stroke-width="2" class="pulse" opacity=".4"/>
+    <g transform="translate(0 -20) scale(1.3)"><path d="M3 -13 L-8 3 H-1 L-4 14 L9 -3 H2Z" fill="#4ade80"/></g>
+    <text y="22" text-anchor="middle" font-size="17" font-weight="800" fill="#fff">24/7 Engine</text>
+    <text y="42" text-anchor="middle" font-size="12" fill="#8b93ad">Runner · warm sockets · cache</text>
+  </g>
+
+  <g transform="translate(1000 105)">
+    <rect x="-96" y="-58" width="192" height="116" rx="26" fill="#0e1220" stroke="#26A5E4" stroke-opacity=".7" stroke-width="1.6"/>
+    <rect x="-96" y="-58" width="192" height="116" rx="26" fill="none" stroke="#26A5E4" stroke-width="2" class="pulse" opacity=".4"/>
+    <g transform="translate(0 -20) scale(1.3)"><circle r="13" fill="#26A5E4"/><g transform="scale(.36)"><path d="M-30 -2 L34 -26 L18 26 L3 10 L-8 22 L-9 6Z" fill="#fff"/><path d="M-9 6 L34 -26 L3 10Z" fill="#000" opacity=".16"/></g></g>
+    <text y="22" text-anchor="middle" font-size="17" font-weight="800" fill="#fff">Telegram</text>
+    <text y="42" text-anchor="middle" font-size="12" fill="#8b93ad">Account · Helper bot</text>
+  </g>
+<text x="600" y="196" text-anchor="middle" font-size="12" fill="#6b7390">no dedicated server · runs on GitHub Actions or any VPS</text>
+<rect width="1200" height="210" rx="26" fill="none" stroke="#ffffff14"/>
+</svg>

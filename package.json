@@ -8,7 +8,8 @@
     "test": "node tests/test-runner.js",
     "dev": "npx wrangler dev",
     "deploy": "npx wrangler deploy",
-    "tail": "npx wrangler tail"
+    "tail": "npx wrangler tail",
+    "readme-art": "node scripts/gen-readme-art.mjs"
   },
   "dependencies": {
     "qrcode": "^1.5.4",

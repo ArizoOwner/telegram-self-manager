@@ -1,15 +1,35 @@
-<svg width="1200" height="120" viewBox="0 0 1200 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="footerWave" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.85" />
-      <stop offset="50%" stop-color="#6366f1" stop-opacity="0.8" />
-      <stop offset="100%" stop-color="#0284c7" stop-opacity="0.9" />
-    </linearGradient>
-    <linearGradient id="footerAccent" x1="100%" y1="0%" x2="0%" y2="0%">
-      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.4" />
-      <stop offset="100%" stop-color="#c084fc" stop-opacity="0.2" />
-    </linearGradient>
-  </defs>
-  <path d="M 0 50 Q 300 10 600 50 T 1200 40 L 1200 0 L 0 0 Z" fill="url(#footerWave)" />
-  <path d="M 0 65 Q 400 30 800 60 T 1200 50 L 1200 0 L 0 0 Z" fill="url(#footerAccent)" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 200" width="1200" height="200" role="img" aria-label="Made by Arizo Team">
+
+<defs>
+  <linearGradient id="fbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0d18"/><stop offset="1" stop-color="#181336"/></linearGradient>
+  <linearGradient id="w1" x1="0" x2="1"><stop offset="0" stop-color="#8b5cf6" stop-opacity=".6"/><stop offset="1" stop-color="#0ea5e9" stop-opacity=".6"/></linearGradient>
+  <clipPath id="fc"><rect width="1200" height="200" rx="26"/></clipPath>
+</defs>
+<style>
+  text{font-family:'Segoe UI','Inter',system-ui,-apple-system,Arial,sans-serif}
+  .tw{animation:tw 4s ease-in-out infinite}
+  @keyframes tw{0%,100%{opacity:.12}50%{opacity:.95}}
+  .spark{transform-box:fill-box;transform-origin:center;animation:spark 3s ease-in-out infinite}
+  @keyframes spark{0%,100%{transform:scale(.2) rotate(0);opacity:0}50%{transform:scale(1) rotate(45deg);opacity:1}}
+  .bob{animation:bob 5s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  .pulse{transform-box:fill-box;transform-origin:center;animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+</style>
+<g clip-path="url(#fc)">
+  <rect width="1200" height="200" fill="url(#fbg)"/>
+  <circle class="tw" style="animation-delay:1.44s" cx="832" cy="107" r="2.1" fill="#fff"/><circle class="tw" style="animation-delay:3.76s" cx="27" cy="81" r="2.3" fill="#fff"/><circle class="tw" style="animation-delay:1.29s" cx="1129" cy="52" r="1.1" fill="#fff"/><circle class="tw" style="animation-delay:1.87s" cx="585" cy="79" r="1.3" fill="#fff"/><circle class="tw" style="animation-delay:1.12s" cx="552" cy="90" r="1.6" fill="#fff"/><circle class="tw" style="animation-delay:3.96s" cx="747" cy="77" r="1.1" fill="#fff"/><circle class="tw" style="animation-delay:0.93s" cx="35" cy="67" r="2.0" fill="#fff"/><circle class="tw" style="animation-delay:2.76s" cx="964" cy="9" r="2.2" fill="#fff"/><circle class="tw" style="animation-delay:1.83s" cx="1133" cy="7" r="1.1" fill="#fff"/><circle class="tw" style="animation-delay:2.19s" cx="1186" cy="31" r="1.3" fill="#fff"/><circle class="tw" style="animation-delay:0.37s" cx="730" cy="64" r="2.1" fill="#fff"/><circle class="tw" style="animation-delay:0.95s" cx="561" cy="119" r="2.2" fill="#fff"/><circle class="tw" style="animation-delay:3.17s" cx="1115" cy="68" r="2.1" fill="#fff"/><circle class="tw" style="animation-delay:0.23s" cx="500" cy="97" r="1.7" fill="#fff"/><circle class="tw" style="animation-delay:1.86s" cx="644" cy="100" r="1.9" fill="#fff"/><circle class="tw" style="animation-delay:3.73s" cx="321" cy="98" r="0.9" fill="#fff"/><circle class="tw" style="animation-delay:0.16s" cx="966" cy="48" r="1.8" fill="#fff"/><circle class="tw" style="animation-delay:1.89s" cx="1066" cy="118" r="2.2" fill="#fff"/><circle class="tw" style="animation-delay:1.26s" cx="827" cy="76" r="2.1" fill="#fff"/><circle class="tw" style="animation-delay:0.47s" cx="697" cy="17" r="0.7" fill="#fff"/><circle class="tw" style="animation-delay:3.51s" cx="456" cy="76" r="2.1" fill="#fff"/><circle class="tw" style="animation-delay:1.23s" cx="1058" cy="51" r="1.3" fill="#fff"/>
+  <path fill="url(#w1)" opacity=".5"><animate attributeName="d" dur="9s" repeatCount="indefinite" values="M0 130 C 200 90, 400 170, 600 130 S 1000 168, 1200 130 V200 H0 Z;M0 150 C 200 110, 400 190, 600 150 S 1000 118, 1200 160 V200 H0 Z;M0 130 C 200 90, 400 170, 600 130 S 1000 168, 1200 130 V200 H0 Z"/></path>
+  <path fill="url(#w1)" opacity=".35"><animate attributeName="d" dur="12s" repeatCount="indefinite" values="M0 160 C 200 120, 400 200, 600 160 S 1000 128, 1200 168 V200 H0 Z;M0 140 C 200 100, 400 180, 600 140 S 1000 176, 1200 128 V200 H0 Z;M0 160 C 200 120, 400 200, 600 160 S 1000 128, 1200 168 V200 H0 Z"/></path>
+  <g>
+    <animateMotion dur="16s" repeatCount="indefinite" rotate="auto" path="M-60 150 C 200 30, 400 160, 600 90 S 1000 20, 1260 110"/>
+    <g transform="scale(.7)"><path d="M-30 -2 L34 -26 L18 26 L3 10 L-8 22 L-9 6Z" fill="#fff"/><path d="M-9 6 L34 -26 L3 10Z" fill="#000" opacity=".16"/></g>
+  </g>
+  <text x="48" y="78" font-size="23" font-weight="700" fill="#fff">Made with <tspan fill="#ff7a9c">♥</tspan> by Arizo Team</text>
+  <text x="48" y="108" font-size="15" fill="#9aa0b8">If this saved you time, a ⭐ on the repo helps a lot.</text>
+  <text x="1152" y="78" text-anchor="end" font-size="20" font-weight="700" fill="#fff">arizo-self.arizosupport.workers.dev</text>
+  <text x="1152" y="108" text-anchor="start" font-size="15" fill="#9aa0b8" direction="rtl" style="font-family:Vazirmatn,Tahoma,'Segoe UI',sans-serif">اگر به کارتان آمد، یک ⭐ بدهید</text>
+  <g transform="translate(300 150) scale(0.9)"><path class="spark" style="animation-delay:0s" d="M0-10 L2.6-2.6 10 0 2.6 2.6 0 10 -2.6 2.6 -10 0 -2.6-2.6Z" fill="#fff"/></g><g transform="translate(900 60) scale(1.1)"><path class="spark" style="animation-delay:1s" d="M0-10 L2.6-2.6 10 0 2.6 2.6 0 10 -2.6 2.6 -10 0 -2.6-2.6Z" fill="#fff"/></g><g transform="translate(1060 150) scale(0.7)"><path class="spark" style="animation-delay:2s" d="M0-10 L2.6-2.6 10 0 2.6 2.6 0 10 -2.6 2.6 -10 0 -2.6-2.6Z" fill="#fff"/></g>
+</g>
+<rect width="1200" height="200" rx="26" fill="none" stroke="#ffffff14"/>
 </svg>

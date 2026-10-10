@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 330" width="900" height="330" role="img" aria-label="A rotating 2FA code and the Cloudflare edge letting the owner through while banning a scanner">
+
+<defs>
+  <linearGradient id="sbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0d18"/><stop offset="1" stop-color="#171233"/></linearGradient>
+  <filter id="sg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="36"/></filter>
+  <filter id="sb" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="6"/></filter>
+</defs>
+<style>
+  text{font-family:'Segoe UI','Inter',system-ui,-apple-system,Arial,sans-serif}
+  .tw{animation:tw 4s ease-in-out infinite}
+  @keyframes tw{0%,100%{opacity:.12}50%{opacity:.95}}
+  .spark{transform-box:fill-box;transform-origin:center;animation:spark 3s ease-in-out infinite}
+  @keyframes spark{0%,100%{transform:scale(.2) rotate(0);opacity:0}50%{transform:scale(1) rotate(45deg);opacity:1}}
+  .bob{animation:bob 5s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  .pulse{transform-box:fill-box;transform-origin:center;animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+</style>
+<rect width="900" height="330" rx="28" fill="url(#sbg)"/>
+<circle cx="140" cy="300" r="110" fill="#8b5cf6" opacity=".3" filter="url(#sg)"/>
+<circle cx="790" cy="30" r="100" fill="#22c55e" opacity=".16" filter="url(#sg)"/>
+
+<!-- authenticator -->
+<rect x="30" y="30" width="330" height="270" rx="26" fill="#0e1220" stroke="#ffffff22"/>
+<g transform="translate(62 62)"><rect x="-8" y="-2" width="16" height="12" rx="3" fill="#c4b5fd"/><path d="M-4.6 -2V-5a4.6 4.6 0 0 1 9.2 0V-2" fill="none" stroke="#c4b5fd" stroke-width="2.4"/><circle cy="4" r="1.8" fill="#0b0e17"/></g>
+<text x="82" y="67" font-size="15" font-weight="700" fill="#fff">Google Authenticator</text>
+<text x="82" y="85" font-size="11" fill="#6b7390">RFC 6238 · TOTP</text>
+<g transform="translate(195 178)">
+  <circle r="46" fill="none" stroke="#ffffff14" stroke-width="7"/>
+  <circle r="46" fill="none" stroke="#a855f7" stroke-width="7" stroke-linecap="round" stroke-dasharray="289.0" transform="rotate(-90)">
+    <animate attributeName="stroke-dashoffset" dur="3s" repeatCount="indefinite" from="0" to="289.0"/>
+    <animate attributeName="stroke" dur="3s" repeatCount="indefinite" keyTimes="0;.7;1" values="#a855f7;#a855f7;#f43f5e"/>
+  </circle>
+  <g font-family="ui-monospace,'Cascadia Code',Consolas,Menlo,monospace" font-size="23" font-weight="700" fill="#fff" text-anchor="middle"><g opacity="1"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.3333333333333333;1" values="1;0;0"/><text y="8">482 913</text></g><g opacity="0"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.3333333333333333;0.6666666666666666;1" values="0;1;0;0"/><text y="8">095 276</text></g><g opacity="0"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.6666666666666666;1" values="0;1;1"/><text y="8">631 408</text></g></g>
+</g>
+<text x="195" y="252" text-anchor="middle" font-size="12" fill="#8b93ad">new 6-digit code every 30 s</text>
+<rect x="76" y="266" width="238" height="22" rx="11" fill="#151a2b"/>
+<text x="195" y="281" text-anchor="middle" font-size="11" fill="#a5b4fc">8 one-time recovery codes</text>
+
+<!-- edge -->
+<rect x="390" y="30" width="480" height="270" rx="26" fill="#0e1220" stroke="#ffffff22"/>
+<text x="414" y="62" font-size="12" fill="#6b7390" letter-spacing="2">CLOUDFLARE EDGE</text>
+<path d="M630 78 L690 98 V160 C690 196 664 222 630 240 C596 222 570 196 570 160 V98Z" fill="#151a2b" stroke="#a855f7" stroke-width="2"/>
+<path d="M630 78 L690 98 V160 C690 196 664 222 630 240 C596 222 570 196 570 160 V98Z" fill="none" stroke="#a855f7" stroke-width="2" filter="url(#sb)" opacity=".7" class="pulse"/>
+<g transform="translate(630 150) scale(1.5)"><rect x="-8" y="-2" width="16" height="12" rx="3" fill="#c4b5fd"/><path d="M-4.6 -2V-5a4.6 4.6 0 0 1 9.2 0V-2" fill="none" stroke="#c4b5fd" stroke-width="2.4"/><circle cy="4" r="1.8" fill="#0b0e17"/></g>
+
+<!-- lane 1: the owner passes -->
+<g opacity="0"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0.0000;0.0200;0.0320;0.4000;0.4120;1.0000" values="0;0;1;1;0;0" />
+  <g>
+    <animateTransform attributeName="transform" type="translate" dur="9s" repeatCount="indefinite" keyTimes="0.0000;0.0200;0.3500;1.0000" values="0 0;0 0;420 0;420 0" />
+    <rect x="410" y="104" width="124" height="34" rx="17" fill="#052e16" stroke="#22c55e"/>
+    <text x="472" y="126" text-anchor="middle" font-size="13" font-weight="700" fill="#bbf7d0">owner · 2FA ✓</text>
+  </g>
+</g>
+<g opacity="0"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0.0000;0.3000;0.3120;0.5600;0.5720;1.0000" values="0;0;1;1;0;0" />
+  <text x="760" y="126" text-anchor="middle" font-size="13" fill="#22c55e" font-weight="700">access granted</text>
+</g>
+
+<!-- lane 2: the scanner is trapped -->
+<g opacity="0"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0.0000;0.4600;0.4720;0.6400;0.6520;1.0000" values="0;0;1;1;0;0" />
+  <g>
+    <animateTransform attributeName="transform" type="translate" dur="9s" repeatCount="indefinite" keyTimes="0.0000;0.4600;0.5800;1.0000" values="0 0;0 0;78 0;78 0" />
+    <rect x="410" y="196" width="124" height="34" rx="17" fill="#3b0a1a" stroke="#f43f5e"/>
+    <text x="472" y="218" text-anchor="middle" font-size="13" font-weight="700" fill="#fecdd3">GET /.env</text>
+  </g>
+</g>
+<g opacity="0"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0.0000;0.5750;0.5870;0.7000;0.7120;1.0000" values="0;0;1;1;0;0" />
+  <circle cx="570" cy="213" fill="none" stroke="#f43f5e" stroke-width="3">
+    <animate attributeName="r" dur="9s" repeatCount="indefinite" keyTimes="0.0000;0.5750;0.6800;1.0000" values="4;4;46;46" />
+    <animate attributeName="stroke-opacity" dur="9s" repeatCount="indefinite" keyTimes="0.0000;0.5750;0.7000;1.0000" values="1;1;0;0" />
+  </circle>
+</g>
+<g opacity="0"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0.0000;0.6200;0.6320;0.9400;0.9520;1.0000" values="0;0;1;1;0;0" />
+  <g><animateTransform attributeName="transform" type="translate" dur="9s" repeatCount="indefinite" keyTimes="0.0000;0.6200;0.6550;1.0000" values="0 12;0 12;0 0;0 0" />
+    <rect x="690" y="188" width="150" height="46" rx="12" fill="#3b0a1a" stroke="#f43f5e" transform="rotate(-4 765 211)"/>
+    <text x="765" y="208" text-anchor="middle" font-size="15" font-weight="800" fill="#f43f5e" letter-spacing="2" transform="rotate(-4 765 211)">IP BANNED</text>
+    <text x="765" y="224" text-anchor="middle" font-size="11" fill="#fda4af" transform="rotate(-4 765 211)">alert sent to your bot</text>
+  </g>
+</g>
+<text x="630" y="282" text-anchor="middle" font-size="12" fill="#6b7390">hostile probes die at the edge · owner traffic pays zero latency</text>
+<g transform="translate(380 310) scale(0.8)"><path class="spark" style="animation-delay:0.5s" d="M0-10 L2.6-2.6 10 0 2.6 2.6 0 10 -2.6 2.6 -10 0 -2.6-2.6Z" fill="#fff"/></g><g transform="translate(880 300) scale(0.8)"><path class="spark" style="animation-delay:1.5s" d="M0-10 L2.6-2.6 10 0 2.6 2.6 0 10 -2.6 2.6 -10 0 -2.6-2.6Z" fill="#fff"/></g>
+</svg>

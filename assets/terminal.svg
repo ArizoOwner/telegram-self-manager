@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 340" width="900" height="340" role="img" aria-label="Typing .ghost on, .read all and .mute in a Telegram chat and watching the account state change">
+
+<defs>
+  <linearGradient id="tbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0d18"/><stop offset="1" stop-color="#151030"/></linearGradient>
+  <linearGradient id="cav" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#0ea5e9"/></linearGradient>
+</defs>
+<style>
+  text{font-family:'Segoe UI','Inter',system-ui,-apple-system,Arial,sans-serif}
+  .tw{animation:tw 4s ease-in-out infinite}
+  @keyframes tw{0%,100%{opacity:.12}50%{opacity:.95}}
+  .spark{transform-box:fill-box;transform-origin:center;animation:spark 3s ease-in-out infinite}
+  @keyframes spark{0%,100%{transform:scale(.2) rotate(0);opacity:0}50%{transform:scale(1) rotate(45deg);opacity:1}}
+  .bob{animation:bob 5s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  .pulse{transform-box:fill-box;transform-origin:center;animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+</style>
+<rect width="900" height="340" rx="26" fill="url(#tbg)"/>
+<rect x="14" y="14" width="872" height="312" rx="20" fill="#0b0e17" stroke="#ffffff1c"/>
+<rect x="14" y="14" width="872" height="48" rx="20" fill="#141829"/><rect x="14" y="40" width="872" height="22" fill="#141829"/>
+<circle cx="40" cy="38" r="6" fill="#ff5f57"/><circle cx="60" cy="38" r="6" fill="#febc2e"/><circle cx="80" cy="38" r="6" fill="#28c840"/>
+<text x="450" y="43" text-anchor="middle" font-size="14" fill="#9aa3bd">Saved Messages · type a command, no panel needed</text>
+<rect x="620" y="74" width="1" height="236" fill="#ffffff12"/>
+
+  <g opacity="0"><animate attributeName="opacity" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.0040;0.0160;0.3233;0.3353;1.0000" values="0;0;1;1;0;0" />
+    <clipPath id="t0"><rect x="441.2" y="86" height="40"><animate attributeName="width" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.0240;0.0890;1.0000" values="0;0;138.8;138.8"/></rect></clipPath>
+    <g>
+      <rect x="441.2" y="86" width="138.8" height="40" rx="14" fill="#5b3fd9"/>
+      <text x="460.2" y="112" font-family="ui-monospace,'Cascadia Code',Consolas,Menlo,monospace" font-size="19" fill="#fff" clip-path="url(#t0)" textLength="100.8" lengthAdjust="spacing">.ghost on</text>
+      <rect y="94" width="2.4" height="24" rx="1" fill="#fff">
+        <animate attributeName="x" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.0240;0.0890;1.0000" values="460.2;460.2;561;561" />
+        <animate attributeName="opacity" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.0040;0.0160;0.1490;0.1590;1.0000" values="0;0;1;1;0;0" />
+      </rect>
+    </g>
+    <g opacity="0"><animate attributeName="opacity" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.1240;0.1360;0.3233;0.3353;1.0000" values="0;0;1;1;0;0" />
+      <g><animateTransform attributeName="transform" type="translate" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.1240;0.1590;1.0000" values="-24 0;-24 0;0 0;0 0" />
+        <rect x="36" y="148" width="434.5" height="52" rx="16" fill="#171c30" stroke="#c4b5fd" stroke-opacity=".55"/>
+        <circle cx="62" cy="174" r="12" fill="url(#cav)"/><g transform="translate(62 174) scale(.2)"><path d="M-30 -2 L34 -26 L18 26 L3 10 L-8 22 L-9 6Z" fill="#fff"/><path d="M-9 6 L34 -26 L3 10Z" fill="#000" opacity=".16"/></g>
+        <text x="84" y="170" font-size="12" font-weight="700" fill="#c4b5fd">Arizo Self</text>
+        <text x="84" y="188" font-size="13.5" fill="#e5e7eb">Ghost mode enabled · read receipts suppressed</text>
+      </g>
+    </g>
+  </g>
+  <g opacity="0"><animate attributeName="opacity" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.3373;0.3493;0.6567;0.6687;1.0000" values="0;0;1;1;0;0" />
+    <clipPath id="t1"><rect x="441.2" y="86" height="40"><animate attributeName="width" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.3573;0.4223;1.0000" values="0;0;138.8;138.8"/></rect></clipPath>
+    <g>
+      <rect x="441.2" y="86" width="138.8" height="40" rx="14" fill="#5b3fd9"/>
+      <text x="460.2" y="112" font-family="ui-monospace,'Cascadia Code',Consolas,Menlo,monospace" font-size="19" fill="#fff" clip-path="url(#t1)" textLength="100.8" lengthAdjust="spacing">.read all</text>
+      <rect y="94" width="2.4" height="24" rx="1" fill="#fff">
+        <animate attributeName="x" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.3573;0.4223;1.0000" values="460.2;460.2;561;561" />
+        <animate attributeName="opacity" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.3373;0.3493;0.4823;0.4923;1.0000" values="0;0;1;1;0;0" />
+      </rect>
+    </g>
+    <g opacity="0"><animate attributeName="opacity" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.4573;0.4693;0.6567;0.6687;1.0000" values="0;0;1;1;0;0" />
+      <g><animateTransform attributeName="transform" type="translate" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.4573;0.4923;1.0000" values="-24 0;-24 0;0 0;0 0" />
+        <rect x="36" y="148" width="337.3" height="52" rx="16" fill="#171c30" stroke="#38bdf8" stroke-opacity=".55"/>
+        <circle cx="62" cy="174" r="12" fill="url(#cav)"/><g transform="translate(62 174) scale(.2)"><path d="M-30 -2 L34 -26 L18 26 L3 10 L-8 22 L-9 6Z" fill="#fff"/><path d="M-9 6 L34 -26 L3 10Z" fill="#000" opacity=".16"/></g>
+        <text x="84" y="170" font-size="12" font-weight="700" fill="#38bdf8">Arizo Self</text>
+        <text x="84" y="188" font-size="13.5" fill="#e5e7eb">24 chats marked as read, silently</text>
+      </g>
+    </g>
+  </g>
+  <g opacity="0"><animate attributeName="opacity" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.6707;0.6827;0.9900;1.0020;1.0000" values="0;0;1;1;0;0" />
+    <clipPath id="t2"><rect x="385.20000000000005" y="86" height="40"><animate attributeName="width" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.6907;0.7557;1.0000" values="0;0;194.79999999999998;194.79999999999998"/></rect></clipPath>
+    <g>
+      <rect x="385.20000000000005" y="86" width="194.79999999999998" height="40" rx="14" fill="#5b3fd9"/>
+      <text x="404.20000000000005" y="112" font-family="ui-monospace,'Cascadia Code',Consolas,Menlo,monospace" font-size="19" fill="#fff" clip-path="url(#t2)" textLength="156.79999999999998" lengthAdjust="spacing">.mute @spammer</text>
+      <rect y="94" width="2.4" height="24" rx="1" fill="#fff">
+        <animate attributeName="x" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.6907;0.7557;1.0000" values="404.20000000000005;404.20000000000005;561;561" />
+        <animate attributeName="opacity" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.6707;0.6827;0.8157;0.8257;1.0000" values="0;0;1;1;0;0" />
+      </rect>
+    </g>
+    <g opacity="0"><animate attributeName="opacity" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.7907;0.8027;0.9900;1.0020;1.0000" values="0;0;1;1;0;0" />
+      <g><animateTransform attributeName="transform" type="translate" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.7907;0.8257;1.0000" values="-24 0;-24 0;0 0;0 0" />
+        <rect x="36" y="148" width="475" height="52" rx="16" fill="#171c30" stroke="#fca5a5" stroke-opacity=".55"/>
+        <circle cx="62" cy="174" r="12" fill="url(#cav)"/><g transform="translate(62 174) scale(.2)"><path d="M-30 -2 L34 -26 L18 26 L3 10 L-8 22 L-9 6Z" fill="#fff"/><path d="M-9 6 L34 -26 L3 10Z" fill="#000" opacity=".16"/></g>
+        <text x="84" y="170" font-size="12" font-weight="700" fill="#fca5a5">Arizo Self</text>
+        <text x="84" y="188" font-size="13.5" fill="#e5e7eb">Muted · 12 incoming messages purged for both sides</text>
+      </g>
+    </g>
+  </g>
+
+<text x="640" y="88" font-size="11" fill="#6b7390" letter-spacing="2">ACCOUNT STATE</text>
+<rect x="640" y="102" width="220" height="38" rx="12" fill="#151a2b"/><text x="654" y="127" font-size="13" fill="#aab2cc">Ghost mode</text>
+    <text x="844" y="124" font-size="15" font-weight="800" fill="#6b7390" text-anchor="end">OFF<animate attributeName="opacity" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.0650;0.0770;0.9900;1.0000" values="1;1;0;0;1" /></text>
+    <text x="844" y="124" font-size="15" font-weight="800" fill="#22c55e" text-anchor="end" opacity="0">ON<animate attributeName="opacity" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.0650;0.0770;0.9900;1.0000" values="0;0;1;1;0" /></text>
+<rect x="640" y="148" width="220" height="38" rx="12" fill="#151a2b"/><text x="654" y="173" font-size="13" fill="#aab2cc">Unread chats</text>
+    <text x="844" y="170" font-size="15" font-weight="800" fill="#fbbf24" text-anchor="end">24<animate attributeName="opacity" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.4000;0.4120;0.9900;1.0000" values="1;1;0;0;1" /></text>
+    <text x="844" y="170" font-size="15" font-weight="800" fill="#22c55e" text-anchor="end" opacity="0">0<animate attributeName="opacity" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.4000;0.4120;0.9900;1.0000" values="0;0;1;1;0" /></text>
+<rect x="640" y="194" width="220" height="38" rx="12" fill="#151a2b"/><text x="654" y="219" font-size="13" fill="#aab2cc">Muted users</text>
+    <text x="844" y="216" font-size="15" font-weight="800" fill="#6b7390" text-anchor="end">0<animate attributeName="opacity" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.7300;0.7420;0.9900;1.0000" values="1;1;0;0;1" /></text>
+    <text x="844" y="216" font-size="15" font-weight="800" fill="#f43f5e" text-anchor="end" opacity="0">1<animate attributeName="opacity" dur="15s" repeatCount="indefinite" keyTimes="0.0000;0.7300;0.7420;0.9900;1.0000" values="0;0;1;1;0" /></text>
+<rect x="640" y="248" width="220" height="48" rx="12" fill="none" stroke="#ffffff14" stroke-dasharray="4 5"/>
+<text x="750" y="268" text-anchor="middle" font-size="12" fill="#6b7390">/start · /test · /status</text>
+<text x="750" y="285" text-anchor="middle" font-size="11" fill="#4b5370">available in the helper bot</text>
+<rect x="14" y="62" width="872" height="3" fill="none"/>
+<g transform="translate(850 100) scale(0.7)"><path class="spark" style="animation-delay:0s" d="M0-10 L2.6-2.6 10 0 2.6 2.6 0 10 -2.6 2.6 -10 0 -2.6-2.6Z" fill="#fff"/></g>
+</svg>

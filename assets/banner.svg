@@ -1,148 +1,69 @@
-<svg width="1200" height="300" viewBox="0 0 1200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <!-- Background Gradients -->
-    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0a0d18" />
-      <stop offset="50%" stop-color="#111827" />
-      <stop offset="100%" stop-color="#181336" />
-    </linearGradient>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" width="1200" height="340" role="img" aria-label="Arizo Telegram Self Manager">
 
-    <!-- Glowing Accent Gradients -->
-    <linearGradient id="titleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#ffffff" />
-      <stop offset="40%" stop-color="#f3e8ff" />
-      <stop offset="70%" stop-color="#a855f7" />
-      <stop offset="100%" stop-color="#38bdf8" />
-    </linearGradient>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0d18"/><stop offset=".5" stop-color="#111827"/><stop offset="1" stop-color="#181336"/></linearGradient>
+  <linearGradient id="title" gradientUnits="userSpaceOnUse" x1="380" y1="0" x2="780" y2="0" spreadMethod="reflect">
+    <stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#e9d5ff"/><stop offset=".75" stop-color="#a855f7"/><stop offset="1" stop-color="#38bdf8"/>
+    <animateTransform attributeName="gradientTransform" type="translate" from="-400 0" to="400 0" dur="7s" repeatCount="indefinite"/>
+  </linearGradient>
+  <linearGradient id="disc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#0ea5e9"/></linearGradient>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="60"/></filter>
+  <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+  <clipPath id="clip"><rect width="1200" height="340" rx="30"/></clipPath>
+</defs>
+<style>
+  text{font-family:'Segoe UI','Inter',system-ui,-apple-system,Arial,sans-serif}
+  .tw{animation:tw 4s ease-in-out infinite}
+  @keyframes tw{0%,100%{opacity:.12}50%{opacity:.95}}
+  .spark{transform-box:fill-box;transform-origin:center;animation:spark 3s ease-in-out infinite}
+  @keyframes spark{0%,100%{transform:scale(.2) rotate(0);opacity:0}50%{transform:scale(1) rotate(45deg);opacity:1}}
+  .bob{animation:bob 5s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  .pulse{transform-box:fill-box;transform-origin:center;animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+</style>
+<g clip-path="url(#clip)">
+  <rect width="1200" height="340" fill="url(#bg)"/>
+  <circle r="230" fill="#8b5cf6" opacity=".5" filter="url(#glow)"><animate attributeName="cx" values="150;330;150" dur="12s" repeatCount="indefinite"/><animate attributeName="cy" values="300;200;300" dur="12s" repeatCount="indefinite"/></circle>
+  <circle r="220" fill="#0ea5e9" opacity=".4" filter="url(#glow)"><animate attributeName="cx" values="1090;900;1090" dur="14s" repeatCount="indefinite"/><animate attributeName="cy" values="30;150;30" dur="14s" repeatCount="indefinite"/></circle>
+  <circle class="tw" style="animation-delay:0.30s" cx="288" cy="94" r="1.3" fill="#fff"/><circle class="tw" style="animation-delay:2.87s" cx="858" cy="288" r="0.8" fill="#fff"/><circle class="tw" style="animation-delay:1.08s" cx="124" cy="73" r="2.0" fill="#fff"/><circle class="tw" style="animation-delay:2.57s" cx="431" cy="121" r="1.5" fill="#fff"/><circle class="tw" style="animation-delay:1.60s" cx="471" cy="163" r="1.8" fill="#fff"/><circle class="tw" style="animation-delay:0.14s" cx="152" cy="249" r="1.9" fill="#fff"/><circle class="tw" style="animation-delay:0.20s" cx="365" cy="43" r="1.6" fill="#fff"/><circle class="tw" style="animation-delay:2.91s" cx="434" cy="314" r="2.0" fill="#fff"/><circle class="tw" style="animation-delay:3.10s" cx="1161" cy="16" r="1.3" fill="#fff"/><circle class="tw" style="animation-delay:0.71s" cx="38" cy="73" r="2.1" fill="#fff"/><circle class="tw" style="animation-delay:3.75s" cx="339" cy="296" r="1.9" fill="#fff"/><circle class="tw" style="animation-delay:2.37s" cx="871" cy="53" r="1.4" fill="#fff"/><circle class="tw" style="animation-delay:2.47s" cx="685" cy="140" r="1.1" fill="#fff"/><circle class="tw" style="animation-delay:0.55s" cx="547" cy="16" r="1.9" fill="#fff"/><circle class="tw" style="animation-delay:2.33s" cx="43" cy="235" r="1.3" fill="#fff"/><circle class="tw" style="animation-delay:0.66s" cx="336" cy="338" r="0.9" fill="#fff"/><circle class="tw" style="animation-delay:1.30s" cx="48" cy="175" r="1.1" fill="#fff"/><circle class="tw" style="animation-delay:2.17s" cx="879" cy="174" r="1.0" fill="#fff"/><circle class="tw" style="animation-delay:0.60s" cx="234" cy="210" r="1.3" fill="#fff"/><circle class="tw" style="animation-delay:0.11s" cx="82" cy="237" r="2.3" fill="#fff"/><circle class="tw" style="animation-delay:1.37s" cx="309" cy="125" r="2.0" fill="#fff"/><circle class="tw" style="animation-delay:2.81s" cx="383" cy="332" r="1.6" fill="#fff"/><circle class="tw" style="animation-delay:1.53s" cx="1013" cy="11" r="1.7" fill="#fff"/><circle class="tw" style="animation-delay:1.94s" cx="196" cy="131" r="2.1" fill="#fff"/><circle class="tw" style="animation-delay:0.91s" cx="1151" cy="209" r="2.2" fill="#fff"/><circle class="tw" style="animation-delay:2.73s" cx="729" cy="155" r="0.9" fill="#fff"/><circle class="tw" style="animation-delay:2.66s" cx="394" cy="80" r="1.5" fill="#fff"/><circle class="tw" style="animation-delay:2.51s" cx="574" cy="208" r="2.1" fill="#fff"/><circle class="tw" style="animation-delay:2.85s" cx="663" cy="33" r="1.9" fill="#fff"/><circle class="tw" style="animation-delay:1.44s" cx="882" cy="61" r="1.4" fill="#fff"/><circle class="tw" style="animation-delay:0.37s" cx="83" cy="0" r="0.8" fill="#fff"/><circle class="tw" style="animation-delay:1.54s" cx="697" cy="313" r="1.4" fill="#fff"/><circle class="tw" style="animation-delay:3.05s" cx="1112" cy="142" r="2.1" fill="#fff"/><circle class="tw" style="animation-delay:1.94s" cx="480" cy="51" r="1.7" fill="#fff"/><circle class="tw" style="animation-delay:2.06s" cx="449" cy="49" r="1.2" fill="#fff"/><circle class="tw" style="animation-delay:2.39s" cx="602" cy="140" r="1.7" fill="#fff"/><circle class="tw" style="animation-delay:2.55s" cx="314" cy="169" r="1.5" fill="#fff"/><circle class="tw" style="animation-delay:3.01s" cx="808" cy="241" r="1.9" fill="#fff"/><circle class="tw" style="animation-delay:2.49s" cx="303" cy="29" r="1.8" fill="#fff"/><circle class="tw" style="animation-delay:0.29s" cx="663" cy="105" r="1.8" fill="#fff"/>
+  <g transform="translate(330 70) scale(1)"><path class="spark" style="animation-delay:0s" d="M0-10 L2.6-2.6 10 0 2.6 2.6 0 10 -2.6 2.6 -10 0 -2.6-2.6Z" fill="#fff"/></g><g transform="translate(1130 250) scale(1.2)"><path class="spark" style="animation-delay:1.2s" d="M0-10 L2.6-2.6 10 0 2.6 2.6 0 10 -2.6 2.6 -10 0 -2.6-2.6Z" fill="#fff"/></g><g transform="translate(700 40) scale(0.8)"><path class="spark" style="animation-delay:2.1s" d="M0-10 L2.6-2.6 10 0 2.6 2.6 0 10 -2.6 2.6 -10 0 -2.6-2.6Z" fill="#fff"/></g><g transform="translate(60 40) scale(0.9)"><path class="spark" style="animation-delay:0.6s" d="M0-10 L2.6-2.6 10 0 2.6 2.6 0 10 -2.6 2.6 -10 0 -2.6-2.6Z" fill="#fff"/></g>
 
-    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#8b5cf6" />
-      <stop offset="50%" stop-color="#6366f1" />
-      <stop offset="100%" stop-color="#0ea5e9" />
-    </linearGradient>
-
-    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.8" />
-      <stop offset="50%" stop-color="#6366f1" stop-opacity="0.7" />
-      <stop offset="100%" stop-color="#0284c7" stop-opacity="0.9" />
-    </linearGradient>
-
-    <radialGradient id="glowPurple" cx="20%" cy="40%" r="50%">
-      <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.35" />
-      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0" />
-    </radialGradient>
-
-    <radialGradient id="glowCyan" cx="80%" cy="30%" r="50%">
-      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.25" />
-      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0" />
-    </radialGradient>
-
-    <!-- Grid Pattern -->
-    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#374151" stroke-width="0.75" stroke-opacity="0.25" />
-    </pattern>
-
-    <!-- Drop Shadows -->
-    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.6" />
-    </filter>
-
-    <filter id="glowEffect" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="8" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-    </filter>
-  </defs>
-
-  <style>
-    .title {
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      font-weight: 800;
-      font-size: 46px;
-      fill: url(#titleGrad);
-      letter-spacing: -0.5px;
-    }
-    .badge-text {
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      font-weight: 700;
-      font-size: 13px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      fill: #c084fc;
-    }
-    .subtitle {
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      font-weight: 400;
-      font-size: 17px;
-      fill: #94a3b8;
-      letter-spacing: 0.2px;
-    }
-    .pill-text {
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      font-weight: 600;
-      font-size: 13px;
-      fill: #e2e8f0;
-    }
-  </style>
-
-  <!-- Background Base -->
-  <rect width="1200" height="300" rx="16" fill="url(#bgGrad)" />
-
-  <!-- Ambient Glows -->
-  <rect width="1200" height="300" rx="16" fill="url(#glowPurple)" />
-  <rect width="1200" height="300" rx="16" fill="url(#glowCyan)" />
-
-  <!-- Subtle Tech Grid -->
-  <rect width="1200" height="300" rx="16" fill="url(#grid)" />
-
-  <!-- Border Highlight -->
-  <rect x="1" y="1" width="1198" height="298" rx="15" fill="none" stroke="#38bdf8" stroke-opacity="0.15" stroke-width="1.5" />
-
-  <!-- Decorative Top Banner Pill -->
-  <g transform="translate(485, 42)">
-    <rect width="230" height="28" rx="14" fill="#581c87" fill-opacity="0.4" stroke="#a855f7" stroke-opacity="0.5" stroke-width="1" />
-    <circle cx="16" cy="14" r="5" fill="#22c55e" />
-    <circle cx="16" cy="14" r="9" fill="#22c55e" fill-opacity="0.25" />
-    <text x="32" y="19" class="badge-text">⚡ ARIZO ENTERPRISE</text>
+  <!-- emblem -->
+  <g transform="translate(190 172)">
+    <circle r="96" fill="#8b5cf6" opacity=".35" filter="url(#soft)" class="pulse"/>
+    <circle r="112" fill="none" stroke="#ffffff30" stroke-width="1.6" stroke-dasharray="3 9">
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="30s" repeatCount="indefinite"/></circle>
+    <circle r="82" fill="none" stroke="#38bdf8" stroke-opacity=".35" stroke-width="1.4" stroke-dasharray="60 20 6 20">
+      <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="22s" repeatCount="indefinite"/></circle>
+    <g><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="20s" repeatCount="indefinite"/><g transform="translate(112.0 0.0)">
+        <g><circle r="22" fill="#0b0e17" stroke="#ffffff30"/><circle r="9" fill="none" stroke="#38bdf8" stroke-width="2.2"/><path d="M0 -5 V0" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="6s" repeatCount="indefinite"/></path><path d="M0 0 L4 2" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round"/>
+          <animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="20s" repeatCount="indefinite"/></g></g><g transform="translate(-56.0 97.0)">
+        <g><circle r="22" fill="#0b0e17" stroke="#ffffff30"/><path d="M-9 10V-2C-9-12 9-12 9-2V10L4.5 6 0 10-4.5 6Z" fill="#e9d5ff"/><circle cx="-3.2" cy="-2" r="1.9" fill="#0b0e17"/><circle cx="3.2" cy="-2" r="1.9" fill="#0b0e17"/>
+          <animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="20s" repeatCount="indefinite"/></g></g><g transform="translate(-56.0 -97.0)">
+        <g><circle r="22" fill="#0b0e17" stroke="#ffffff30"/><rect x="-8" y="-2" width="16" height="12" rx="3" fill="#86efac"/><path d="M-4.6 -2V-5a4.6 4.6 0 0 1 9.2 0V-2" fill="none" stroke="#86efac" stroke-width="2.4"/><circle cy="4" r="1.8" fill="#0b0e17"/>
+          <animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="20s" repeatCount="indefinite"/></g></g></g>
+    <circle r="62" fill="url(#disc)"/>
+    <circle r="62" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.5"/>
+    <g class="bob"><g transform="translate(-2 0) scale(.95)"><path d="M-30 -2 L34 -26 L18 26 L3 10 L-8 22 L-9 6Z" fill="#fff"/><path d="M-9 6 L34 -26 L3 10Z" fill="#000" opacity=".16"/></g></g>
   </g>
 
-  <!-- Main Title & Logo Icon -->
-  <g transform="translate(600, 120)" text-anchor="middle" filter="url(#shadow)">
-    <text y="0" class="title">⚡ Arizo Telegram Self Manager</text>
+  <!-- profile clock pill -->
+  <g transform="translate(850 38)">
+    <rect width="290" height="42" rx="21" fill="#0b0e17" stroke="#ffffff22"/>
+    <circle cx="24" cy="21" r="5" fill="#22c55e"><animate attributeName="opacity" values="1;.25;1" dur="1.6s" repeatCount="indefinite"/></circle>
+    <text x="40" y="26.5" font-size="14" font-weight="700" fill="#e5e7eb">Arizo</text>
+    <g transform="translate(106 21)" fill="#38bdf8"><circle r="9" fill="none" stroke="#38bdf8" stroke-width="2.2"/><path d="M0 -5 V0" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="6s" repeatCount="indefinite"/></path><path d="M0 0 L4 2" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round"/></g>
+    <g font-size="15" font-weight="700" font-family="ui-monospace,'Cascadia Code',Consolas,Menlo,monospace" fill="#38bdf8"><g opacity="1"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.16666666666666666;1" values="1;0;0"/><text x="128" y="26.5">12:41</text></g><g opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.16666666666666666;0.3333333333333333;1" values="0;1;0;0"/><text x="128" y="26.5">12:42</text></g><g opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.3333333333333333;0.5;1" values="0;1;0;0"/><text x="128" y="26.5">12:43</text></g><g opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.5;0.6666666666666666;1" values="0;1;0;0"/><text x="128" y="26.5">12:44</text></g><g opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.6666666666666666;0.8333333333333334;1" values="0;1;0;0"/><text x="128" y="26.5">12:45</text></g><g opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.8333333333333334;1" values="0;1;1"/><text x="128" y="26.5">12:46</text></g></g>
+    <text x="206" y="26" font-size="11" fill="#7c8397" letter-spacing="1">LIVE 24/7</text>
   </g>
 
-  <!-- Subtitle -->
-  <g transform="translate(600, 160)" text-anchor="middle">
-    <text y="0" class="subtitle">Next-Gen Edge MTProto Engine • 2FA TOTP Security • Ghost Mode • AI Assistant Studio</text>
-  </g>
-
-  <!-- Feature Pills -->
-  <g transform="translate(180, 195)">
-    <!-- Pill 1: Response Time -->
-    <g transform="translate(0, 0)">
-      <rect width="185" height="36" rx="18" fill="#1e293b" fill-opacity="0.8" stroke="#64748b" stroke-opacity="0.3" stroke-width="1" />
-      <text x="92" y="23" text-anchor="middle" class="pill-text">⚡ Sub-40ms Engine</text>
-    </g>
-
-    <!-- Pill 2: Security -->
-    <g transform="translate(205, 0)">
-      <rect width="195" height="36" rx="18" fill="#1e293b" fill-opacity="0.8" stroke="#64748b" stroke-opacity="0.3" stroke-width="1" />
-      <text x="97" y="23" text-anchor="middle" class="pill-text">🛡️ 2FA &amp; Honeypot</text>
-    </g>
-
-    <!-- Pill 3: Serverless -->
-    <g transform="translate(420, 0)">
-      <rect width="200" height="36" rx="18" fill="#1e293b" fill-opacity="0.8" stroke="#64748b" stroke-opacity="0.3" stroke-width="1" />
-      <text x="100" y="23" text-anchor="middle" class="pill-text">☁️ 100% Serverless Edge</text>
-    </g>
-
-    <!-- Pill 4: Web Studio -->
-    <g transform="translate(640, 0)">
-      <rect width="195" height="36" rx="18" fill="#1e293b" fill-opacity="0.8" stroke="#64748b" stroke-opacity="0.3" stroke-width="1" />
-      <text x="97" y="23" text-anchor="middle" class="pill-text">🎨 32+ Dynamic Fonts</text>
-    </g>
-  </g>
-
-  <!-- Bottom Dynamic Wave -->
-  <path d="M 0 270 Q 300 240 600 270 T 1200 260 L 1200 300 L 0 300 Z" fill="url(#waveGrad)" />
-  <path d="M 0 282 Q 400 265 800 285 T 1200 275 L 1200 300 L 0 300 Z" fill="#0ea5e9" fill-opacity="0.3" />
+  <!-- titles -->
+  <text x="380" y="168" font-size="82" font-weight="800" fill="url(#title)" letter-spacing="1">Arizo Self</text>
+  <text x="384" y="208" font-size="22" font-weight="600" fill="#c4b5fd" letter-spacing="7">TELEGRAM SELF MANAGER</text>
+  <g font-size="21" fill="#cbd5e1"><g opacity="1"><animate attributeName="opacity" dur="12s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;1" values="1;0;0"/><text x="384" y="252">Atomic clock · sub-40ms MTProto precision</text></g><g opacity="0"><animate attributeName="opacity" dur="12s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;1" values="0;1;0;0"/><text x="384" y="252">Ghost mode · silent read receipts</text></g><g opacity="0"><animate attributeName="opacity" dur="12s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.5;0.75;1" values="0;1;0;0"/><text x="384" y="252">Google 2FA · zero-trust honeypot</text></g><g opacity="0"><animate attributeName="opacity" dur="12s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.75;1" values="0;1;1"/><text x="384" y="252">Anti-delete · anti-edit · view-once saver</text></g></g>
+  <text x="384" y="292" font-size="19" fill="#8b86c9" style="font-family:Vazirmatn,Tahoma,'Segoe UI',sans-serif" direction="rtl" text-anchor="end">سلف‌بات هوشمند تلگرام روی کلادفلر</text>
+  <g transform="translate(384 322)"><rect x="0" width="14" height="3" rx="1.5" fill="#ffffff22"/><rect x="22" width="14" height="3" rx="1.5" fill="#ffffff22"/><rect x="44" width="14" height="3" rx="1.5" fill="#ffffff22"/><rect x="66" width="14" height="3" rx="1.5" fill="#ffffff22"/><g opacity="1"><animate attributeName="opacity" dur="12s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;1" values="1;0;0"/><rect x="0" width="14" height="3" rx="1.5" fill="#a855f7"/></g><g opacity="0"><animate attributeName="opacity" dur="12s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.25;0.5;1" values="0;1;0;0"/><rect x="22" width="14" height="3" rx="1.5" fill="#a855f7"/></g><g opacity="0"><animate attributeName="opacity" dur="12s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.5;0.75;1" values="0;1;0;0"/><rect x="44" width="14" height="3" rx="1.5" fill="#a855f7"/></g><g opacity="0"><animate attributeName="opacity" dur="12s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.75;1" values="0;1;1"/><rect x="66" width="14" height="3" rx="1.5" fill="#a855f7"/></g></g>
+</g>
+<rect width="1200" height="340" rx="30" fill="none" stroke="#ffffff14"/>
 </svg>

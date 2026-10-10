@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" width="900" height="420" role="img" aria-label="A live Telegram profile clock on the left and the helper bot logging deleted, edited and view-once messages on the right">
+
+<defs>
+  <linearGradient id="dbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0d18"/><stop offset="1" stop-color="#171233"/></linearGradient>
+  <linearGradient id="av" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#0ea5e9"/></linearGradient>
+  <linearGradient id="cover" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#312e81"/><stop offset="1" stop-color="#0c4a6e"/></linearGradient>
+  <clipPath id="ph"><rect x="40" y="26" width="270" height="368" rx="34"/></clipPath>
+  <filter id="dg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="40"/></filter>
+</defs>
+<style>
+  text{font-family:'Segoe UI','Inter',system-ui,-apple-system,Arial,sans-serif}
+  .tw{animation:tw 4s ease-in-out infinite}
+  @keyframes tw{0%,100%{opacity:.12}50%{opacity:.95}}
+  .spark{transform-box:fill-box;transform-origin:center;animation:spark 3s ease-in-out infinite}
+  @keyframes spark{0%,100%{transform:scale(.2) rotate(0);opacity:0}50%{transform:scale(1) rotate(45deg);opacity:1}}
+  .bob{animation:bob 5s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  .pulse{transform-box:fill-box;transform-origin:center;animation:pulse 2.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+</style>
+<rect width="900" height="420" rx="28" fill="url(#dbg)"/>
+<circle cx="120" cy="380" r="110" fill="#8b5cf6" opacity=".3" filter="url(#dg)"/>
+<circle cx="820" cy="40" r="110" fill="#0ea5e9" opacity=".28" filter="url(#dg)"/>
+
+<!-- phone: the profile the engine keeps updating -->
+<rect x="40" y="26" width="270" height="368" rx="34" fill="#0e1220" stroke="#ffffff26" stroke-width="1.5"/>
+<g clip-path="url(#ph)">
+  <rect x="40" y="26" width="270" height="116" fill="url(#cover)"/>
+  <circle cx="60" cy="70" r="40" fill="#fff" opacity=".07" class="pulse"/>
+  <circle cx="175" cy="132" r="42" fill="#0e1220"/>
+  <circle cx="175" cy="132" r="37" fill="url(#av)"/>
+  <text x="175" y="146" text-anchor="middle" font-size="38" font-weight="800" fill="#fff">A</text>
+  <circle cx="204" cy="158" r="8" fill="#0e1220"/><circle cx="204" cy="158" r="5.5" fill="#22c55e"><animate attributeName="opacity" values="1;.35;1" dur="1.8s" repeatCount="indefinite"/></circle>
+
+  <g text-anchor="middle" font-weight="700" fill="#fff" font-size="21">
+    <g opacity="1"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.16666666666666666;1" values="1;0;0"/><text x="175" y="205" style="font-family:'Segoe UI','Inter',system-ui,-apple-system,Arial,sans-serif">Arizo · 12:41</text></g><g opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.16666666666666666;0.3333333333333333;1" values="0;1;0;0"/><text x="175" y="205" style="font-family:'Segoe UI','Inter',system-ui,-apple-system,Arial,sans-serif">Arizo · 12:42</text></g><g opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.3333333333333333;0.5;1" values="0;1;0;0"/><text x="175" y="205" style="font-family:Vazirmatn,Tahoma,'Segoe UI',sans-serif">Arizo · ۱۲:۴۳</text></g><g opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.5;0.6666666666666666;1" values="0;1;0;0"/><text x="175" y="205" style="font-family:Vazirmatn,Tahoma,'Segoe UI',sans-serif">Arizo · ۱۲:۴۴</text></g><g opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.6666666666666666;0.8333333333333334;1" values="0;1;0;0"/><text x="175" y="205" style="font-family:'Segoe UI','Inter',system-ui,-apple-system,Arial,sans-serif">Arizo · 12:45</text></g><g opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.8333333333333334;1" values="0;1;1"/><text x="175" y="205" style="font-family:'Segoe UI','Inter',system-ui,-apple-system,Arial,sans-serif">Arizo · 12:46</text></g>
+  </g>
+  <text x="175" y="226" text-anchor="middle" font-size="12" fill="#6b7390">name synced at second :00</text>
+  <g text-anchor="middle" font-size="13" fill="#a5b4fc"><g opacity="1"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.16666666666666666;1" values="1;0;0"/><text x="175" y="252">Sat 11 Oct · 12:41 · Online</text></g><g opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.16666666666666666;0.3333333333333333;1" values="0;1;0;0"/><text x="175" y="252">Sat 11 Oct · 12:42 · Online</text></g><g opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.3333333333333333;0.5;1" values="0;1;0;0"/><text x="175" y="252">Sat 11 Oct · 12:43 · Online</text></g><g opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.5;0.6666666666666666;1" values="0;1;0;0"/><text x="175" y="252">Sat 11 Oct · 12:44 · Online</text></g><g opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.6666666666666666;0.8333333333333334;1" values="0;1;0;0"/><text x="175" y="252">Sat 11 Oct · 12:45 · Online</text></g><g opacity="0"><animate attributeName="opacity" dur="6s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;0.8333333333333334;1" values="0;1;1"/><text x="175" y="252">Sat 11 Oct · 12:46 · Online</text></g></g>
+  <rect x="60" y="266" width="230" height="1" fill="#ffffff14"/>
+</g>
+<g clip-path="url(#ph)">
+  
+    <g transform="translate(58 292)">
+      <rect x="-8" y="-17" width="226" height="34" rx="12" fill="#151a2b"/>
+      <text x="6" y="5" font-size="13" fill="#d7dbea">Ghost mode</text>
+      <rect x="164" y="-10" width="42" height="22" rx="11" fill="#2a3047">
+        <animate attributeName="fill" dur="14s" repeatCount="indefinite" keyTimes="0.0000;0.1200;0.1400;0.9300;0.9600;1.0000" values="#2a3047;#2a3047;#22c55e;#22c55e;#2a3047;#2a3047" />
+      </rect>
+      <circle cx="175" cy="1" r="8" fill="#fff">
+        <animate attributeName="cx" dur="14s" repeatCount="indefinite" keyTimes="0.0000;0.1200;0.1400;0.9300;0.9600;1.0000" values="175;175;195;195;175;175" />
+      </circle>
+    </g>
+  
+    <g transform="translate(58 332)">
+      <rect x="-8" y="-17" width="226" height="34" rx="12" fill="#151a2b"/>
+      <text x="6" y="5" font-size="13" fill="#d7dbea">Auto-secretary</text>
+      <rect x="164" y="-10" width="42" height="22" rx="11" fill="#2a3047">
+        <animate attributeName="fill" dur="14s" repeatCount="indefinite" keyTimes="0.0000;0.3000;0.3200;0.9300;0.9600;1.0000" values="#2a3047;#2a3047;#22c55e;#22c55e;#2a3047;#2a3047" />
+      </rect>
+      <circle cx="175" cy="1" r="8" fill="#fff">
+        <animate attributeName="cx" dur="14s" repeatCount="indefinite" keyTimes="0.0000;0.3000;0.3200;0.9300;0.9600;1.0000" values="175;175;195;195;175;175" />
+      </circle>
+    </g>
+  
+    <g transform="translate(58 372)">
+      <rect x="-8" y="-17" width="226" height="34" rx="12" fill="#151a2b"/>
+      <text x="6" y="5" font-size="13" fill="#d7dbea">Night schedule</text>
+      <rect x="164" y="-10" width="42" height="22" rx="11" fill="#2a3047">
+        
+      </rect>
+      <circle cx="175" cy="1" r="8" fill="#fff">
+        
+      </circle>
+    </g>
+</g>
+
+<!-- helper bot log -->
+<rect x="340" y="26" width="520" height="368" rx="30" fill="#0e1220" stroke="#ffffff26" stroke-width="1.5"/>
+<circle cx="378" cy="55" r="17" fill="url(#av)"/><g transform="translate(378 55) scale(.34)"><path d="M-30 -2 L34 -26 L18 26 L3 10 L-8 22 L-9 6Z" fill="#fff"/><path d="M-9 6 L34 -26 L3 10Z" fill="#000" opacity=".16"/></g>
+<text x="404" y="52" font-size="15" font-weight="700" fill="#fff">Arizo Helper Bot</text>
+<text x="404" y="69" font-size="11" fill="#22c55e">● logging live</text>
+<rect x="364" y="78" width="480" height="1" fill="#ffffff12"/>
+
+
+    <g opacity="0"><animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0.0000;0.0800;0.0920;0.9450;0.9570;1.0000" values="0;0;1;1;0;0" />
+      <g><animateTransform attributeName="transform" type="translate" dur="14s" repeatCount="indefinite" keyTimes="0.0000;0.0800;0.1150;1.0000" values="36 0;36 0;0 0;0 0" />
+        <rect x="364" y="84" width="480" height="66" rx="18" fill="#151a2b" stroke="#f43f5e" stroke-opacity=".5"/>
+        <rect x="364" y="84" width="5" height="66" rx="2.5" fill="#f43f5e"/>
+        <rect x="382" y="97" width="40" height="40" rx="12" fill="#f43f5e" fill-opacity=".18"/>
+        <text x="402" y="124" text-anchor="middle" font-size="20">🗑</text>
+        <text x="436" y="113" font-size="15" font-weight="700" fill="#fff">Deleted message recovered</text>
+        <text x="436" y="134" font-size="13" fill="#9aa3bd">Sara · “Are we meeting at eight?”</text>
+        <text x="828" y="108" text-anchor="end" font-size="11" fill="#6b7390">12:41</text>
+        
+      </g>
+    </g>
+
+    <g opacity="0"><animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0.0000;0.2800;0.2920;0.9450;0.9570;1.0000" values="0;0;1;1;0;0" />
+      <g><animateTransform attributeName="transform" type="translate" dur="14s" repeatCount="indefinite" keyTimes="0.0000;0.2800;0.3150;1.0000" values="36 0;36 0;0 0;0 0" />
+        <rect x="364" y="160" width="480" height="66" rx="18" fill="#151a2b" stroke="#f59e0b" stroke-opacity=".5"/>
+        <rect x="364" y="160" width="5" height="66" rx="2.5" fill="#f59e0b"/>
+        <rect x="382" y="173" width="40" height="40" rx="12" fill="#f59e0b" fill-opacity=".18"/>
+        <text x="402" y="200" text-anchor="middle" font-size="20">✏️</text>
+        <text x="436" y="189" font-size="15" font-weight="700" fill="#fff">Message edited</text>
+        <text x="436" y="210" font-size="13" fill="#9aa3bd">“Meet at 8?”  →  “Meet at 9, sorry!”</text>
+        <text x="828" y="184" text-anchor="end" font-size="11" fill="#6b7390">12:42</text>
+        
+      </g>
+    </g>
+
+    <g opacity="0"><animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0.0000;0.4800;0.4920;0.9450;0.9570;1.0000" values="0;0;1;1;0;0" />
+      <g><animateTransform attributeName="transform" type="translate" dur="14s" repeatCount="indefinite" keyTimes="0.0000;0.4800;0.5150;1.0000" values="36 0;36 0;0 0;0 0" />
+        <rect x="364" y="236" width="480" height="66" rx="18" fill="#151a2b" stroke="#ec4899" stroke-opacity=".5"/>
+        <rect x="364" y="236" width="5" height="66" rx="2.5" fill="#ec4899"/>
+        <rect x="382" y="249" width="40" height="40" rx="12" fill="#ec4899" fill-opacity=".18"/>
+        <text x="402" y="276" text-anchor="middle" font-size="20">🔥</text>
+        <text x="436" y="265" font-size="15" font-weight="700" fill="#fff">View-once photo saved</text>
+        <text x="436" y="286" font-size="13" fill="#9aa3bd">Omid · 5 s timer · original quality kept</text>
+        <text x="828" y="260" text-anchor="end" font-size="11" fill="#6b7390">12:43</text>
+        
+      </g>
+    </g>
+
+    <g opacity="0"><animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0.0000;0.6800;0.6920;0.9450;0.9570;1.0000" values="0;0;1;1;0;0" />
+      <g><animateTransform attributeName="transform" type="translate" dur="14s" repeatCount="indefinite" keyTimes="0.0000;0.6800;0.7150;1.0000" values="36 0;36 0;0 0;0 0" />
+        <rect x="364" y="312" width="480" height="66" rx="18" fill="#151a2b" stroke="#a855f7" stroke-opacity=".5"/>
+        <rect x="364" y="312" width="5" height="66" rx="2.5" fill="#a855f7"/>
+        <rect x="382" y="325" width="40" height="40" rx="12" fill="#a855f7" fill-opacity=".18"/>
+        <text x="402" y="352" text-anchor="middle" font-size="20">🍯</text>
+        <text x="436" y="341" font-size="15" font-weight="700" fill="#fff">Honeypot trap triggered</text>
+        <text x="436" y="362" font-size="13" fill="#9aa3bd">185.220.101.x probed /.env · IP banned at the edge</text>
+        <text x="828" y="336" text-anchor="end" font-size="11" fill="#6b7390">12:44</text>
+        
+      </g>
+    </g>
+
+<g opacity="0"><animate attributeName="opacity" dur="14s" repeatCount="indefinite" keyTimes="0.0000;0.0600;0.0720;0.9450;0.9570;1.0000" values="0;0;1;1;0;0" />
+  <circle cx="838" cy="55" r="4.5" fill="#f43f5e"><animate attributeName="opacity" values="1;.2;1" dur="1.2s" repeatCount="indefinite"/></circle>
+  <text x="826" y="59" text-anchor="end" font-size="11" fill="#8b93ad" letter-spacing="1">4 EVENTS</text>
+</g>
+<g transform="translate(300 400) scale(0.8)"><path class="spark" style="animation-delay:0s" d="M0-10 L2.6-2.6 10 0 2.6 2.6 0 10 -2.6 2.6 -10 0 -2.6-2.6Z" fill="#fff"/></g><g transform="translate(870 395) scale(0.9)"><path class="spark" style="animation-delay:1.4s" d="M0-10 L2.6-2.6 10 0 2.6 2.6 0 10 -2.6 2.6 -10 0 -2.6-2.6Z" fill="#fff"/></g>
+</svg>
