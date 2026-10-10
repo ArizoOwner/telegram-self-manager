@@ -311,44 +311,50 @@
 </div>
 
 ```mermaid
-graph TD
-    subgraph "🌐 لایه پردازش ابری (Cloudflare Edge)"
-        CF["☁️ Cloudflare Workers<br/><small>REST API · Web Studio · Mini App · Webhook</small>"]
-        KV[("🗄️ Cloudflare KV<br/><small>AES-256-GCM Isolated User Vault</small>")]
-        HONEY["🍯 Zero-Trust Honeypot<br/><small>Threat Detection & Auto-Ban</small>"]
+%%{init: {"flowchart": {"nodeSpacing": 30, "rankSpacing": 50, "padding": 10, "htmlLabels": true}}}%%
+flowchart LR
+    subgraph EDGE["🌐 لبه ابری Cloudflare"]
+        direction TB
+        HONEY["🍯 Honeypot<br/><small>Auto-Ban + Alert</small>"]
+        CF["☁️ Workers<br/><small>API · Studio · Mini App</small>"]
+        KV[("🗄️ KV<br/><small>AES-256-GCM</small>")]
+        HONEY --> CF
+        CF <-->|"2FA"| KV
     end
 
-    subgraph "⚡ لایه موتور و سوکت‌ها (Zero-Downtime Engine)"
-        RUNNER["🔄 Persistent Runner (GitHub Actions / VPS)<br/><small>Zero-Downtime 24/7 Engine</small>"]
-        SOCKET["🔌 Warm Socket Pool<br/><small>Sub-40ms MTProto Gateway</small>"]
-        CACHE["🧠 Smart Memory Cache<br/><small>Anti-Delete · Anti-Edit Buffer</small>"]
+    subgraph ENGINE["⚡ موتور و سوکت‌ها"]
+        direction TB
+        RUNNER["🔄 Runner<br/><small>24/7</small>"]
+        SOCKET["🔌 Socket Pool<br/><small>under 40ms</small>"]
+        CACHE["🧠 Cache<br/><small>Anti-Delete</small>"]
+        RUNNER --> SOCKET --> CACHE
     end
 
-    subgraph "📱 اکوسیستم تلگرام (Telegram Ecosystem)"
-        DC["☁️ Telegram Datacenter<br/><small>Official MTProto 2.0</small>"]
-        BOT["🤖 دستیار شخصی تلگرام<br/><small>Helper Bot · Logger · Mini App</small>"]
-        USER["👤 حساب کاربری تلگرام<br/><small>Atomic Clock · Bio · Ghost Mode · AFK</small>"]
+    subgraph TG["📱 اکوسیستم تلگرام"]
+        direction TB
+        DC["☁️ MTProto DC"]
+        USER["👤 حساب کاربری"]
+        BOT["🤖 ربات دستیار"]
+        DC --> USER
     end
 
-    CF <-->|"HTTPS + 2FA Auth"| KV
-    HONEY -->|"Auto-Block IP"| CF
-    HONEY -->|"Instant Alert"| BOT
-    RUNNER -->|"10s Sync Config"| CF
-    RUNNER --> SOCKET
-    SOCKET --> CACHE
-    SOCKET <-->|"Sub-40ms TCP Stream"| DC
-    DC --> USER
-    SOCKET -->|"Direct Delivery (Anti-Delete/TTL)"| BOT
+    EDGE ---|"Sync 10s"| ENGINE
+    ENGINE ---|"اتصال TCP"| TG
 
-    style CF fill:#f38020,stroke:#f38020,color:#fff
-    style KV fill:#6366f1,stroke:#6366f1,color:#fff
-    style HONEY fill:#ef4444,stroke:#ef4444,color:#fff
-    style RUNNER fill:#22c55e,stroke:#22c55e,color:#fff
-    style SOCKET fill:#a855f7,stroke:#a855f7,color:#fff
-    style CACHE fill:#ec4899,stroke:#ec4899,color:#fff
-    style DC fill:#26A5E4,stroke:#26A5E4,color:#fff
-    style BOT fill:#0088cc,stroke:#0088cc,color:#fff
-    style USER fill:#0ea5e9,stroke:#0ea5e9,color:#fff
+    classDef cf fill:#f38020,stroke:#f38020,color:#fff
+    classDef vault fill:#6366f1,stroke:#6366f1,color:#fff
+    classDef risk fill:#ef4444,stroke:#ef4444,color:#fff
+    classDef run fill:#22c55e,stroke:#22c55e,color:#fff
+    classDef sock fill:#a855f7,stroke:#a855f7,color:#fff
+    classDef mem fill:#ec4899,stroke:#ec4899,color:#fff
+    classDef tg fill:#0088cc,stroke:#0088cc,color:#fff
+    class CF cf
+    class KV vault
+    class HONEY risk
+    class RUNNER run
+    class SOCKET sock
+    class CACHE mem
+    class DC,BOT,USER tg
 ```
 
 ---
